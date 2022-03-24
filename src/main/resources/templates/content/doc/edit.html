@@ -1,123 +1,131 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout/default_layout}">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}">
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- 위 3개의 메타 태그는 *반드시* head 태그의 처음에 와야합니다; 어떤 다른 콘텐츠들은 반드시 이 태그들 *다음에* 와야 합니다 -->
-<title>문서편집</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 위 3개의 메타 태그는 *반드시* head 태그의 처음에 와야합니다; 어떤 다른 콘텐츠들은 반드시 이 태그들 *다음에* 와야 합니다 -->
+    <title>문서편집</title>
 
-<!-- 부트스트랩 -->
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
-	crossorigin="anonymous">
+    <!-- 부트스트랩 -->
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
+            crossorigin="anonymous">
 
-<!-- IE8 에서 HTML5 요소와 미디어 쿼리를 위한 HTML5 shim 와 Respond.js -->
-<!-- WARNING: Respond.js 는 당신이 file:// 을 통해 페이지를 볼 때는 동작하지 않습니다. -->
-<!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <!-- IE8 에서 HTML5 요소와 미디어 쿼리를 위한 HTML5 shim 와 Respond.js -->
+    <!-- WARNING: Respond.js 는 당신이 file:// 을 통해 페이지를 볼 때는 동작하지 않습니다. -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-<style>
-.ck.ck-editor {
-	max-width: 100%;
-}
+    <style>
+        .ck.ck-editor {
+            max-width: 100%;
+        }
 
-.ck-editor__editable {
-	min-height: 300px;
-}
+        .ck-editor__editable {
+            min-height: 300px;
+        }
 
-#loader {
-	width: 100%;
-	height: 100%;
-	top: 0;
-	left: 0;
-	position: fixed;
-	display: block;
-	opacity: 0.8;
-	background: rgb(156, 154, 154);
-	z-index: 99;
-	text-align: center;
-}
+        #loader {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            position: fixed;
+            display: block;
+            opacity: 0.8;
+            background: rgb(156, 154, 154);
+            z-index: 99;
+            text-align: center;
+        }
 
-#loader>div {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	z-index: 100;
-}
-</style>
+        #loader > div {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            z-index: 100;
+        }
+    </style>
 </head>
 
 <body>
-	<th:block layout:fragment="header" th:include="@{/fragments/header}"></th:block>
-	<div id="loader">
-		<div
-			class="spinner-border text-info position-absolute top-50 start-50"
-			role="status">
-			<span class="visually-hidden">Loading...</span>
-		</div>
-	</div>
-	<div layout:fragment="content" class="content">
-		<div class="nav-scroller bg-body shadow-sm">
-			<nav class="nav nav-underline" aria-label="Secondary navigation">
-				<a class="nav-link active" aria-current="page"
-					th:href="@{'/doc/edit/'+${docContent.doc_name}}">편집</a> <a
-					class="nav-link" href="#"> Friends <span
-					class="badge bg-light text-dark rounded-pill align-text-bottom">27</span>
-				</a> <a class="nav-link" href="#">Explore</a> <a class="nav-link"
-					href="#">Suggestions</a> <a class="nav-link" href="#">Link</a> <a
-					class="nav-link" href="#">Link</a> <a class="nav-link" href="#">Link</a>
-				<a class="nav-link" href="#">Link</a> <a class="nav-link" href="#">Link</a>
-			</nav>
-		</div>
-		<form th:action="@{/doc/modify}" th:object="${docContent}"
-			id="insertForm" method="POST">
-			<textarea name="doc_content" id="doc_content"
-				th:text="${docContent.doc_content}" class="ck_editor_txt"></textarea>
-		</form>
-	</div>
-	<br />
-	<div class="d-grid gap-2 d-md-flex justify-content-md-center">
-		<button class="btn btn-primary me-md-2" type="button"
-			onclick="insert();">편집완료</button>
-	</div>
-	<!-- jQuery (부트스트랩의 자바스크립트 플러그인을 위해 필요합니다) -->
-	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-	<!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
-		crossorigin="anonymous"></script>
-	<script src="/js/ckeditor5-31/doc/ckeditor.js"></script>
-	<script>
-			$(window).on('load', function () {
-			    $('#loader').hide();
-			})
-	
-			var allEditors = document.querySelector('.ck_editor_txt');
-			ClassicEditor.create((allEditors),
-				{
-					simpleUpload:
-					{
-						uploadUrl:"http://localhost:8080/upload/image",
-						withCredentials: true,
-						headers: {
-			                'X-CSRF-TOKEN': 'CSRF-Token',
-			                Authorization: 'Bearer <JSON Web Token>'
-			            }
-					}	
-				})
-		    .catch( error => {
-		        //console.log( error );
-		    } );
-	</script>
+<th:block layout:fragment="header" th:include="@{/fragments/header}"></th:block>
+<div id="loader">
+    <div
+            class="spinner-border text-info position-absolute top-50 start-50"
+            role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+<div layout:fragment="content" class="content">
+    <div class="nav-scroller bg-body shadow-sm">
+        <nav class="nav nav-underline" aria-label="Secondary navigation">
+            <a class="nav-link active" aria-current="page"
+               th:href="@{'/doc/edit/'+${docContent.doc_name}}">편집</a> <a
+                class="nav-link" href="#"> Friends <span
+                class="badge bg-light text-dark rounded-pill align-text-bottom">27</span>
+        </a> <a class="nav-link" href="#">Explore</a> <a class="nav-link"
+                                                         href="#">Suggestions</a> <a class="nav-link" href="#">Link</a>
+            <a
+                    class="nav-link" href="#">Link</a> <a class="nav-link" href="#">Link</a>
+            <a class="nav-link" href="#">Link</a> <a class="nav-link" href="#">Link</a>
+        </nav>
+    </div>
+    <form th:action="@{/doc/update}" th:object="${docModel}"
+          id="updateForm" method="POST">
+        <input type="hidden" name="doc_name" id="doc_name" th:value="${docContent.doc_name}"/>
+        <textarea name="doc_content" id="doc_content"
+                  th:text="${docContent.doc_content}" class="ck_editor_txt"></textarea>
+        <br/>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+            <button class="btn btn-primary me-md-2" type="button"
+                    onclick="doc_update();">편집완료
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- jQuery (부트스트랩의 자바스크립트 플러그인을 위해 필요합니다) -->
+<script
+        src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+<script src="/js/ckeditor5-31/doc/ckeditor.js"></script>
+<script>
+    $(window).on('load', function () {
+        $('#loader').hide();
+    })
+
+    var allEditors = document.querySelector('.ck_editor_txt');
+    ClassicEditor.create((allEditors),
+        {
+            simpleUpload:
+                {
+                    uploadUrl: "http://localhost:8080/upload/image",
+                    withCredentials: true,
+                    headers: {
+                        'X-CSRF-TOKEN': 'CSRF-Token',
+                        Authorization: 'Bearer <JSON Web Token>'
+                    }
+                }
+        })
+        .catch(error => {
+            //console.log( error );
+        });
+
+    function doc_update() {
+        document.getElementById("updateForm").submit();
+    }
+</script>
 
 </body>
 

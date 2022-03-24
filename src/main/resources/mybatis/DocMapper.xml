@@ -11,4 +11,14 @@
 		WHERE
 		DOC_NAME=#{doc_name}
 	</select>
+	<update id="updateDoc" parameterType="DocModel">
+	<![CDATA[
+		UPDATE
+		DOCUMENT
+		SET
+		DOC_CONTENT = #{doc_content},
+		MODIFY_DATE = now()
+		WHERE DOC_NAME = #{doc_name}
+	]]>
+	</update>
 </mapper>

@@ -13,7 +13,8 @@
 
 	<select id="selectQuizEdit" parameterType="QuizModel"
 		resultType="QuizModel">
-		SELECT * FROM QUIZ WHERE DOC_CODE=#{doc_code} AND
+		SELECT fnc_common_code(A.QUIZ_SOURCE) AS QUIZ_SOURCE_NAME,
+		A.* FROM QUIZ A WHERE DOC_CODE=#{doc_code} AND
 		QUIZ_NUMBER =
 		#{quiz_number}
 	</select>
