@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 위 3개의 메타 태그는 *반드시* head 태그의 처음에 와야합니다; 어떤 다른 콘텐츠들은 반드시 이 태그들 *다음에* 와야 합니다 -->
+<title>문제등록</title>
+
+<!-- 부트스트랩 -->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
+	crossorigin="anonymous">
+
+<!-- IE8 에서 HTML5 요소와 미디어 쿼리를 위한 HTML5 shim 와 Respond.js -->
+<!-- WARNING: Respond.js 는 당신이 file:// 을 통해 페이지를 볼 때는 동작하지 않습니다. -->
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+<script>
+		function insert() {
+			document.getElementById("insertForm").submit();
+		}
+	</script>
+<style>
+#loader {
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	position: fixed;
+	display: block;
+	opacity: 0.8;
+	background: rgb(156, 154, 154);
+	z-index: 99;
+	text-align: center;
+}
+
+#loader>div {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	z-index: 100;
+}
+</style>
+</head>
+
+<body>
+	<th:block layout:fragment="header" th:include="@{/fragments/header}"></th:block>
+	<div id="loader">
+		<div
+			class="spinner-border text-info position-absolute top-50 start-50"
+			role="status">
+			<span class="visually-hidden">Loading...</span>
+		</div>
+	</div>
+	<div layout:fragment="content" class="content">
+		<div class="page-header">
+			<h1>문제등록</h1>
+		</div>
+		<form th:action="@{/quiz/insert}" th:object="${quizModel}"
+			id="insertForm" method="POST">
+			<div class="row">
+				<div class="col">
+					<span class="input-group-text" id="basic-addon1">출처</span> <select
+						class="form-select" aria-label="출처" th:name="quiz_source">
+						<option th:each="src:${srcCodeList}" th:value="${src.code_id}"
+							th:selected="${src.code_id == quizModel.quiz_source}"
+							th:utext="${src.code_name}"></option>
+					</select>
+				</div>
+				<div class="col">
+					<span class="input-group-text" id="inputGroup-sizing-default">기존번호</span>
+					<input type="text" name="quiz_org_number" id="quiz_org_number"
+						class="form-control" aria-label="Sizing example input"
+						aria-describedby="inputGroup-sizing-default">
+				</div>
+				<div class="col">
+					<span class="input-group-text" id="basic-addon1">문서분류</span> <select
+						class="form-select" aria-label="분류" th:name="doc_code">
+						<option th:each="val:${docCatehogryList}"
+							th:value="${val.doc_code}" th:utext="${val.category_name}"></option>
+					</select>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<span class="input-group-text" id="basic-addon1">문항방식</span> <select
+						class="form-select" th:field="*{quiz_code}" aria-label="문항방식">
+						<option th:each="qc:${quizCodeList}" th:value="${qc.code_id}"
+							th:text="${qc.code_name}"></option>
+					</select>
+				</div>
+				<div class="col">
+					<span class="input-group-text" id="basic-addon1">문제패턴</span> <select
+						class="form-select" aria-label="문제패턴" th:field="*{pattern_code}">
+						<option th:each="ptn:${ptnCodeList}" th:value="${ptn.code_id}"
+							th:text="${ptn.code_name}"></option>
+					</select>
+				</div>
+				<div class="col">
+					<span class="input-group-text" id="basic-addon1">난이도&nbsp;&nbsp;&nbsp;</span>
+					<select class="form-select" aria-label="문제난이도"
+						th:field="*{quiz_level}">
+						<option th:each="lvl:${lvlCodeList}" th:value="${lvl.code_id}"
+							th:text="${lvl.code_name}" th:selected="${lvl.code_id == '11'}"></option>
+					</select>
+				</div>
+			</div>
+			<div class="mb-3">
+				<textarea name="quiz_title" id="quiz_title" class="ck_editor_txt"
+					placeholder="문제 제목을 적으세요."></textarea>
+			</div>
+			<div class="mb-3">
+				<textarea name="quiz_subtitle" id="quiz_subtitle"
+					class="ck_editor_txt" placeholder="문제 설명을 적으세요."></textarea>
+			</div>
+			<div class="row">
+				<div class="col">
+					<span class="input-group-text" id="basic-addon1">1)번</span>
+					<textarea name="quiz_object_name" id="quiz_object_name"
+						class="ck_editor_txt"></textarea>
+				</div>
+				<div class="col">
+					<span class="input-group-text" id="basic-addon1">2)번</span>
+					<textarea name="quiz_object_name" id="quiz_object_name"
+						class="ck_editor_txt"></textarea>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<span class="input-group-text" id="basic-addon1">3)번</span>
+					<textarea name="quiz_object_name" id="quiz_object_name"
+						class="ck_editor_txt"></textarea>
+				</div>
+				<div class="col">
+					<span class="input-group-text" id="basic-addon1">4)번</span>
+					<textarea name="quiz_object_name" id="quiz_object_name"
+						class="ck_editor_txt"></textarea>
+				</div>
+			</div>
+			<div class="input-group mb-3">
+				<span class="input-group-text" id="basic-addon1">문제정답</span> <input
+					type="text" name="quiz_answer" id="quiz_answer"
+					class="form-control" placeholder="문제 정답을 적으세요.">
+			</div>
+			<div class="input-group mb-3">
+				<span class="input-group-text" id="basic-addon1">문제해설</span>
+				<textarea name="quiz_desc" id="quiz_desc" class="ck_editor_txt"
+					placeholder="문제 정답 해설을 적으세요."></textarea>
+			</div>
+			<br />
+
+
+			<div class="d-grid gap-2 d-md-flex justify-content-md-center">
+				<button class="btn btn-primary me-md-2" type="button"
+					onclick="insert();">등록하기</button>
+				<a class="btn btn-primary" href="/index" role="button">취소하기</a>
+			</div>
+
+		</form>
+	</div>
+	<!-- jQuery (부트스트랩의 자바스크립트 플러그인을 위해 필요합니다) -->
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	<!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+		crossorigin="anonymous"></script>
+	<script src="/js/ckeditor5-31/quiz/ckeditor.js"></script>
+	<script>
+		$(window).on('load', function () {
+		    $('#loader').hide();
+		});		
+		var allEditors = document.querySelectorAll('.ck_editor_txt');
+		for (var i=0; i < allEditors.length; ++i){
+			ClassicEditor.create((allEditors[i]),
+				{
+					simpleUpload:
+					{
+						uploadUrl:"/attach/image",
+						withCredentials: true,
+					},
+					autoParagraph: false
+				})
+				.then(newEditor => {
+					editr = newEditor;
+				})
+		    .catch( error => {
+		        console.log( error );
+		    } );
+		}
+	</script>
+
+</body>
+
+</html>

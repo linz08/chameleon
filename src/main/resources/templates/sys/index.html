@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/default_layout}">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="_csrf_header" th:content="${_csrf.headerName}">
+<meta name="_csrf" th:content="${_csrf.token}">
+<!-- 위 3개의 메타 태그는 *반드시* head 태그의 처음에 와야합니다; 어떤 다른 콘텐츠들은 반드시 이 태그들 *다음에* 와야 합니다 -->
+<title>카멜레온</title>
+<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
+<!-- 부트스트랩 -->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
+	crossorigin="anonymous">
+
+<!-- IE8 에서 HTML5 요소와 미디어 쿼리를 위한 HTML5 shim 와 Respond.js -->
+<!-- WARNING: Respond.js 는 당신이 file:// 을 통해 페이지를 볼 때는 동작하지 않습니다. -->
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+<style>
+.nounderline {
+	text-decoration: none !important;
+	color: black;
+}
+</style>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
+	integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+	crossorigin="anonymous"></script>
+<link rel="stylesheet"
+	href="https://uicdn.toast.com/tui-grid/latest/tui-grid.css" />
+<script src="https://uicdn.toast.com/tui-grid/latest/tui-grid.js"></script>
+</head>
+
+<body>
+	<th:block layout:fragment="header" th:include="@{/fragments/header}"></th:block>
+	<div>
+		<select id="upper_code" class="form-select form-select-lg mb-3"
+			onchange="gridCodeList()">
+			<option selected value="">코드를 선택하세요.</option>
+		</select>
+	</div>
+	<div id="grid"></div>
+	<br />
+	<div align="right">
+		<input class="btn btn-primary" type="button" value="행추가"
+			onclick="gridRowAdd()"> <input class="btn btn-primary"
+			type="button" value="행삭제"> <input class="btn btn-primary"
+			type="button" onclick="saveGrid()" value="저 장">
+	</div>
+	<script src="/js/tui/toastUICustom.js"></script>
+	<script>
+		let header = $("meta[name='_csrf_header']").attr('content');
+		let token = $("meta[name='_csrf']").attr('content');
+
+		/**
+		 * 그리드 헤더
+		 */
+		let gridOneColumns = [ {
+			header : '상태',
+			name : 'col_status',
+			align : 'center',
+			defaultValue : ''
+		}, {
+			header : '상위코드',
+			name : 'upper_code_id',
+			editor : 'text',
+			condition : function(d) {
+				return d.col_status === "I"
+			}
+		}, {
+			header : '코드',
+			name : 'code_id',
+			editor : 'text',
+			condition : function(d) {
+				return d.i
+			}
+		}, {
+			header : '코드명',
+			name : 'code_name',
+			editor : 'text'
+		}, {
+			header : '정렬값',
+			name : 'sort_num',
+			editor : 'text'
+		}, {
+			header : '사용여부',
+			name : 'use_yn',
+			editor : {
+				type : 'select',
+				options : {
+					listItems : [ {
+						text : 'Y',
+						value : 'Y'
+					}, {
+						text : 'N',
+						value : 'N'
+					} ]
+				}
+			}
+		} ]
+
+		/**
+		 * 그리드 생성
+		 */
+		const gridOne = fn_createCustomTuiGrid({
+			el : document.getElementById('grid'),
+			scrollX : false,
+			scrollY : false,
+			columns : gridOneColumns
+		}, function(_grid) {
+			//그리드 생성 후 이벤트
+			_grid.on("onGridMounted", function(evt) {
+				//그리드 조회 처리
+			});
+
+			// 그리드 셀 변경 완료 이벤트
+			_grid.off("editingFinish");
+			_grid.on("editingFinish", function(evt) {
+				let col_status = _grid.getValue(evt.rowKey, "col_status");
+				if (col_status != "I") {
+					if (_grid.beforeCellValue != evt.value) {
+						_grid.setValue(evt.rowKey, "col_status", "U", false);
+					}
+				}
+				_grid.beforeCellValue = null;
+
+			});
+
+			//그리드 클릭 이벤트
+			_grid.on("click", function(evt) {
+			});
+		});
+
+		//행 추가
+		gridRowAdd = function() {
+			const rowData = {
+				col_status : 'I',
+				upper_code_id : '',
+				code_id : '',
+				code_name : '',
+				sort_num : '1',
+				use_yn : 'Y'
+			};
+
+			gridOne.appendRow(rowData);
+		}
+
+		/**
+		 * 그리드 조회
+		 */
+		let gridCodeList = function() {
+			let chk_upper_code_id = $("#upper_code").val();
+			if (chk_upper_code_id == "") {
+				return false;
+			}
+			$.ajax({
+				url : "/code/codeSelect",
+				beforeSend : function(xhr) {
+					xhr.setRequestHeader(header, token);
+				},
+				data : {
+					upper_code_id : chk_upper_code_id
+				},
+				dataType : "json",
+				type : "POST",
+				success : function(res) {
+					let upperList = res.upperList;
+					gridOne.resetData(upperList);
+				},
+				error : function(request, status, error) {
+					alert("code=" + request.status + "\n+" + "error:" + error);
+				}
+			})
+		}
+
+		// 그리드 저장	
+		let saveGrid = function() {
+			var param1 = [{
+				    "fruit": "Apple",
+				    "size": "Large",
+				    "color": "Red"
+				}]
+			
+			let changedData = gridOne.getChangeData(); // 의미를 모르겠음
+
+			//유효성 검사 및 신규, 수정, 삭제 데이터 추출
+			if (!fn_gridValidation(changedData, gridOneColumns, gridOne)) {
+				return;
+			}
+			if (confirm("저장하시겠습니까?")) {
+				console.log(JSON.stringify(changedData));
+				$.ajax({
+					url : "/code/update",
+ 					beforeSend : function(xhr) {
+ 						xhr.setRequestHeader(header, token);
+ 					},
+ 					data : JSON.stringify({"changedData" : changedData}),
+					dataType : "json",
+					contentType : "application/json",
+					type : "POST",
+					async : false,
+					success : function(data) {
+						if(data.result == "success") {
+							alert("성공");
+							gridCodeList();
+						}
+						else {
+							alert("실패");
+						}
+					},
+					error : function(request, status, error) {
+						console.log(changedData);
+						alert("code=" + request.status + "\n+" + "error:" + error);
+					},
+				});
+			}
+
+		}
+
+		// 셀렉트 박스 초기화
+		$.ajax({
+			url : "/code/codeSelect",
+			beforeSend : function(xhr) {
+				xhr.setRequestHeader(header, token);
+			},
+			data : {
+				upper_code_id : '9999'
+			},
+			dataType : "json",
+			type : "POST",
+			success : function(res) {
+				let upperList = res.upperList;
+				$.each(upperList, function(idx, obj) {
+					$("#upper_code").append(
+							'<option value='+obj.code_id+'>' + obj.code_name
+									+ '</option>');
+				});
+
+			},
+			error : function(request, status, error) {
+				alert("code=" + request.status + "\n+" + "error:" + error);
+			}
+		})
+	</script>
+</body>
+
+</html>

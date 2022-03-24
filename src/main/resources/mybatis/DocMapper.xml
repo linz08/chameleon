@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.javaguitar.mapper.DocMapper">
+	<select id="selectDocIndex" resultType="DocModel"> 
+	  <![CDATA[
+	  SELECT DOC_NAME FROM DOCUMENT WHERE DOC_NAME <> 'index'  ORDER BY SORT_NUM
+	 ]]>
+	</select>
+	<select id="selectDoc" parameterType="String" 
+		resultType="DocModel">
+		SELECT A.* FROM DOCUMENT A
+		WHERE
+		DOC_NAME=#{doc_name}
+	</select>
+</mapper>

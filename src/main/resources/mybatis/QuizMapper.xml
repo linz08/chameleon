@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.javaguitar.mapper.QuizMapper">
+	<select id="selectQuiz" resultType="QuizModel">
+		SELECT A.*,
+		fnc_common_code(A.QUIZ_SOURCE) AS QUIZ_SOURCE_NAME
+		FROM QUIZ A
+		LEFT OUTER JOIN QUIZ_ANSWER B
+		ON A.DOC_CODE = B.DOC_CODE
+		AND
+		A.QUIZ_NUMBER = B.QUIZ_NUMBER
+		ORDER BY RAND() LIMIT 1
+	</select>
+
+	<select id="selectQuizEdit" parameterType="QuizModel"
+		resultType="QuizModel">
+		SELECT * FROM QUIZ WHERE DOC_CODE=#{doc_code} AND
+		QUIZ_NUMBER =
+		#{quiz_number}
+	</select>
+
+	<select id="selectQuizList" parameterType="int"
+		resultType="QuizModel">
+		SELECT B.CATEGORY_NAME, A.* FROM QUIZ A, DOCUMENT_CATEGORY
+		B
+		WHERE
+		QUIZ_SOURCE=#{quiz_source}
+		AND A.DOC_CODE = B.DOC_CODE
+		ORDER BY
+		CAST(QUIZ_ORG_NUMBER AS INTEGER) ASC
+	</select>
+
+	<insert id="insertQuiz" parameterType="QuizModel">
+		<![CDATA[
+			INSERT INTO QUIZ(
+						   DOC_CODE
+						  ,QUIZ_NUMBER
+						  ,QUIZ_CODE
+						  ,QUIZ_TITLE
+						  ,QUIZ_SUBTITLE
+						  ,PATTERN_CODE
+						  ,QUIZ_LEVEL
+						  ,QUIZ_SOURCE
+						  ,CREATE_DATE
+						  ,MODIFY_DATE
+						  ,QUIZ_MEMO
+						  ,QUIZ_ORG_NUMBER
+						  ,QUIZ_ANSWER
+						  ,QUIZ_DESC
+					) VALUES (
+					   #{doc_code}
+					  ,#{quiz_number}
+					  ,#{quiz_code}
+					  ,REPLACE(REPLACE(#{quiz_title},'<p>',''),'</p>','')
+					  ,REPLACE(REPLACE(#{quiz_subtitle},'<p>',''),'</p>','')
+					  ,#{pattern_code}
+					  ,#{quiz_level}
+					  ,#{quiz_source}
+					  ,now()
+					  ,now()
+					  ,#{quiz_memo}
+					  ,#{quiz_org_number}
+					  ,#{quiz_answer}
+					  ,#{quiz_desc}
+					)			
+		]]>
+	</insert>
+	<update id="updateQuiz" parameterType="QuizModel">
+	<![CDATA[	
+		UPDATE 
+		QUIZ
+		SET
+		DOC_CODE = #{doc_code},
+		QUIZ_CODE = #{quiz_code},
+		QUIZ_TITLE = REPLACE(REPLACE(#{quiz_title},'<p>',''),'</p>',''),
+		QUIZ_SUBTITLE = REPLACE(REPLACE(#{quiz_subtitle},'<p>',''),'</p>',''),
+		PATTERN_CODE = #{pattern_code},
+		QUIZ_LEVEL = #{quiz_level},
+		QUIZ_SOURCE = #{quiz_source},
+		MODIFY_DATE = now(),
+		QUIZ_MEMO = #{quiz_memo},
+		QUIZ_ORG_NUMBER =#{quiz_org_number},
+		QUIZ_ANSWER = #{quiz_answer},
+		QUIZ_DESC = #{quiz_desc}
+		WHERE QUIZ_NUMBER = #{quiz_number}
+	]]>
+	</update>
+	<select id="selectMaxQuizNumber" resultType="java.lang.Integer">
+		SELECT /*
+		QuizMapper.selectMaxQuizNumber */
+		IFNULL(MAX(QUIZ_NUMBER)+1,1) FROM
+		QUIZ
+	</select>
+
+</mapper>

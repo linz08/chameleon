@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.javaguitar.mapper.QuizObjectiveMapper">
+	<select id="selectQuizObjective"
+		parameterType="net.javaguitar.model.QuizModel"
+		resultType="QuizObjectiveModel">
+		SELECT * FROM QUIZ_OBJECTIVE WHERE DOC_CODE= #{doc_code}
+		AND QUIZ_NUMBER = #{quiz_number}
+		ORDER BY QUIZ_OBJECT_NUM ASC;
+	</select>
+	<insert id="insertQuizObjective" parameterType="QuizModel">
+		<![CDATA[
+			INSERT INTO QUIZ_OBJECTIVE(
+						   	 DOC_CODE
+							,QUIZ_NUMBER								
+							,QUIZ_OBJECT_NUM								
+							,QUIZ_OBJECT_NAME								
+							,IMAGE_TEXT_YN								
+							,CREATE_DATE	
+							,MODIFY_DATE							
+					) VALUES (
+					   #{doc_code}
+					  ,#{quiz_number}
+					  ,#{quiz_object_num}
+					  ,REPLACE(REPLACE(#{quiz_object_name},'<p>',''),'</p>','')
+					  ,'N'
+					  ,now()
+					  ,now()
+					)			
+		]]>
+	</insert>
+	<update id="updateQuizObjective" parameterType="QuizModel">
+	<![CDATA[
+			UPDATE QUIZ_OBJECTIVE
+			 SET QUIZ_OBJECT_NAME = REPLACE(REPLACE(#{quiz_object_name},'<p>',''),'</p>',''),
+			  DOC_CODE=#{doc_code},
+			 MODIFY_DATE = now()
+			WHERE QUIZ_NUMBER = #{quiz_number} AND QUIZ_OBJECT_NUM=#{quiz_object_num}
+		]]>
+	</update>
+
+</mapper>

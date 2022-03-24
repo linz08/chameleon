@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.javaguitar.mapper.DocCategoryMapper">
+	<select id="selectDocCategory" resultType="DocCategoryModel">
+		<![CDATA[
+		SELECT CASE WHEN LEVEL-1 > 0 then CONCAT(CONCAT(REPEAT('&nbsp;&nbsp;', level -
+		1),ani.doc_code,')&nbsp;'),
+		ani.category_name)
+		ELSE ani.category_name
+		END AS category_name
+		, ani.doc_code
+		, ani.up_doc_code
+		FROM
+		(SELECT fnc_cat() AS doc_code, @level AS level
+		FROM (SELECT @start_with:=0, @id:=@start_with, @level:=0) vars
+		JOIN DOCUMENT_CATEGORY) fnc
+		JOIN DOCUMENT_CATEGORY ani ON fnc.doc_code = ani.doc_code
+		]]>
+	</select>
+	<select id="selectDocCategoryList" resultType="DocCategoryModel">
+		<![CDATA[
+		SELECT CASE WHEN LEVEL-1 > 0 then CONCAT(CONCAT(REPEAT('&nbsp;&nbsp;', level -
+		1),ani.doc_code,')&nbsp;'),
+		ani.category_name)
+		ELSE ani.category_name
+		END AS category_name
+		, ani.doc_code
+		, ani.up_doc_code
+		FROM
+		(SELECT fnc_cat() AS doc_code, @level AS level
+		FROM (SELECT @start_with:=0, @id:=@start_with, @level:=0) vars
+		JOIN DOCUMENT_CATEGORY) fnc
+		JOIN DOCUMENT_CATEGORY ani ON fnc.doc_code = ani.doc_code
+		]]>
+	</select>
+</mapper>

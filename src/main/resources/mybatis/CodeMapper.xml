@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.javaguitar.mapper.CodeMapper">
+	<select id="selectMaxCode_id" resultType="String">
+		SELECT MAX(CODE_ID)+1 FROM COMMON_CODE
+	</select>
+	<select id="selectCode" parameterType="int"
+		resultType="CodeModel">
+		SELECT
+		'' AS COL_STATUS, 
+		CODE_ID,
+		CODE_NAME FROM COMMON_CODE
+		WHERE
+		UPPER_CODE_ID=#{upper_code_id}
+		AND USE_YN='Y'
+		ORDER BY
+		SORT_NUM ASC
+	</select>
+	<select id="selectCodeManage" parameterType="int"
+		resultType="CodeModel">
+		SELECT
+		'' AS COL_STATUS,
+		UPPER_CODE_ID,
+		CODE_ID,
+		CODE_NAME,
+		SORT_NUM,
+		USE_YN FROM
+		COMMON_CODE WHERE UPPER_CODE_ID=#{upper_code_id}
+		ORDER BY
+		SORT_NUM ASC
+	</select>
+	<insert id="insertCode" parameterType="CodeModel">
+		INSERT INTO COMMON_CODE
+		(UPPER_CODE_ID, CODE_ID, CODE_NAME, SORT_NUM, USE_YN)
+		VALUES
+		(#{upper_code_id}, #{code_id},
+		#{code_name}, #{sort_num}, #{use_yn});
+	</insert>
+	<update id="updateCode" parameterType="CodeModel">
+		UPDATE COMMON_CODE
+		SET
+		CODE_NAME = #{code_name}, SORT_NUM = #{sort_num}, USE_YN = #{use_yn}
+		WHERE UPPER_CODE_ID = #{upper_code_id} AND CODE_ID = #{code_id}
+	</update>
+</mapper>
