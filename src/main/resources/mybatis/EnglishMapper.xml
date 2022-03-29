@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.javaguitar.mapper.EnglishMapper">
+    <select id="selectEnglish" resultType="EnglishModel">
+        SELECT A.* FROM ENGLISH A ORDER BY RAND() LIMIT 1
+    </select>
+
+    <select id="selectEnglishEdit" parameterType="EnglishModel"
+            resultType="EnglishModel">
+        SELECT A.* FROM ENGLISH A WHERE ONEWORD=#{oneword}
+    </select>
+
+    <select id="selectEnglishList" parameterType="int"
+            resultType="EnglishModel">
+        SELECT A.* FROM ENGLISH A ORDER BY WDATE DESC
+    </select>
+
+    <insert id="insertEnglish" parameterType="EnglishModel">
+        <![CDATA[
+			INSERT INTO ENGLISH(
+						  ONEWORD,EXAMPLES,DESCRIPT,NAVER_SRC,IMG_SRC,WDATE,VIEW_YN
+					) VALUES (
+					   #{oneword},
+					   #{examples},
+					   #{descript},
+					   #{naver_src},
+					   #{img_src},#{wdate},#{view_yn}
+					)			
+		]]>
+    </insert>
+    <update id="updateEnglish" parameterType="EnglishModel">
+        <![CDATA[
+		UPDATE 
+		ENGLISH
+		SET
+			EXAMPLES = #{examples},
+			DESCRIPT = #{descript},
+			NAVER_SRC = #{naver_src},
+			IMG_SRC = #{img_src},
+			VIEW_YN = #{view_yn}
+		WHERE ONEWORD = #{oneword}
+	]]>
+    </update>
+
+</mapper>

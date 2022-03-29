@@ -83,7 +83,7 @@ public class DocController {
      * @param
      * @return
      * @throws Exception
-     * @Method Name: quizUpdate
+     * @Method Name: quizUpdatejava.nio.charset.StandardCharsets.UTF_8.toString()
      * @Method 설명 : 문제 수정
      * @author : javaguitar
      * @version : 0.1
