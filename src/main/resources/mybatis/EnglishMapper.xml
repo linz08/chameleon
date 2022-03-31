@@ -18,14 +18,14 @@
     <insert id="insertEnglish" parameterType="EnglishModel">
         <![CDATA[
 			INSERT INTO ENGLISH(
-						  ONEWORD,EXAMPLES,DESCRIPT,NAVER_SRC,IMG_SRC,WDATE,VIEW_YN
+						  ONEWORD,EXAMPLES,DESCRIPT,IMG_SRC,WDATE
 					) VALUES (
 					   #{oneword},
 					   #{examples},
 					   #{descript},
-					   #{naver_src},
-					   #{img_src},#{wdate},#{view_yn}
-					)			
+					   #{img_src},
+					   now()
+					)
 		]]>
     </insert>
     <update id="updateEnglish" parameterType="EnglishModel">

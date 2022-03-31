@@ -3,7 +3,6 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/default_layout}" lang="ko">
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -47,7 +46,7 @@
             height: 100%;
             top: 0;
             left: 0;
-            font-size: 50px;
+            font-size: 70px;
         }
 
         .layer .content {
@@ -67,7 +66,7 @@
 
 <body>
 <div class="layer">
-    <span class="content">blunder</span>
+    <a th:href="@{|https://en.dict.naver.com/#/search?query=${englishModel.oneword}|}" target="_blank"><span class="content" th:text="${englishModel.oneword}"></span></a>
     <span class="blank"></span>
 </div>
 </body>

@@ -9,12 +9,12 @@ public class EnglishModel {
         // TODO Auto-generated constructor stub
     }
 
-    private String ONEWORD;
-    private String EXAMPLES;
-    private String DESCRIPT;
-    private String NAVER_SRC;
-    private String IMG_SRC;
-    private String WDATE;
-    private String VIEW_YN;
+    private String oneword;
+    private String examples;
+    private String descript;
+    private String naver_src;
+    private String img_src;
+    private String wdate;
+    private String view_yn;
 
 }
