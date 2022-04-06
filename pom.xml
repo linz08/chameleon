@@ -11,7 +11,8 @@
     <groupId>net.javaguitar</groupId>
     <artifactId>chameleon</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>chameleon</name>
+    <packaging>war</packaging>
+    <name>www</name>
     <description>카멜레온 프로젝트</description>
     <properties>
         <java.version>1.8</java.version>
@@ -75,6 +76,10 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20211205</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
         </dependency>
         <dependency>
             <groupId>org.bgee.log4jdbc-log4j2</groupId>

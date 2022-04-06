@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/default_layout}" lang="ko">
+      layout:decorate="~{layout/eng_layout}" lang="ko">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -37,10 +37,10 @@
 
     <style type="text/css">
         body {
-            background-color: #000000;
+            background-color: #212529;
         }
         .layer {
-            position: absolute;
+            position: static;
             text-align: center;
             width: 100%;
             height: 100%;
@@ -61,14 +61,47 @@
             height: 100%;
             vertical-align: middle
         }
+        .examples {
+            position: static;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            font-size: 25px;
+        }
+
+        .examples .content {
+            display: inline-block;
+            vertical-align: middle;
+            color: #ffffff;
+        }
     </style>
 </head>
 
 <body>
+<th:block layout:fragment="header" th:include="@{/fragments/eng_header}"></th:block>
 <div class="layer">
     <a th:href="@{|https://en.dict.naver.com/#/search?query=${englishModel.oneword}|}" target="_blank"><span class="content" th:text="${englishModel.oneword}"></span></a>
     <span class="blank"></span>
 </div>
+<br/>
+<br/>
+<div class="examples" style="display:none">
+    <a th:href="@{|https://en.dict.naver.com/#/search?query=${englishModel.oneword}|}" target="_blank"><span class="content" th:text="${englishModel.examples}"></span></a>
+
+</div>
+<script>
+    let examples_show = function() {
+
+        if($('.examples').css('display') === 'none') {
+            $('.examples').css('display','block');
+        }
+        else {
+            $('.examples').css('display','none');
+        }
+    }
+</script>
 </body>
 
 </html>
