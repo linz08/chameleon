@@ -52,7 +52,8 @@
             </div>
             <div class="modal-body" th:utext="${quizModel.quiz_desc}">...</div>
             <div class="modal-footer">
-                <a class="btn btn-success" role="button" th:href="'/quiz/edit/'+${quizModel.doc_code}+'/'+${quizModel.quiz_number}" target="_blank">편집</a>
+                <a class="btn btn-success" role="button"
+                   th:href="'/quiz/edit/'+${quizModel.doc_code}+'/'+${quizModel.quiz_number}" target="_blank">편집</a>
                 <button type="button" class="btn btn-primary" data-dismiss="modal">닫기</button>
             </div>
         </div>
@@ -77,9 +78,7 @@
                    th:href="'/quiz/edit/'+${quizModel.doc_code}+'/'+${quizModel.quiz_number}"
                    th:utext="${quizModel.quiz_org_number}+'. '+${quizModel.quiz_title}"/></td>
         </tr>
-
-        <tr
-                th:if="${quizModel.quiz_subtitle != null and quizModel.quiz_subtitle != '' } ">
+        <tr th:if="${quizModel.quiz_subtitle != null and quizModel.quiz_subtitle != '' } ">
             <td th:utext="${quizModel.quiz_subtitle}"></td>
         </tr>
     </table>
@@ -97,18 +96,14 @@
                         style="width: 98%; cursor: pointer;">문항
                 </td>
             </tr>
-        </th:block><dependency>
-        <groupId>mysql</groupId>
-        <artifactId>mysql-connector-java</artifactId>
-    </dependency>
+        </th:block>
     </table>
 </div>
 <script>
-    let quiz_answer = function(answer) {
-        if(answer === [[${quizModel.quiz_answer}]]) {
+    let quiz_answer = function (answer) {
+        if (answer === [[${quizModel.quiz_answer}]]) {
             alert("정답");
-        }
-        else {
+        } else {
             alert("오답");
         }
     }

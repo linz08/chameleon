@@ -37,7 +37,6 @@
 			EXAMPLES = #{examples},
 			EXAMPLES_SRC = #{examples_src},
 			DESCRIPT = #{descript},
-			NAVER_SRC = #{naver_src},
 			IMG_SRC = #{img_src},
 			VIEW_YN = #{view_yn}
 		WHERE ONEWORD = #{oneword}

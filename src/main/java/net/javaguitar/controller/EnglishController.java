@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -42,6 +43,20 @@ public class EnglishController {
 
         mav.setViewName("content/english/english");
         return mav;
+    }
+
+    @RequestMapping(value = {"/english/{oneword}"}, method = RequestMethod.GET)
+    public ModelAndView english_select(@PathVariable String oneword,
+                                       @ModelAttribute("englishModel") EnglishModel englishModel, ModelMap model) throws Exception {
+        ModelAndView mav = new ModelAndView();
+        englishModel.setOneword(oneword);
+
+        englishModel = ss.selectOne("net.javaguitar.mapper.EnglishMapper.selectEnglishEdit", englishModel);
+
+        mav.addObject("englishModel", englishModel);
+        mav.setViewName("content/english/english");
+        return mav;
+
     }
 
     /**
@@ -80,11 +95,63 @@ public class EnglishController {
         return "redirect:/english";
     }
 
+    /**
+     * @param
+     * @return
+     * @throws Exception
+     * @Method Name: englishEdit
+     * @Method 설명 : 영단어 수정폼
+     * @author : javaguitar
+     * @version : 0.1
+     * @since : 1.0
+     */
+    @RequestMapping(value = {"/english/edit/{oneword}"}, method = RequestMethod.GET)
+    public ModelAndView englishEdit(@PathVariable String oneword,
+                                    @ModelAttribute("englishModel") EnglishModel englishModel, ModelMap model) throws Exception {
+        ModelAndView mav = new ModelAndView();
+        englishModel.setOneword(oneword);
 
+        englishModel = ss.selectOne("net.javaguitar.mapper.EnglishMapper.selectEnglishEdit", englishModel);
+
+        mav.addObject("englishModel", englishModel);
+        mav.setViewName("content/english/edit");
+        return mav;
+
+    }
+
+    /**
+     * @param
+     * @return
+     * @throws Exception
+     * @Method Name: englishUpdate
+     * @Method 설명 : 영단어 수정
+     * @author : javaguitar
+     * @version : 0.1
+     * @since : 1.0
+     */
+    @RequestMapping(value = {"/english/update"}, method = {RequestMethod.POST, RequestMethod.GET})
+    public String quizUpdate(@ModelAttribute("englishModel") EnglishModel englishModel, ModelMap model,
+                             HttpServletRequest request, RedirectAttributes redirectAttributes) throws Exception {
+
+        ss.update("net.javaguitar.mapper.EnglishMapper.updateEnglish", englishModel);
+
+        return "redirect:/english/" + englishModel.getOneword();
+    }
+
+    /**
+     * @param
+     * @return
+     * @throws Exception
+     * @Method Name: english_hide
+     * @Method 설명 : 암기가 되어 숨긴 영어 단어
+     * @author : javaguitar
+     * @version : 0.1
+     * @since : 1.0
+     */
     @GetMapping("/english/hide")
     @ResponseBody
-    public void ajax(@ModelAttribute("englishModel") EnglishModel englishModel, HttpServletResponse response,
-                     @RequestParam String oneword) throws Exception {
+    public void english_hide(@ModelAttribute("englishModel") EnglishModel englishModel, HttpServletResponse response,
+                             @RequestParam String oneword) throws Exception {
         Gson gson = new Gson();
         Map<String, Object> data = new HashMap<String, Object>();
 

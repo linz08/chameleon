@@ -21,8 +21,8 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script>
-        function insert() {
-            document.getElementById("insertForm").submit();
+        function update() {
+            document.getElementById("updateForm").submit();
         }
     </script>
 </head>
@@ -32,31 +32,32 @@
     <div class="page-header">
         <h1>단어등록</h1>
     </div>
-    <form th:action="@{/english/insert}" th:object="${englishModel}"
-          id="insertForm" method="POST">
+
+    <form th:action="@{/english/update}" th:object="${englishModel}"
+          id="updateForm" method="POST">
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">단 어</span> <input
-                type="text" name="oneword" id="oneword"
+                type="text" name="oneword" id="oneword" th:value="${englishModel.oneword}"
                 class="form-control" placeholder="영단어를 적으세요.">
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">설 명</span> <input
-                type="text" name="descript" id="descript"
+                type="text" name="descript" id="descript"  th:value="${englishModel.descript}"
                 class="form-control">
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">예 제</span> <input
-                type="text" name="examples" id="examples"
+                type="text" name="examples" id="examples"  th:value="${englishModel.examples}"
                 class="form-control">
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">예제링크</span> <input
-                type="text" name="examples_src" id="examples_src"
+                type="text" name="examples_src" id="examples_src"  th:value="${englishModel.examples_src}"
                 class="form-control">
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">이미지링크</span> <input
-                type="text" name="img_src" id="img_src"
+                type="text" name="img_src" id="img_src"  th:value="${englishModel.img_src}"
                 class="form-control">
         </div>
         <br/>
@@ -64,9 +65,9 @@
 
         <div class="d-grid gap-2 d-md-flex justify-content-md-center">
             <button class="btn btn-primary me-md-2" type="button"
-                    onclick="insert();">등록하기
+                    onclick="update();">수정하기
             </button>
-            <a class="btn btn-primary" href="/index" role="button">취소하기</a>
+            <a class="btn btn-primary" href="/english" role="button">취소하기</a>
         </div>
 
     </form>
