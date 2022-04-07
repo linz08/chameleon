@@ -1,5 +1,6 @@
 package net.javaguitar.controller;
 
+import com.google.gson.Gson;
 import net.javaguitar.model.*;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Controller
@@ -76,35 +80,27 @@ public class EnglishController {
         return "redirect:/english";
     }
 
-    /**
-     * @param
-     * @return
-     * @throws Exception
-     * @Method Name: quizUpdate
-     * @Method 설명 : 문제 수정
-     * @author : javaguitar
-     * @version : 0.1
-     * @since : 1.0
-     */
-    @RequestMapping(value = {"/english/update"}, method = {RequestMethod.POST, RequestMethod.GET})
-    public String quizUpdate(@ModelAttribute("englishModel") QuizModel englishModel, ModelMap model,
-                             HttpServletRequest request, RedirectAttributes redirectAttributes) throws Exception {
-        String[] quiz_object_name = null;
-        ss.update("net.javaguitar.mapper.QuizMapper.updateQuiz", englishModel);
 
-        if (englishModel.getQuiz_code() == 2) { // 객관식인 경우
+    @GetMapping("/english/hide")
+    @ResponseBody
+    public void ajax(@ModelAttribute("englishModel") EnglishModel englishModel, HttpServletResponse response,
+                     @RequestParam String oneword) throws Exception {
+        Gson gson = new Gson();
+        Map<String, Object> data = new HashMap<String, Object>();
 
-            quiz_object_name = request.getParameterValues("quiz_object_name");
+        /* 추후 json을 object로 전환하는 방식으로 변경 필요 (2022.02.22) */
+        data.put("oneword", oneword);
+        englishModel.setOneword(oneword);
+        int retCnt = 0;
+        retCnt = ss.update("net.javaguitar.mapper.EnglishMapper.updateViewYn", englishModel);
 
-            for (int i = 0; i < quiz_object_name.length; i++) {
-                englishModel.setQuiz_object_name(quiz_object_name[i]);
-                englishModel.setQuiz_object_num(i + 1);
-                ss.update("net.javaguitar.mapper.QuizObjectiveMapper.updateQuizObjective", englishModel);
-            }
-
+        if (retCnt > 0) {
+            data.put("result", "success");
+        } else {
+            data.put("result", "fail");
         }
-        return "redirect:/index/" + englishModel.getDoc_code() + "/" + englishModel.getQuiz_number();
+
+        response.getWriter().print(gson.toJson(data));
+
     }
-
-
 }

@@ -101,6 +101,27 @@
             $('.examples').css('display','none');
         }
     }
+    let close_yn = function() {
+        /*<![CDATA[*/
+        if(window.confirm("해당 단어를 숨기렵니까?")){
+            $.ajax({
+                url: "/english/hide",
+                data: {
+                    oneword : '[[${englishModel.oneword}]]'
+                },
+                dataType: "json",
+                success: function(data) {
+                    if(data.result === 'success') {
+                        alert("처리되었습니다.")
+                    } else {
+                        alert("오류발생");
+                    }
+                }
+            })
+        }
+        /*]]>*/
+    }
+
 </script>
 </body>
 

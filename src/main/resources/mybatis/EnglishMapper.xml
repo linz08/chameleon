@@ -2,7 +2,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="net.javaguitar.mapper.EnglishMapper">
     <select id="selectEnglish" resultType="EnglishModel">
-        SELECT A.* FROM ENGLISH A ORDER BY RAND() LIMIT 1
+        SELECT A.* FROM ENGLISH A WHERE VIEW_YN='Y' ORDER BY RAND() LIMIT 1
     </select>
 
     <select id="selectEnglishEdit" parameterType="EnglishModel"
@@ -18,10 +18,11 @@
     <insert id="insertEnglish" parameterType="EnglishModel">
         <![CDATA[
 			INSERT INTO ENGLISH(
-						  ONEWORD,EXAMPLES,DESCRIPT,IMG_SRC,WDATE
+						  ONEWORD,EXAMPLES,EXAMPLES_SRC,DESCRIPT,IMG_SRC,WDATE
 					) VALUES (
 					   #{oneword},
 					   #{examples},
+					   #{examples_src},
 					   #{descript},
 					   #{img_src},
 					   now()
@@ -34,10 +35,20 @@
 		ENGLISH
 		SET
 			EXAMPLES = #{examples},
+			EXAMPLES_SRC = #{examples_src},
 			DESCRIPT = #{descript},
 			NAVER_SRC = #{naver_src},
 			IMG_SRC = #{img_src},
 			VIEW_YN = #{view_yn}
+		WHERE ONEWORD = #{oneword}
+	]]>
+    </update>
+    <update id="updateViewYn" parameterType="EnglishModel">
+        <![CDATA[
+		UPDATE
+		ENGLISH
+		SET
+			VIEW_YN = 'N'
 		WHERE ONEWORD = #{oneword}
 	]]>
     </update>

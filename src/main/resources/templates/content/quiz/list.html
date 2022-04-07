@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head>
 <meta charset="utf-8">
@@ -32,7 +32,7 @@
 
 		<div class="input-group mb-3">
 			<span class="input-group-text" id="basic-addon1">출처</span> <select
-				class="form-select" aria-label="출처" th:name="quiz_source"
+				class="form-select" aria-label="출처1" th:name="quiz_source"
 				th:id="quiz_source">
 				<option th:each="src:${srcCodeList}" th:value="${src.code_id}"
 					th:utext="${src.code_name}"></option>
@@ -46,7 +46,8 @@
 				<tr th:each="quizList : ${quizList}" th:if="${quizList.doc_code}==2 or ${quizList.doc_code}==3">
 					<td><a class="link-light"
 						th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
-						th:text="'[' + ${quizList.category_name} +'] '+${quizList.quiz_org_number}" /></td>
+						th:text="'[' + ${quizList.category_name} +'] '+${quizList.quiz_org_number}" />
+						&nbsp;&nbsp;<a class="link-light" th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}">[편집]</a></td>
 				</tr>
 			</tbody>
 		</table>
@@ -56,7 +57,8 @@
 				<tr th:each="quizList : ${quizList}" th:if="${quizList.doc_code}==4">
 					<td><a class="link-light"
 						th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
-						th:text="'[' + ${quizList.category_name} +'] '+${quizList.quiz_org_number}" /></td>
+						th:text="'[' + ${quizList.category_name} +'] '+${quizList.quiz_org_number}" />
+						&nbsp;&nbsp;<a class="link-light" th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}">[편집]</a></td>
 				</tr>
 			</tbody>
 		</table></div>
@@ -65,7 +67,8 @@
 				<tr th:each="quizList : ${quizList}" th:if="${quizList.doc_code}==5">
 					<td><a class="link-light"
 						th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
-						th:text="'[' + ${quizList.category_name} +'] '+${quizList.quiz_org_number}" /></td>
+						th:text="'[' + ${quizList.category_name} +'] '+${quizList.quiz_org_number}" />
+						&nbsp;&nbsp;<a class="link-light" th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}">[편집]</a></td>
 				</tr>
 			</tbody>
 		</table></div>
@@ -74,7 +77,8 @@
 				<tr th:each="quizList : ${quizList}" th:if="${quizList.doc_code}==6">
 					<td><a class="link-light"
 						th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
-						th:text="'[' + ${quizList.category_name} +'] '+${quizList.quiz_org_number}" /></td>
+						th:text="'[' + ${quizList.category_name} +'] '+${quizList.quiz_org_number}" />
+						&nbsp;&nbsp;<a class="link-light" th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}">[편집]</a></td>
 				</tr>
 			</tbody>
 		</table></div>
@@ -83,7 +87,8 @@
 				<tr th:each="quizList : ${quizList}" th:if="${quizList.doc_code}==7">
 					<td><a class="link-light"
 						th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
-						th:text="'[' + ${quizList.category_name} +'] '+${quizList.quiz_org_number}" /></td>
+						th:text="'[' + ${quizList.category_name} +'] '+${quizList.quiz_org_number}" />
+						&nbsp;&nbsp;<a class="link-light" th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}">[편집]</a></td>
 				</tr>
 			</tbody>
 		</table></div>

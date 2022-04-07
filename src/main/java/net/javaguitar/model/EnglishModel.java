@@ -11,6 +11,7 @@ public class EnglishModel {
 
     private String oneword;
     private String examples;
+    private String examples_src;
     private String descript;
     private String naver_src;
     private String img_src;
