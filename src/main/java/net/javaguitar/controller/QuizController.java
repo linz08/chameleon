@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -247,6 +248,10 @@ public class QuizController {
 			}
 
 		}
+		//세션 만들기
+		HttpSession session = request.getSession();
+		session.setAttribute("quiz_org_number", Integer.parseInt(quizModel.getQuiz_org_number())+1);
+		session.setAttribute("doc_code", quizModel.getDoc_code());
 		return "redirect:/quiz/list/" + quizModel.getQuiz_source();
 	}
 

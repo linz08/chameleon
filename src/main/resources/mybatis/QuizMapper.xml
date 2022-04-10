@@ -52,7 +52,7 @@
 					  ,#{quiz_number}
 					  ,#{quiz_code}
 					  ,REPLACE(REPLACE(#{quiz_title},'<p>',''),'</p>','')
-					  ,REPLACE(REPLACE(#{quiz_subtitle},'<p>',''),'</p>','')
+					  ,#{quiz_subtitle}
 					  ,#{pattern_code}
 					  ,#{quiz_level}
 					  ,#{quiz_source}
@@ -73,7 +73,7 @@
 		DOC_CODE = #{doc_code},
 		QUIZ_CODE = #{quiz_code},
 		QUIZ_TITLE = REPLACE(REPLACE(#{quiz_title},'<p>',''),'</p>',''),
-		QUIZ_SUBTITLE = REPLACE(REPLACE(#{quiz_subtitle},'<p>',''),'</p>',''),
+		QUIZ_SUBTITLE = #{quiz_subtitle},
 		PATTERN_CODE = #{pattern_code},
 		QUIZ_LEVEL = #{quiz_level},
 		QUIZ_SOURCE = #{quiz_source},

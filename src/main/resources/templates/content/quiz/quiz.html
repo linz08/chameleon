@@ -25,6 +25,10 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style>
+        img {
+            width: 100%;
+            height:auto !important;
+        }
         .nounderline {
             text-decoration: none !important;
             color: black;
@@ -67,11 +71,8 @@
             class="badge rounded-pill bg-success">메모내용</span> <span
             class="badge rounded-pill bg-danger"
             th:utext="'출처: '+${quizModel.quiz_source_name}+ ' '+${quizModel.quiz_org_number}+'번'">>Danger</span>
-        <!-- <span class="badge rounded-pill bg-warning text-dark">Warning</span>
-<span class="badge rounded-pill bg-info text-dark">Info</span>
-<span class="badge rounded-pill bg-light text-dark">Light</span>
-<span class="badge rounded-pill bg-dark">Dark</span> -->
     </div>
+    <hr/>
     <table class="table">
         <tr>
             <td><a class="nounderline"
@@ -109,5 +110,4 @@
     }
 </script>
 </body>
-
 </html>

@@ -76,14 +76,15 @@
 				<div class="col">
 					<span class="input-group-text" id="inputGroup-sizing-default">기존번호</span>
 					<input type="text" name="quiz_org_number" id="quiz_org_number"
-						class="form-control" aria-label="Sizing example input"
+						class="form-control" aria-label="Sizing example input" th:value="${session.quiz_org_number}"
 						aria-describedby="inputGroup-sizing-default">
 				</div>
 				<div class="col">
 					<span class="input-group-text" id="basic-addon1">문서분류</span> <select
 						class="form-select" aria-label="분류" th:name="doc_code">
 						<option th:each="val:${docCatehogryList}"
-							th:value="${val.doc_code}" th:utext="${val.category_name}"></option>
+							th:value="${val.doc_code}" th:utext="${val.category_name}"
+								th:selected="${val.doc_code==session.doc_code}"></option>
 					</select>
 				</div>
 			</div>
