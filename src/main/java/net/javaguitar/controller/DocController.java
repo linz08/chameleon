@@ -4,6 +4,8 @@ import java.net.URLEncoder;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+
+import net.javaguitar.model.QuizModel;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,9 +38,14 @@ public class DocController {
     @RequestMapping(value = "/doc/{doc_name}", method = RequestMethod.GET)
     public ModelAndView docName(@PathVariable String doc_name) {
         ModelAndView mav = new ModelAndView();
-
-        DocModel docContent = ss.selectOne("net.javaguitar.mapper.DocMapper.selectDoc", doc_name);
-        mav.addObject("docContent", docContent);
+        int docCheck = ss.selectOne("net.javaguitar.mapper.DocMapper.selectDocCheck");
+        DocModel docModel = new DocModel();
+        if(docCheck == 0) {
+            docModel.setDoc_name(doc_name);
+            ss.insert("net.javaguitar.mapper.DocMapper.insertDoc", docModel);
+        }
+        docModel = ss.selectOne("net.javaguitar.mapper.DocMapper.selectDoc", doc_name);
+        mav.addObject("docModel", docModel);
         mav.setViewName("content/doc/view");
         return mav;
     }
@@ -66,14 +73,6 @@ public class DocController {
     public String docWrite(@ModelAttribute("docVO") DocModel docVO, ModelMap model) throws Exception {
 
         return "content/doc/write";
-
-    }
-
-    @RequestMapping(value = {"/doc/insert"}, method = {RequestMethod.POST, RequestMethod.GET})
-    public String docInsert(@ModelAttribute("docVO") DocModel docVO, ModelMap model, HttpServletRequest request,
-                            RedirectAttributes redirectAttributes) throws Exception {
-
-        return "redirect:/doc/write";
 
     }
 

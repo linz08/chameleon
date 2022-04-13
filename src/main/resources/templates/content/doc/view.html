@@ -38,7 +38,7 @@
 		<div class="nav-scroller bg-body shadow-sm">
 			<nav class="nav nav-underline" aria-label="Secondary navigation">
 				<a class="nav-link active" aria-current="page"
-					th:href="@{'/doc/edit/'+${docContent.doc_name}}">편집</a> <a
+					th:href="@{'/doc/edit/'+${docModel.doc_name}}">편집</a> <a
 					class="nav-link" href="#"> Friends <span
 					class="badge bg-light text-dark rounded-pill align-text-bottom">27</span>
 				</a> <a class="nav-link" href="#">Explore</a> <a class="nav-link"
@@ -48,7 +48,7 @@
 			</nav>
 		</div>
 		<div class="doc_content">
-			<span th:utext="${docContent.doc_content}"></span>
+			<span th:utext="${docModel.doc_content}"></span>
 		</div>
 	</div>
 	<!-- jQuery (부트스트랩의 자바스크립트 플러그인을 위해 필요합니다) -->

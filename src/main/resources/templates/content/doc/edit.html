@@ -87,6 +87,9 @@
             <button class="btn btn-primary me-md-2" type="button"
                     onclick="doc_update();">편집완료
             </button>
+            <button class="btn btn-secondary me-md-2" type="button"
+                    onclick="doc_view();">보기
+            </button>
         </div>
     </form>
 </div>
@@ -122,8 +125,11 @@
             //console.log( error );
         });
 
-    function doc_update() {
+    let doc_update = function() {
         document.getElementById("updateForm").submit();
+    }
+    let doc_view = function(){
+        document.location.href= "/doc/[[${docContent.doc_name}]]";
     }
 </script>
 

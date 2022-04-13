@@ -1,24 +1,42 @@
-<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="net.javaguitar.mapper.DocMapper">
-	<select id="selectDocIndex" resultType="DocModel"> 
+    <select id="selectDocIndex" resultType="DocModel">
 	  <![CDATA[
-	  SELECT DOC_NAME FROM DOCUMENT WHERE DOC_NAME <> 'index'  ORDER BY SORT_NUM
-	 ]]>
+        SELECT DOC_NAME
+        FROM DOCUMENT
+        WHERE DOC_NAME <> 'index'
+        ORDER BY SORT_NUM
+        ]]>
 	</select>
-	<select id="selectDoc" parameterType="String" 
-		resultType="DocModel">
-		SELECT A.* FROM DOCUMENT A
-		WHERE
-		DOC_NAME=#{doc_name}
-	</select>
-	<update id="updateDoc" parameterType="DocModel">
+    <select id="selectDoc" parameterType="String"
+            resultType="DocModel">
+        SELECT A.*
+        FROM DOCUMENT A
+        WHERE DOC_NAME = #{doc_name}
+    </select>
+    <update id="updateDoc" parameterType="DocModel">
 	<![CDATA[
-		UPDATE
-		DOCUMENT
-		SET
-		DOC_CONTENT = #{doc_content},
-		MODIFY_DATE = now()
-		WHERE DOC_NAME = #{doc_name}
-	]]>
+        UPDATE
+            DOCUMENT
+        SET DOC_CONTENT = #{doc_content},
+            MODIFY_DATE = now()
+        WHERE DOC_NAME = #{doc_name}
+        ]]>
 	</update>
+    <select id="selectDocCheck" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM DOCUMENT
+        WHERE DOC_NAME = #{doc_name}
+    </select>
+    <insert id="insertDoc" parameterType="DocModel">
+		<![CDATA[
+        INSERT INTO DOC(DOC_NAME,
+                        UPPER_DOC_NAME,
+                        SORT_NUM)
+        VALUES ( #{doc_name}
+               , #{upper_doc_name}
+               , 1)
+        ]]>
+	</insert>
 </mapper>
