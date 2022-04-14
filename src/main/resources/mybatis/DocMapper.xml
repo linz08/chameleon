@@ -32,10 +32,10 @@
     <insert id="insertDoc" parameterType="DocModel">
 		<![CDATA[
         INSERT INTO DOCUMENT (DOC_NAME,
-                        SORT_NUM,
+                              SORT_NUM,
                               DOC_CONTENT)
-        VALUES ( #{doc_name}
-               , 1,
+        VALUES (#{doc_name}
+                   , 1,
                 '내용을 입력해 주세요.')
         ]]>
 	</insert>
