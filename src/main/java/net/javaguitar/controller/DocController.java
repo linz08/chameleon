@@ -38,9 +38,9 @@ public class DocController {
     @RequestMapping(value = "/doc/{doc_name}", method = RequestMethod.GET)
     public ModelAndView docName(@PathVariable String doc_name) {
         ModelAndView mav = new ModelAndView();
-        int docCheck = ss.selectOne("net.javaguitar.mapper.DocMapper.selectDocCheck");
+        int docCheck = ss.selectOne("net.javaguitar.mapper.DocMapper.selectDocCheck", doc_name);
         DocModel docModel = new DocModel();
-        if(docCheck == 0) {
+        if (docCheck == 0) {
             docModel.setDoc_name(doc_name);
             ss.insert("net.javaguitar.mapper.DocMapper.insertDoc", docModel);
         }
@@ -54,8 +54,8 @@ public class DocController {
     public ModelAndView docEdit(@PathVariable String doc_name) {
         ModelAndView mav = new ModelAndView();
 
-        DocModel docContent = ss.selectOne("net.javaguitar.mapper.DocMapper.selectDoc", doc_name);
-        mav.addObject("docContent", docContent);
+        DocModel docModel = ss.selectOne("net.javaguitar.mapper.DocMapper.selectDoc", doc_name);
+        mav.addObject("docModel", docModel);
         mav.setViewName("content/doc/edit");
         return mav;
     }
@@ -91,6 +91,7 @@ public class DocController {
                             HttpServletRequest request, RedirectAttributes redirectAttributes) throws Exception {
         ss.update("net.javaguitar.mapper.DocMapper.updateDoc", docModel);
         String docName = URLEncoder.encode(docModel.getDoc_name(), java.nio.charset.StandardCharsets.UTF_8.toString());
+        docName = docName.replaceAll("\\+", "%20");
         return "redirect:/doc/edit/" + docName;
     }
 

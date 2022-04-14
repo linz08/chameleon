@@ -67,7 +67,7 @@
     <div class="nav-scroller bg-body shadow-sm">
         <nav class="nav nav-underline" aria-label="Secondary navigation">
             <a class="nav-link active" aria-current="page"
-               th:href="@{'/doc/edit/'+${docContent.doc_name}}">편집</a> <a
+               th:href="@{'/doc/edit/'+${docModel.doc_name}}">편집</a> <a
                 class="nav-link" href="#"> Friends <span
                 class="badge bg-light text-dark rounded-pill align-text-bottom">27</span>
         </a> <a class="nav-link" href="#">Explore</a> <a class="nav-link"
@@ -79,9 +79,9 @@
     </div>
     <form th:action="@{/doc/update}" th:object="${docModel}"
           id="updateForm" method="POST">
-        <input type="hidden" name="doc_name" id="doc_name" th:value="${docContent.doc_name}"/>
+        <input type="hidden" name="doc_name" id="doc_name" th:value="${docModel.doc_name}"/>
         <textarea name="doc_content" id="doc_content"
-                  th:text="${docContent.doc_content}" class="ck_editor_txt"></textarea>
+                  th:text="${docModel.doc_content}" class="ck_editor_txt"></textarea>
         <br/>
         <div class="d-grid gap-2 d-md-flex justify-content-md-center">
             <button class="btn btn-primary me-md-2" type="button"
@@ -129,7 +129,7 @@
         document.getElementById("updateForm").submit();
     }
     let doc_view = function(){
-        document.location.href= "/doc/[[${docContent.doc_name}]]";
+        document.location.href= "/doc/[[${docModel.doc_name}]]";
     }
 </script>
 
