@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.javaguitar.mapper.QuizDocumentMapper">
+	<select id="selectQuizDocumentListByQuiz"  parameterType="QuizDocumentModel" resultType="QuizDocumentModel">
+		SELECT A.*
+		FROM QUIZ_DOCUMENT A
+		WHERE
+		      A.DOC_NUMBER = #{doc_number}
+		AND A.QUIZ_NUMBER = #{quiz_number}
+	</select>
+	<select id="selectQuizDocumentListByDoc" parameterType="QuizDocumentModel" resultType="QuizDocumentModel">
+		SELECT A.*
+		FROM QUIZ_DOCUMENT A
+		WHERE
+			A.DOC_NAME = #{doc_name}
+	</select>
+	<insert id="insertQuizDocument" parameterType="QuizDocumentModel">
+		<![CDATA[
+			INSERT INTO QUIZ_DOCUMENT(
+						   DOC_NAME
+						  ,DOC_NUMBER
+						  ,QUIZ_NUMBER
+					) VALUES (
+					   #{doc_name}
+					  ,#{doc_number}
+					  ,#{quiz_number}
+					)			
+		]]>
+	</insert>
+	<update id="updateQuiz" parameterType="QuizModel">
+	<![CDATA[	
+		UPDATE 
+		QUIZ
+		SET
+		DOC_CODE = #{doc_code},
+		QUIZ_CODE = #{quiz_code},
+		QUIZ_TITLE = REPLACE(REPLACE(#{quiz_title},'<p>',''),'</p>',''),
+		QUIZ_SUBTITLE = #{quiz_subtitle},
+		PATTERN_CODE = #{pattern_code},
+		QUIZ_LEVEL = #{quiz_level},
+		QUIZ_SOURCE = #{quiz_source},
+		MODIFY_DATE = now(),
+		QUIZ_MEMO = #{quiz_memo},
+		QUIZ_ORG_NUMBER =#{quiz_org_number},
+		QUIZ_ANSWER = #{quiz_answer},
+		QUIZ_DESC = #{quiz_desc}
+		WHERE QUIZ_NUMBER = #{quiz_number}
+	]]>
+	</update>
+	<select id="selectMaxQuizNumber" resultType="java.lang.Integer">
+		SELECT /*
+		QuizMapper.selectMaxQuizNumber */
+		IFNULL(MAX(QUIZ_NUMBER)+1,1) FROM
+		QUIZ
+	</select>
+
+</mapper>

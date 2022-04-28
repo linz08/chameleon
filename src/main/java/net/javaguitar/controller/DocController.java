@@ -92,7 +92,7 @@ public class DocController {
         ss.update("net.javaguitar.mapper.DocMapper.updateDoc", docModel);
         String docName = URLEncoder.encode(docModel.getDoc_name(), java.nio.charset.StandardCharsets.UTF_8.toString());
         docName = docName.replaceAll("\\+", "%20");
-        return "redirect:/doc/edit/" + docName;
+        return "redirect:/doc/" + docName;
     }
 
 }

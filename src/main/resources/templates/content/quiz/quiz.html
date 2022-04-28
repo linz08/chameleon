@@ -41,7 +41,6 @@
             crossorigin="anonymous"></script>
 
 </head>
-
 <body>
 <th:block layout:fragment="header" th:include="@{/fragments/header}"></th:block>
 <!-- 문제 해설 Modal -->
@@ -70,14 +69,14 @@
             class="badge rounded-pill bg-secondary">문제통계</span> <span
             class="badge rounded-pill bg-success">메모내용</span> <span
             class="badge rounded-pill bg-danger"
-            th:utext="'출처: '+${quizModel.quiz_source_name}+ ' '+${quizModel.quiz_org_number}+'번'">>Danger</span>
+            th:utext="'출처: '+${quizModel.quiz_source_name}+ ' '+${quizModel.quiz_org_number}+'번'"></span>
     </div>
     <hr/>
     <table class="table">
-        <tr>
+       <tr>
             <td><a class="nounderline"
                    th:href="'/quiz/edit/'+${quizModel.doc_code}+'/'+${quizModel.quiz_number}"
-                   th:utext="${quizModel.quiz_org_number}+'. '+${quizModel.quiz_title}"/></td>
+                   th:utext="${quizModel.quiz_org_number}"/><span th:utext="'. '+${quizModel.quiz_title}"></span></td>
         </tr>
         <tr th:if="${quizModel.quiz_subtitle != null and quizModel.quiz_subtitle != '' } ">
             <td th:utext="${quizModel.quiz_subtitle}"></td>
@@ -87,14 +86,12 @@
     <table class="table table-striped">
         <th:block th:each="objectList:${objectList}">
             <tr>
-                <td class="table-active"
+                <td class="table-active" th:onclick="quiz_answer([[${objectList.quiz_object_num}]]);"
                     th:text="${objectList.quiz_object_num}+ ') '"
-                    style="width: 2%; text-align: center;">번호
+                    style="width: 2%; text-align: center; cursor: pointer;">번호
                 </td>
-                <td
-                        th:onclick="quiz_answer([[${objectList.quiz_object_num}]]);"
-                        th:utext="${objectList.quiz_object_name}"
-                        style="width: 98%; cursor: pointer;">문항
+                <td th:utext="${objectList.quiz_object_name}"
+                        style="width: 98%;">문항
                 </td>
             </tr>
         </th:block>
