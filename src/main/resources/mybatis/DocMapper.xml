@@ -6,6 +6,7 @@
         SELECT DOC_NAME
         FROM DOCUMENT
         WHERE DOC_NAME <> 'index'
+        AND MAIN_SHOW='Y'
         ORDER BY SORT_NUM
         ]]>
 	</select>

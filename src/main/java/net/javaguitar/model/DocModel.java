@@ -15,4 +15,5 @@ public class DocModel {
 	private String doc_content;
 	private int read_num;
 	private String read_date;
+	private String main_show;
 }
