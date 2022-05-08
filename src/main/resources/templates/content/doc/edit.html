@@ -86,46 +86,46 @@
             </button>
         </div>
     </form>
-</div>
 
-<!-- jQuery (부트스트랩의 자바스크립트 플러그인을 위해 필요합니다) -->
-<script
-        src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
-<script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
-        crossorigin="anonymous"></script>
-<script src="/js/ckeditor5-31/doc/ckeditor.js"></script>
-<script>
-    $(window).on('load', function () {
-        $('#loader').hide();
-    })
-
-    let allEditors = document.querySelector('.ck_editor_txt');
-    ClassicEditor.create((allEditors),
-        {
-            simpleUpload:
-                {
-                    uploadUrl: "http://localhost:8080/upload/image",
-                    withCredentials: true,
-                    headers: {
-                        'X-CSRF-TOKEN': 'CSRF-Token',
-                        Authorization: 'Bearer <JSON Web Token>'
-                    }
-                }
+    <!-- jQuery (부트스트랩의 자바스크립트 플러그인을 위해 필요합니다) -->
+    <script
+            src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
+    <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+            crossorigin="anonymous"></script>
+    <script src="/js/ckeditor5-31/doc/ckeditor.js"></script>
+    <script>
+        $(window).on('load', function () {
+            $('#loader').hide();
         })
-        .catch(error => {
-            //console.log( error );
-        });
 
-    let doc_update = function() {
-        document.getElementById("updateForm").submit();
-    }
-    let doc_view = function(){
-        document.location.href= "/doc/[[${docModel.doc_name}]]";
-    }
-</script>
+        let allEditors = document.querySelector('.ck_editor_txt');
+        ClassicEditor.create((allEditors),
+            {
+                simpleUpload:
+                    {
+                        uploadUrl: "http://localhost:8080/upload/image",
+                        withCredentials: true,
+                        headers: {
+                            'X-CSRF-TOKEN': 'CSRF-Token',
+                            Authorization: 'Bearer <JSON Web Token>'
+                        }
+                    }
+            })
+            .catch(error => {
+                //console.log( error );
+            });
+
+        let doc_update = function () {
+            document.getElementById("updateForm").submit();
+        }
+        let doc_view = function () {
+            document.location.href = "/doc/[[${docModel.doc_name}]]";
+        }
+    </script>
+</div>
 
 </body>
 

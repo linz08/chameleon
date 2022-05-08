@@ -72,15 +72,15 @@
             </tr>
         </th:block>
     </table>
-</div>
-<script>
-    let quiz_answer = function (answer) {
-        if (answer === [[${quizModel.quiz_answer}]]) {
-            alert("정답");
-        } else {
-            alert("오답");
+    <script>
+        let quiz_answer = function (answer) {
+            if (answer === [[${quizModel.quiz_answer}]]) {
+                alert("정답");
+            } else {
+                alert("오답");
+            }
         }
-    }
-</script>
+    </script>
+</div>
 </body>
 </html>
