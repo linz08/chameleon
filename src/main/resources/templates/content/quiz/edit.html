@@ -117,18 +117,42 @@
 
         </div>
         <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1">문제정답</span> <input type="text" name="quiz_answer"
-                                                                                id="quiz_answer"
-                                                                                class="form-control"
-                                                                                th:value="${quizModel.quiz_answer}">
-        </div>
-        <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">문제해설</span>
             <textarea name="quiz_desc" id="quiz_desc" class="ck_editor_txt"
                       th:value="${quizModel.quiz_desc}"
                       th:text="${quizModel.quiz_desc}"></textarea>
         </div>
-
+        <div class="row">
+            <div class="col">
+                <span class="input-group-text" id="basic-addon1">문제정답</span> <input type="text" name="quiz_answer"
+                                                                                    id="quiz_answer"
+                                                                                    class="form-control"
+                                                                                    th:value="${quizModel.quiz_answer}">
+            </div>
+            <div class="col">
+                <span class="input-group-text" id="basic-addon1">관련문서</span>
+                <table class="table">
+                    <tbody>
+                    <th:block th:each="quizDocumentModelList,index : ${quizDocumentModelList}">
+                        <tr>
+                            <th th:text="${index.index+1}" scope="row">번호</th>
+                            <td th:text="${quizDocumentModelList.doc_name}">문서명
+                            </td>
+                            <td>삭제
+                            </td>
+                        </tr>
+                    </th:block>
+                    <tr>
+                        <th scope="row"></th>
+                        <td><input type="text" id="searchInput"
+                                   class="form-control"></td>
+                        <td>추가</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <br/><br/>
         <div class="d-grid gap-2 d-md-flex justify-content-md-center">
             <button class="btn btn-primary me-md-2" type="button"
                     onclick="update();">수정완료
@@ -140,6 +164,8 @@
     <!-- jQuery (부트스트랩의 자바스크립트 플러그인을 위해 필요합니다) -->
     <script
             src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script
+    src="https://releases.jquery.com/git/ui/jquery-ui-git.js"></script>
     <!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
     <script
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
@@ -150,8 +176,8 @@
         $(window).on('load', function () {
             $('#loader').hide();
         });
-        var allEditors = document.querySelectorAll('.ck_editor_txt');
-        for (var i = 0; i < allEditors.length; ++i) {
+        let allEditors = document.querySelectorAll('.ck_editor_txt');
+        for (let i = 0; i < allEditors.length; ++i) {
             ClassicEditor.create((allEditors[i]),
                 {
                     simpleUpload:
@@ -168,6 +194,44 @@
                     console.log(error);
                 });
         }
+
+        $('#searchInput').autocomplete({
+            source : function(request, response) { //source: 입력시 보일 목록
+                $.ajax({
+                    url : "/docSearch"
+                    , type : "POST"
+                    , dataType: "JSON"
+                    , data : {value: $("#searchInput").val()}	// 검색 키워드
+                    ,beforeSend: function (jqXHR, settings) {
+                        let header = $("meta[name='_csrf_header']").attr("content");
+                        let token = $("meta[name='_csrf']").attr("content");
+                        jqXHR.setRequestHeader(header, token);
+                    }
+                }).done(function (rData, textStatus, jqXHR) {
+                    response(
+                        $.map(data.resultList, function(item) {
+                            return {
+                                label : item.SEARCH_WORD    	// 목록에 표시되는 값
+                                , value : item.SEARCH_WORD 		// 선택 시 input창에 표시되는 값
+                                , idx : item.SEQ // index
+                            };
+                        })
+                    );
+                }).fail(function (rData, textStatus, errorThrown) {
+                    alert("오류가 발생했습니다.");
+                }).always(function (rData, textStatus, jqXHR) {});
+            }
+            ,focus : function(event, ui) { // 방향키로 자동완성단어 선택 가능하게 만들어줌
+                return false;
+            },
+            minLength: 1,// 최소 글자수
+            delay: 100	//autocomplete 딜레이 시간(ms),
+            , select : function(evt, ui) {
+                // 아이템 선택시 실행 ui.item 이 선택된 항목을 나타내는 객체, lavel/value/idx를 가짐
+                console.log(ui.item.label);
+                console.log(ui.item.idx);
+            }
+        });
     </script>
 </div>
 </body>

@@ -16,6 +16,12 @@
         FROM DOCUMENT A
         WHERE DOC_NAME = #{doc_name}
     </select>
+    <select id="selectDocSearch" parameterType="String"
+            resultType="DocModel">
+        SELECT A.DOC_NAME
+        FROM DOCUMENT A
+        WHERE DOC_NAME LIKE CONCAT(#{doc_name},'%')
+    </select>
     <update id="updateDoc" parameterType="DocModel">
 	<![CDATA[
         UPDATE
