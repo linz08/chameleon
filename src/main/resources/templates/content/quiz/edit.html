@@ -1,34 +1,15 @@
 <!DOCTYPE html>
+<!--suppress ALL -->
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/default_layout}" lang="ko">
 <head>
     <title>문제편집</title>
+    <link href="https://releases.jquery.com/git/ui/jquery-ui-git.css" />
 </head>
 <body>
 <div layout:fragment="content" class="content">
-    <style>
-        #loader {
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            position: fixed;
-            display: block;
-            opacity: 0.8;
-            background: rgb(156, 154, 154);
-            z-index: 99;
-            text-align: center;
-        }
-
-        #loader > div {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            z-index: 100;
-        }
-    </style>
     <div id="loader">
         <div
                 class="spinner-border text-info position-absolute top-50 start-50"
@@ -58,7 +39,7 @@
             </div>
         </div>
         <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1">문서분류</span> <select
+            <span class="input-group-text" id="basic-addon2">문서분류</span> <select
                 class="form-select" aria-label="분류" th:name="doc_code">
             <option th:each="val:${docCatehogryList}"
                     th:value="${val.doc_code}"
@@ -77,7 +58,7 @@
         </div>
         <div class="row">
             <div class="col">
-                <span class="input-group-text" id="basic-addon1">문항방식</span> <select
+                <span class="input-group-text" id="basic-addon3">문항방식</span> <select
                     class="form-select" th:field="*{quiz_code}" aria-label="문항방식">
                 <option th:each="qc:${quizCodeList}" th:value="${qc.code_id}"
                         th:selected="${qc.code_id == quizModel.quiz_code}"
@@ -85,7 +66,7 @@
             </select>
             </div>
             <div class="col">
-                <span class="input-group-text" id="basic-addon1">문제패턴</span> <select
+                <span class="input-group-text" id="basic-addon4">문제패턴</span> <select
                     class="form-select" aria-label="문제패턴" th:field="*{pattern_code}">
                 <option th:each="ptn:${ptnCodeList}" th:value="${ptn.code_id}"
                         th:selected="${ptn.code_id == quizModel.pattern_code}"
@@ -94,7 +75,7 @@
             </div>
         </div>
         <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1">난이도&nbsp;&nbsp;&nbsp;</span>
+            <span class="input-group-text" id="basic-addon5">난이도&nbsp;&nbsp;&nbsp;</span>
             <select class="form-select" aria-label="문제난이도"
                     th:field="*{quiz_level}">
                 <option th:each="lvl:${lvlCodeList}" th:value="${lvl.code_id}"
@@ -107,7 +88,7 @@
             <th:block th:each="quizObjective:${quizObjectiveList}">
                 <div class="input-group mb-3">
 						<span th:text="${quizObjective.quiz_object_num}"
-                              class="input-group-text" id="basic-addon1"></span>
+                              class="input-group-text" id="basic-addon6"></span>
                     <textarea name="quiz_object_name" id="quiz_object_name"
                               class="ck_editor_txt"
                               th:value="${quizObjective.quiz_object_name}"
@@ -117,20 +98,20 @@
 
         </div>
         <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon1">문제해설</span>
+            <span class="input-group-text" id="basic-addon7">문제해설</span>
             <textarea name="quiz_desc" id="quiz_desc" class="ck_editor_txt"
                       th:value="${quizModel.quiz_desc}"
                       th:text="${quizModel.quiz_desc}"></textarea>
         </div>
         <div class="row">
             <div class="col">
-                <span class="input-group-text" id="basic-addon1">문제정답</span> <input type="text" name="quiz_answer"
+                <span class="input-group-text" id="basic-addon8">문제정답</span> <input type="text" name="quiz_answer"
                                                                                     id="quiz_answer"
                                                                                     class="form-control"
                                                                                     th:value="${quizModel.quiz_answer}">
             </div>
             <div class="col">
-                <span class="input-group-text" id="basic-addon1">관련문서</span>
+                <span class="input-group-text" id="basic-addon9">관련문서</span>
                 <table class="table">
                     <tbody>
                     <th:block th:each="quizDocumentModelList,index : ${quizDocumentModelList}">
@@ -144,7 +125,7 @@
                     </th:block>
                     <tr>
                         <th scope="row"></th>
-                        <td><input type="text" id="searchInput"
+                        <td><input type="text" id="doc_name"
                                    class="form-control"></td>
                         <td>추가</td>
                     </tr>
@@ -195,13 +176,13 @@
                 });
         }
 
-        $('#searchInput').autocomplete({
+        $('#doc_name').autocomplete({
             source : function(request, response) { //source: 입력시 보일 목록
                 $.ajax({
                     url : "/docSearch"
                     , type : "POST"
                     , dataType: "JSON"
-                    , data : {value: $("#searchInput").val()}	// 검색 키워드
+                    , data : {doc_name: $("#doc_name").val()}	// 검색 키워드
                     ,beforeSend: function (jqXHR, settings) {
                         let header = $("meta[name='_csrf_header']").attr("content");
                         let token = $("meta[name='_csrf']").attr("content");
@@ -209,11 +190,11 @@
                     }
                 }).done(function (rData, textStatus, jqXHR) {
                     response(
-                        $.map(data.resultList, function(item) {
+                        $.map(rData.resultList, function(item) {
                             return {
-                                label : item.SEARCH_WORD    	// 목록에 표시되는 값
-                                , value : item.SEARCH_WORD 		// 선택 시 input창에 표시되는 값
-                                , idx : item.SEQ // index
+                                label : item.doc_name    	// 목록에 표시되는 값
+                                , value : item.doc_name 		// 선택 시 input창에 표시되는 값
+                                //, idx : item.SEQ // index
                             };
                         })
                     );
@@ -221,7 +202,7 @@
                     alert("오류가 발생했습니다.");
                 }).always(function (rData, textStatus, jqXHR) {});
             }
-            ,focus : function(event, ui) { // 방향키로 자동완성단어 선택 가능하게 만들어줌
+            ,focus : function(evt, ui) { // 방향키로 자동완성단어 선택 가능하게 만들어줌
                 return false;
             },
             minLength: 1,// 최소 글자수
@@ -229,9 +210,13 @@
             , select : function(evt, ui) {
                 // 아이템 선택시 실행 ui.item 이 선택된 항목을 나타내는 객체, lavel/value/idx를 가짐
                 console.log(ui.item.label);
-                console.log(ui.item.idx);
+                //console.log(ui.item.idx);
             }
         });
+
+        function update() {
+            document.getElementById("updateForm").submit();
+        }
     </script>
 </div>
 </body>
