@@ -356,4 +356,28 @@ public class QuizController {
         return paramMap;
     }
 
+    @RequestMapping(value = {"/docAdd"}, method = {RequestMethod.POST})
+    public @ResponseBody
+    void docAdd(HttpServletRequest request, @ModelAttribute("quizDocumentModel") QuizDocumentModel quizDocumentModelModel) throws Exception {
+        ss.insert("net.javaguitar.mapper.QuizDocumentMapper.insertQuizDocument", quizDocumentModelModel);
+    }
+
+    @RequestMapping(value = {"/docDel"}, method = {RequestMethod.POST})
+    public @ResponseBody
+    void docDel(HttpServletRequest request, @ModelAttribute("quizDocumentModel") QuizDocumentModel quizDocumentModelModel) throws Exception {
+        ss.delete("net.javaguitar.mapper.QuizDocumentMapper.deleteQuizDocument", quizDocumentModelModel);
+    }
+
+    @RequestMapping(value = {"/quiz/doc/list"}, method = RequestMethod.POST)
+    public @ResponseBody
+    ModelAndView quizDocument(@ModelAttribute("quizDocumentModel") QuizDocumentModel quizDocumentModel) throws Exception {
+        ModelAndView mav = new ModelAndView();
+
+        List<QuizDocumentModel> quizDocumentModelList = ss
+                .selectList("net.javaguitar.mapper.QuizDocumentMapper.selectQuizDocumentListByQuiz", quizDocumentModel);
+        mav.addObject("quizDocumentModelList", quizDocumentModelList);
+
+        return mav;
+
+    }
 }

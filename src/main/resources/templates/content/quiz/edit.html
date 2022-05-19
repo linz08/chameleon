@@ -40,7 +40,7 @@
         </div>
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon2">문서분류</span> <select
-                class="form-select" aria-label="분류" th:name="doc_code">
+                class="form-select" aria-label="분류" id="doc_code" th:name="doc_code">
             <option th:each="val:${docCatehogryList}"
                     th:value="${val.doc_code}"
                     th:selected="${val.doc_code==quizModel.doc_code}"
@@ -112,23 +112,25 @@
             </div>
             <div class="col">
                 <span class="input-group-text" id="basic-addon9">관련문서</span>
-                <table class="table">
+                <table class="doc_table" id="doc_table">
                     <tbody>
+                    <tr>
+                        <th scope="row"></th>
+                        <td><input type="text" id="doc_name" class="form-control"></td>
+                        <td><button type="button" class="btn btn-primary btn-sm" id="btn_doc_add">추가</button></td>
+                    </tr>
                     <th:block th:each="quizDocumentModelList,index : ${quizDocumentModelList}">
                         <tr>
                             <th th:text="${index.index+1}" scope="row">번호</th>
                             <td th:text="${quizDocumentModelList.doc_name}">문서명
                             </td>
-                            <td>삭제
+                            <td>
+                                <button type="button" class="btn btn-secondary btn-sm" id="btn_doc_del"
+                                        th:myName="${quizDocumentModelList.doc_name}"
+                                        th:onclick="doc_del(this.getAttribute('myName'))">삭제</button>
                             </td>
                         </tr>
                     </th:block>
-                    <tr>
-                        <th scope="row"></th>
-                        <td><input type="text" id="doc_name"
-                                   class="form-control"></td>
-                        <td>추가</td>
-                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -216,6 +218,78 @@
 
         function update() {
             document.getElementById("updateForm").submit();
+        }
+        function doc_del(doc_name) {
+            $.ajax({
+                type: "POST",
+                url: "/docDel",
+                beforeSend: function (jqXHR, settings) {
+                    let header = $("meta[name='_csrf_header']").attr("content");
+                    let token = $("meta[name='_csrf']").attr("content");
+                    jqXHR.setRequestHeader(header, token);
+                },
+                data: { "doc_name" : doc_name,
+                    "doc_code" : $('#doc_code').val(),
+                    "quiz_number" : $('#quiz_number').val() },
+                success: function() {
+                }, error: function(){
+                    alert('실패');
+                }
+            });
+        }
+
+        $('#btn_doc_add').click(function(){
+          $.ajax({
+             type: "POST",
+             url: "/docAdd",
+             beforeSend: function (jqXHR, settings) {
+                let header = $("meta[name='_csrf_header']").attr("content");
+                let token = $("meta[name='_csrf']").attr("content");
+                jqXHR.setRequestHeader(header, token);
+            },
+             data: { "doc_name" : $('#doc_name').val(),
+                    "doc_code" : $('#doc_code').val(),
+                    "quiz_number" : $('#quiz_number').val() },
+              success: function() {
+                  doc_reload();
+              }, error: function(){
+                 alert('실패');
+              }
+          });
+        });
+
+        function doc_reload() {
+            let doc_code = $('#doc_code').val();
+            let quiz_number = $('#quiz_number').val();
+
+            $.ajax({
+                type: "POST",
+                url: "/quiz/doc/list",
+                beforeSend: function (jqXHR, settings) {
+                    let header = $("meta[name='_csrf_header']").attr("content");
+                    let token = $("meta[name='_csrf']").attr("content");
+                    jqXHR.setRequestHeader(header, token);
+                },
+                data: { "doc_name" : $('#doc_name').val(),
+                        "doc_code" : $('#doc_code').val(),
+                        "quiz_number" : $('#quiz_number').val() },
+                success: function(data) {
+
+                        let results = data.quizDocumentModelList;
+                        let str = '<TR>';
+                        $.each(results , function(i){
+                            str += '<th scope="row">3</th>';
+                            str += '<td>' + results[i].doc_name + '</td>';
+                            str += '<td><button type="button" class="btn btn-secondary btn-sm" onclick=doc_del("+ results[i].doc_name +")">삭제</button>';
+                            str += '</td></tr>';
+                        });
+                       $("#doc_table").append(str);
+                }, error : function(request,status,error) {
+                    console.log("code:" + request.status + "\n");
+                    console.log("message:" + request.responseText + "\n");
+                    console.log("error:" + error);
+                }
+            });
         }
     </script>
 </div>
