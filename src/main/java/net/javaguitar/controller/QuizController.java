@@ -2,10 +2,7 @@ package net.javaguitar.controller;
 
 import java.io.File;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -370,14 +367,14 @@ public class QuizController {
 
     @RequestMapping(value = {"/quiz/doc/list"}, method = RequestMethod.POST)
     public @ResponseBody
-    ModelAndView quizDocument(@ModelAttribute("quizDocumentModel") QuizDocumentModel quizDocumentModel) throws Exception {
+    List<QuizDocumentModel> quizDocument(@ModelAttribute("quizDocumentModel") QuizDocumentModel quizDocumentModel) throws Exception {
         ModelAndView mav = new ModelAndView();
-
-        List<QuizDocumentModel> quizDocumentModelList = ss
+        List<QuizDocumentModel> quizDocumentModelList = new ArrayList<QuizDocumentModel>();
+        quizDocumentModelList = ss
                 .selectList("net.javaguitar.mapper.QuizDocumentMapper.selectQuizDocumentListByQuiz", quizDocumentModel);
-        mav.addObject("quizDocumentModelList", quizDocumentModelList);
+        // mav.addObject("quizDocumentModelList", quizDocumentModelList);
 
-        return mav;
+        return quizDocumentModelList;
 
     }
 }
