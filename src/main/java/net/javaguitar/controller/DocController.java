@@ -1,9 +1,11 @@
 package net.javaguitar.controller;
 
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import net.javaguitar.model.QuizModel;
 import org.apache.ibatis.session.SqlSession;
@@ -36,7 +38,27 @@ public class DocController {
     }
 
     @RequestMapping(value = "/doc/{doc_name}", method = RequestMethod.GET)
-    public ModelAndView docName(@PathVariable String doc_name) {
+    public ModelAndView docName(@PathVariable String doc_name, HttpServletRequest request) throws Exception {
+
+        if (request.getHeader("Referer") != null) {
+            String referrer = (request.getHeader("Referer"));
+            if (referrer.indexOf("/doc/") > 0) {
+                System.out.println(referrer.substring(referrer.indexOf("/doc/") + 5));
+                String decodeResult = URLDecoder.decode(referrer.substring(referrer.indexOf("/doc/") + 5), "UTF-8");
+                System.out.println(decodeResult);
+                //세션 만들기
+                HttpSession session = request.getSession();
+                String doc_path = "";
+                if (session.getAttribute("doc_path") != null) {
+                    doc_path = session.getAttribute("doc_path").toString();
+                }
+                if (!doc_path.contains(decodeResult)) {
+                    session.setAttribute("doc_path", doc_path + "/" + decodeResult);
+                }
+                doc_path = session.getAttribute("doc_path").toString();
+                System.out.println("doc_path=" + doc_path);
+            }
+        }
         ModelAndView mav = new ModelAndView();
         int docCheck = ss.selectOne("net.javaguitar.mapper.DocMapper.selectDocCheck", doc_name);
         DocModel docModel = new DocModel();

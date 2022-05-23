@@ -27,9 +27,14 @@
             margin-top: 10px;
             margin-left: 30px;
         }
+
         .doc_content {
             margin-top: 30px;
             margin-left: 30px;
+        }
+
+        .doc_path {
+            padding: 0.5rem 1rem;
         }
     </style>
 </head>
@@ -38,17 +43,39 @@
 
 <div layout:fragment="content" class="content">
     <div class="nav-scroller bg-body shadow-sm">
-        <nav class="nav nav-underline" aria-label="Secondary navigation">
-            <a class="nav-link active" aria-current="page"
-               th:href="@{'/doc/edit/'+${docModel.doc_name}}">편집</a>
-            <a class="nav-link active" aria-current="page">관련퀴즈</a>
+        <nav class="navbar navbar-expand-lg bg-light">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page"
+                               th:href="@{'/doc/edit/'+${docModel.doc_name}}">편집</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">관련퀴즈</a>
+                        </li>
+                    </ul>
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
         </nav>
+        <div class="doc_path">이동경로 :
+            <th:block th:each="doc_word : ${#strings.arraySplit(session.doc_path, '/')}">
+                / <a th:href="@{'/doc/'+${doc_word}}" th:text="${doc_word}"></a>
+            </th:block>
+        </div>
     </div>
     <div class="doc_title">
         <h2><span th:utext="${docModel.doc_name}"></span></h2>
     </div>
     <div class="doc_content">
         <span th:utext="${docModel.doc_content}"></span>
+    </div>
+    <div class="doc_title">
+        <h3>관련퀴즈</h3>
     </div>
 </div>
 <!-- jQuery (부트스트랩의 자바스크립트 플러그인을 위해 필요합니다) -->
