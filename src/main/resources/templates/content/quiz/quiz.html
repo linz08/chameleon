@@ -52,7 +52,7 @@
        <tr>
             <td><a class="nounderline"
                    th:href="'/quiz/edit/'+${quizModel.doc_code}+'/'+${quizModel.quiz_number}"
-                   th:utext="${quizModel.quiz_org_number}"/><span th:utext="'. '+${quizModel.quiz_title}"></span></td>
+                   th:utext="${quizModel.quiz_org_number}"></a><span th:utext="'. '+${quizModel.quiz_title}"></span></td>
         </tr>
         <tr th:if="${quizModel.quiz_subtitle != null and quizModel.quiz_subtitle != '' } ">
             <td th:utext="${quizModel.quiz_subtitle}"></td>
