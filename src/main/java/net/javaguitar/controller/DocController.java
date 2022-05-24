@@ -43,9 +43,7 @@ public class DocController {
         if (request.getHeader("Referer") != null) {
             String referrer = (request.getHeader("Referer"));
             if (referrer.indexOf("/doc/") > 0) {
-                System.out.println(referrer.substring(referrer.indexOf("/doc/") + 5));
                 String decodeResult = URLDecoder.decode(referrer.substring(referrer.indexOf("/doc/") + 5), "UTF-8");
-                System.out.println(decodeResult);
                 //세션 만들기
                 HttpSession session = request.getSession();
                 String doc_path = "";
@@ -56,7 +54,6 @@ public class DocController {
                     session.setAttribute("doc_path", doc_path + "/" + decodeResult);
                 }
                 doc_path = session.getAttribute("doc_path").toString();
-                System.out.println("doc_path=" + doc_path);
             }
         }
         ModelAndView mav = new ModelAndView();
