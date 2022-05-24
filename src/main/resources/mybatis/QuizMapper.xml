@@ -70,7 +70,6 @@
 		UPDATE 
 		QUIZ
 		SET
-		DOC_CODE = #{doc_code},
 		QUIZ_CODE = #{quiz_code},
 		QUIZ_TITLE = REPLACE(REPLACE(#{quiz_title},'<p>',''),'</p>',''),
 		QUIZ_SUBTITLE = #{quiz_subtitle},
@@ -82,8 +81,17 @@
 		QUIZ_ORG_NUMBER =#{quiz_org_number},
 		QUIZ_ANSWER = #{quiz_answer},
 		QUIZ_DESC = #{quiz_desc}
-		WHERE QUIZ_NUMBER = #{quiz_number}
+		WHERE DOC_CODE= #{doc_code} AND QUIZ_NUMBER = #{quiz_number}
 	]]>
+	</update>
+	<update id="updateQuizDesc" parameterType="QuizModel">
+	<![CDATA[
+		UPDATE
+			QUIZ
+		SET
+			QUIZ_DESC = #{quiz_desc}
+		WHERE DOC_CODE= #{doc_code} AND QUIZ_NUMBER = #{quiz_number}
+		]]>
 	</update>
 	<select id="selectMaxQuizNumber" resultType="java.lang.Integer">
 		SELECT /*

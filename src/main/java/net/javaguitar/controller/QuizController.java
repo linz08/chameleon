@@ -33,16 +33,7 @@ public class QuizController {
     @Autowired
     SqlSession ss;
 
-    /**
-     * @param
-     * @return
-     * @throws Exception
-     * @Method Name: quizIndex
-     * @Method 설명 : 퀴즈 풀이(랜덤)
-     * @author : javaguitar
-     * @version : 0.1
-     * @since : 1.0
-     */
+
     @RequestMapping(value = {"/", "/quiz", "/index"}, method = RequestMethod.GET)
     public ModelAndView index(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
@@ -61,6 +52,43 @@ public class QuizController {
         return mav;
     }
 
+    @RequestMapping(value = {"/quiz/desc/{doc_code}/{quiz_number}"}, method = RequestMethod.GET)
+    public ModelAndView quiz_desc(HttpServletRequest request, @ModelAttribute("quizModel") QuizModel quizModel,
+                                  @PathVariable int doc_code, @PathVariable int quiz_number) {
+        ModelAndView mav = new ModelAndView();
+
+        quizModel.setDoc_code(doc_code);
+        quizModel.setQuiz_number(quiz_number);
+        quizModel = ss.selectOne("net.javaguitar.mapper.QuizMapper.selectQuizEdit", quizModel);
+
+        mav.addObject("quizModel", quizModel);
+
+        mav.setViewName("content/quiz/descript");
+        return mav;
+    }
+
+    @RequestMapping(value = {"/quiz/desc/edit/{doc_code}/{quiz_number}"}, method = RequestMethod.GET)
+    public ModelAndView quiz_desc_edit(HttpServletRequest request, @ModelAttribute("quizModel") QuizModel quizModel,
+                                  @PathVariable int doc_code, @PathVariable int quiz_number) {
+        ModelAndView mav = new ModelAndView();
+
+        quizModel.setDoc_code(doc_code);
+        quizModel.setQuiz_number(quiz_number);
+        quizModel = ss.selectOne("net.javaguitar.mapper.QuizMapper.selectQuizEdit", quizModel);
+
+        mav.addObject("quizModel", quizModel);
+
+        mav.setViewName("content/quiz/descript_edit");
+        return mav;
+    }
+    @RequestMapping(value = {"/quiz/desc/update"}, method = {RequestMethod.POST, RequestMethod.GET})
+    public String quizDescUpdate(@ModelAttribute("quizModel") QuizModel quizModel
+                             ) throws Exception {
+        String[] quiz_object_name = null;
+        ss.update("net.javaguitar.mapper.QuizMapper.updateQuizDesc", quizModel);
+
+       return "redirect:/quiz/desc/" + quizModel.getDoc_code() + "/" + quizModel.getQuiz_number();
+    }
     @RequestMapping(value = {"/quiz/list"}, method = RequestMethod.GET)
     public ModelAndView quizList(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
@@ -90,16 +118,7 @@ public class QuizController {
         return mav;
     }
 
-    /**
-     * @param
-     * @return
-     * @throws Exception
-     * @Method Name: quizIndex
-     * @Method 설명 : 퀴즈 풀이(랜덤)
-     * @author : javaguitar
-     * @version : 0.1
-     * @since : 1.0
-     */
+
     @RequestMapping(value = {"/index/{doc_code}/{quiz_number}"}, method = RequestMethod.GET)
     public ModelAndView quizIndex(@PathVariable int doc_code, @PathVariable int quiz_number, ModelMap model)
             throws Exception {
@@ -123,16 +142,7 @@ public class QuizController {
         return mav;
     }
 
-    /**
-     * @param
-     * @return
-     * @throws Exception
-     * @Method Name: quizWrite
-     * @Method 설명 : 퀴즈 등록폼
-     * @author : javaguitar
-     * @version : 0.1
-     * @since : 1.0
-     */
+
     @RequestMapping(value = {"/quiz/write"}, method = RequestMethod.GET)
     public ModelAndView quizWrite(@ModelAttribute("quizModel") QuizModel quizModel, ModelMap mode) throws Exception {
         ModelAndView mav = new ModelAndView();
@@ -160,16 +170,7 @@ public class QuizController {
 
     }
 
-    /**
-     * @param
-     * @return
-     * @throws Exception
-     * @Method Name: quizEdit
-     * @Method 설명 : 퀴즈 수정폼
-     * @author : javaguitar
-     * @version : 0.1
-     * @since : 1.0
-     */
+
     @RequestMapping(value = {"/quiz/edit/{doc_code}/{quiz_number}"}, method = RequestMethod.GET)
     public ModelAndView quizEdit(@PathVariable int doc_code, @PathVariable int quiz_number,
                                  @ModelAttribute("quizModel") QuizModel quizModel, ModelMap model) throws Exception {
@@ -215,16 +216,7 @@ public class QuizController {
 
     }
 
-    /**
-     * @param
-     * @return
-     * @throws Exception
-     * @Method Name: quizInsert
-     * @Method 설명 : 문제 등록
-     * @author : javaguitar
-     * @version : 0.1
-     * @since : 1.0
-     */
+
     @RequestMapping(value = {"/quiz/insert"}, method = {RequestMethod.POST, RequestMethod.GET})
     public String quizInsert(@ModelAttribute("quizModel") QuizModel quizModel, ModelMap model,
                              HttpServletRequest request, RedirectAttributes redirectAttributes) throws Exception {
@@ -252,16 +244,7 @@ public class QuizController {
         return "redirect:/quiz/list/" + quizModel.getQuiz_source();
     }
 
-    /**
-     * @param
-     * @return
-     * @throws Exception
-     * @Method Name: quizUpdate
-     * @Method 설명 : 문제 수정
-     * @author : javaguitar
-     * @version : 0.1
-     * @since : 1.0
-     */
+
     @RequestMapping(value = {"/quiz/update"}, method = {RequestMethod.POST, RequestMethod.GET})
     public String quizUpdate(@ModelAttribute("quizModel") QuizModel quizModel, ModelMap model,
                              HttpServletRequest request, RedirectAttributes redirectAttributes) throws Exception {

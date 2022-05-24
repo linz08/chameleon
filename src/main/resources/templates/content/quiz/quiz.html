@@ -19,29 +19,28 @@
     </style>
 </head>
 <body>
-<!-- 문제 해설 Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-     aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">문제해설</h4>
-                <button type="button" class="btn-close" data-dismiss="modal">
-                </button>
-            </div>
-            <div class="modal-body" th:utext="${quizModel.quiz_desc}">...</div>
-            <div class="modal-footer">
-                <a class="btn btn-success" role="button"
-                   th:href="'/quiz/edit/'+${quizModel.doc_code}+'/'+${quizModel.quiz_number}" target="_blank">편집</a>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">닫기</button>
+<div layout:fragment="content" class="content" th:object="${quizModel}">
+    <!-- 문제 해설 Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">문제해설</h4>
+                    <button type="button" class="btn-close" data-dismiss="modal">
+                    </button>
+                </div>
+                <div class="modal-body" th:utext="${quizModel.quiz_desc}">...</div>
+                <div class="modal-footer">
+                    <a class="btn btn-success" role="button"
+                       th:href="'/quiz/edit/'+${quizModel.doc_code}+'/'+${quizModel.quiz_number}" target="_blank">편집</a>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">닫기</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div layout:fragment="content" class="content" th:object="${quizModel}">
     <div>
-			<span class="badge rounded-pill bg-primary" data-toggle="modal"
-                  data-target="#myModal" style="cursor:pointer">문제해설</span> <span
+			<span class="badge rounded-pill bg-primary" style="cursor:pointer" onclick="openWindowPop()">문제해설</span> <span
             class="badge rounded-pill bg-secondary">문제통계</span> <span
             class="badge rounded-pill bg-success">메모내용</span> <span
             class="badge rounded-pill bg-danger"
@@ -79,6 +78,12 @@
             } else {
                 alert("오답");
             }
+        }
+
+        let openWindowPop = function() {
+            let urls = "/quiz/desc/[[${quizModel.doc_code}]]/[[${quizModel.quiz_number}]]";
+            let options = 'top=10, left=10, width=500, height=600, status=no, menubar=no, toolbar=no, resizable=yes';
+            window.open(urls, "description", options);
         }
     </script>
 </div>
