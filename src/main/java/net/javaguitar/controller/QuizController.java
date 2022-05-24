@@ -69,7 +69,7 @@ public class QuizController {
 
     @RequestMapping(value = {"/quiz/desc/edit/{doc_code}/{quiz_number}"}, method = RequestMethod.GET)
     public ModelAndView quiz_desc_edit(HttpServletRequest request, @ModelAttribute("quizModel") QuizModel quizModel,
-                                  @PathVariable int doc_code, @PathVariable int quiz_number) {
+                                       @PathVariable int doc_code, @PathVariable int quiz_number) {
         ModelAndView mav = new ModelAndView();
 
         quizModel.setDoc_code(doc_code);
@@ -81,14 +81,16 @@ public class QuizController {
         mav.setViewName("content/quiz/descript_edit");
         return mav;
     }
+
     @RequestMapping(value = {"/quiz/desc/update"}, method = {RequestMethod.POST, RequestMethod.GET})
     public String quizDescUpdate(@ModelAttribute("quizModel") QuizModel quizModel
-                             ) throws Exception {
+    ) throws Exception {
         String[] quiz_object_name = null;
         ss.update("net.javaguitar.mapper.QuizMapper.updateQuizDesc", quizModel);
 
-       return "redirect:/quiz/desc/" + quizModel.getDoc_code() + "/" + quizModel.getQuiz_number();
+        return "redirect:/quiz/desc/" + quizModel.getDoc_code() + "/" + quizModel.getQuiz_number();
     }
+
     @RequestMapping(value = {"/quiz/list"}, method = RequestMethod.GET)
     public ModelAndView quizList(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
@@ -224,6 +226,8 @@ public class QuizController {
         String[] quiz_object_name = null;
         quizNumber = ss.selectOne("net.javaguitar.mapper.QuizMapper.selectMaxQuizNumber");
         quizModel.setQuiz_number(quizNumber);
+        quizModel.setQuiz_title(quizModel.getQuiz_title().replaceAll("<table>", "<table style='width:100%';>"));
+        quizModel.setQuiz_subtitle(quizModel.getQuiz_subtitle().replaceAll("<table>", "<table style='width:100%';>"));
         ss.insert("net.javaguitar.mapper.QuizMapper.insertQuiz", quizModel);
 
         if (quizModel.getQuiz_code() == 2) { // 객관식인 경우
@@ -231,7 +235,7 @@ public class QuizController {
             quiz_object_name = request.getParameterValues("quiz_object_name");
 
             for (int i = 0; i < quiz_object_name.length; i++) {
-                quizModel.setQuiz_object_name(quiz_object_name[i]);
+                quizModel.setQuiz_object_name(quiz_object_name[i].replaceAll("<table>", "<table style='width:100%';>"));
                 quizModel.setQuiz_object_num(i + 1);
                 ss.insert("net.javaguitar.mapper.QuizObjectiveMapper.insertQuizObjective", quizModel);
             }
@@ -249,6 +253,8 @@ public class QuizController {
     public String quizUpdate(@ModelAttribute("quizModel") QuizModel quizModel, ModelMap model,
                              HttpServletRequest request, RedirectAttributes redirectAttributes) throws Exception {
         String[] quiz_object_name = null;
+        quizModel.setQuiz_title(quizModel.getQuiz_title().replaceAll("<table>", "<table style='width:100%';>"));
+        quizModel.setQuiz_subtitle(quizModel.getQuiz_subtitle().replaceAll("<table>", "<table style='width:100%';>"));
         ss.update("net.javaguitar.mapper.QuizMapper.updateQuiz", quizModel);
 
         if (quizModel.getQuiz_code() == 2) { // 객관식인 경우
@@ -256,7 +262,7 @@ public class QuizController {
             quiz_object_name = request.getParameterValues("quiz_object_name");
 
             for (int i = 0; i < quiz_object_name.length; i++) {
-                quizModel.setQuiz_object_name(quiz_object_name[i]);
+                quizModel.setQuiz_object_name(quiz_object_name[i].replaceAll("<table>", "<table style='width:100%';>"));
                 quizModel.setQuiz_object_num(i + 1);
                 ss.update("net.javaguitar.mapper.QuizObjectiveMapper.updateQuizObjective", quizModel);
             }
