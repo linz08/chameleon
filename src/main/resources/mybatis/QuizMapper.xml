@@ -21,7 +21,7 @@
 
 	<select id="selectQuizList" parameterType="int"
 		resultType="QuizModel">
-		SELECT B.CATEGORY_NAME, A.* FROM QUIZ A, DOCUMENT_CATEGORY
+		SELECT B.CATEGORY_NAME, A.DOC_CODE,A.QUIZ_NUMBER,A.QUIZ_ORG_NUMBER FROM QUIZ A, DOCUMENT_CATEGORY
 		B
 		WHERE
 		QUIZ_SOURCE=#{quiz_source}

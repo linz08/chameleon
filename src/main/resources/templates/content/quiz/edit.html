@@ -69,7 +69,7 @@
                 <span class="input-group-text" id="basic-addon4">문제패턴</span> <select
                     class="form-select" aria-label="문제패턴" th:field="*{pattern_code}">
                 <option th:each="ptn:${ptnCodeList}" th:value="${ptn.code_id}"
-                        th:selected="${ptn.code_id == quizModel.pattern_code}"
+                        th:selected="${ptn.code_id} == ${quizModel.pattern_code}"
                         th:text="${ptn.code_name}"></option>
             </select>
             </div>
