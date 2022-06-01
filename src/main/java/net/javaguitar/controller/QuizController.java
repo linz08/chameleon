@@ -247,7 +247,7 @@ public class QuizController {
         session.setAttribute("quiz_org_number", Integer.parseInt(quizModel.getQuiz_org_number()) + 1);
         session.setAttribute("doc_code", quizModel.getDoc_code());
         session.setAttribute("quiz_source", quizModel.getQuiz_source());
-        return "redirect:/quiz/list/" + quizModel.getQuiz_source();
+        return "redirect:/quiz/write";
     }
 
 

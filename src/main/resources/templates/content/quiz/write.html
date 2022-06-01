@@ -22,6 +22,9 @@
     </script>
     <form th:action="@{/quiz/insert}" th:object="${quizModel}"
           id="insertForm" method="POST">
+        <input type="hidden" id="quiz_code" name="quiz_code" value="2"><!-- 문항방식 -->
+        <input type="hidden" id="pattern_code" name="pattern_code" value="6"><!-- 문제패턴 -->
+        <input type="hidden" id="quiz_level" name="quiz_level" value="10"><!-- 난이도 -->
         <div class="row">
             <div class="col">
                 <span class="input-group-text" id="basic-addon1">출처</span> <select
@@ -46,7 +49,7 @@
             </select>
             </div>
         </div>
-        <div class="row">
+        <!--<div class="row">
             <div class="col">
                 <span class="input-group-text" id="basic-addon3">문항방식</span> <select
                     class="form-select" th:field="*{quiz_code}" aria-label="문항방식">
@@ -69,7 +72,7 @@
                             th:text="${lvl.code_name}" th:selected="${lvl.code_id == '11'}"></option>
                 </select>
             </div>
-        </div>
+        </div>-->
         <div class="mb-3">
 				<textarea name="quiz_title" id="quiz_title" class="ck_editor_txt"
                           placeholder="문제 제목을 적으세요."></textarea>
@@ -78,6 +81,17 @@
 				<textarea name="quiz_subtitle" id="quiz_subtitle"
                           class="ck_editor_txt" placeholder="문제 설명을 적으세요."></textarea>
         </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon10">문제정답</span>
+            <select
+                    class="form-select" aria-label="문제정답" th:name="quiz_answer">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+            </select>
+        </div>
+
         <div class="row">
             <div class="col">
                 <span class="input-group-text" id="basic-addon6">1)번</span>
@@ -102,11 +116,7 @@
                           class="ck_editor_txt"></textarea>
             </div>
         </div>
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon10">문제정답</span> <input
-                type="text" name="quiz_answer" id="quiz_answer"
-                class="form-control" placeholder="문제 정답을 적으세요.">
-        </div>
+
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon11">문제해설</span>
             <textarea name="quiz_desc" id="quiz_desc" class="ck_editor_txt"

@@ -26,7 +26,7 @@
                 <span class="input-group-text" id="basic-addon1">출처</span> <select
                     class="form-select" aria-label="출처" th:name="quiz_source">
                 <option th:each="src:${srcCodeList}" th:value="${src.code_id}"
-                        th:selected="${src.code_id == quizModel.quiz_source}"
+                        th:selected="${src.code_id} == ${quizModel.quiz_source}"
                         th:utext="${src.code_name}"></option>
             </select>
             </div>

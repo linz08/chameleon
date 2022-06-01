@@ -12,7 +12,7 @@
             class="form-select" aria-label="출처1" th:name="quiz_source"
             th:id="quiz_source">
         <option th:each="src:${srcCodeList}" th:value="${src.code_id}"
-                th:selected="${src.code_id} == ${quiz_source }"
+                th:selected="${src.code_id} == ${session.quiz_source}"
                 th:utext="${src.code_name}"></option>
     </select>
         <button class="btn btn-outline-secondary" type="button"
