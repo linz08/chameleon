@@ -21,26 +21,46 @@
         }
     </script>
     <form th:action="@{/quiz/insert}" th:object="${quizModel}"
-          id="insertForm" method="POST">
+          id="insertForm" method="POST" class="row gx-3 gy-2 align-items-center">
         <input type="hidden" id="quiz_code" name="quiz_code" value="2"><!-- 문항방식 -->
         <input type="hidden" id="pattern_code" name="pattern_code" value="6"><!-- 문제패턴 -->
         <input type="hidden" id="quiz_level" name="quiz_level" value="10"><!-- 난이도 -->
-        <div class="row">
-            <div class="col">
-                <span class="input-group-text" id="basic-addon1">출처</span> <select
-                    class="form-select" aria-label="출처" th:name="quiz_source">
-                <option th:each="srcs:${srcCodeList}"
-						th:value="${srcs.code_id}" th:utext="${srcs.code_name}"
-                        th:selected="${srcs.code_id}==${session.quiz_source}"></option>
-            </select>
+        <div class="col-sm-3">
+            <label class="visually-hidden" for="specificSizeInputGroupUsername">문제정답</label>
+            <div class="input-group">
+                <div class="input-group-text">문제정답</div>
+                <select
+                        class="form-select" aria-label="문제정답" th:name="quiz_answer">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
             </div>
-            <div class="col">
-                <span class="input-group-text" id="inputGroup-sizing-default">기존번호</span>
-                <input type="text" name="quiz_org_number" id="quiz_org_number"
-                       class="form-control" aria-label="Sizing example input" th:value="${session.quiz_org_number}"
-                       aria-describedby="inputGroup-sizing-default">
+        </div>
+        <div class="col-sm-3">
+            <label class="visually-hidden" for="specificSizeInputGroupUsername">출처</label>
+            <div class="input-group">
+                <div class="input-group-text">출처</div>
+                <select
+                        class="form-select" aria-label="출처" th:name="quiz_source">
+                    <option th:each="srcs:${srcCodeList}"
+                            th:value="${srcs.code_id}" th:utext="${srcs.code_name}"
+                            th:selected="${srcs.code_id}==${session.quiz_source}"></option>
+                </select>
             </div>
-            <div class="col">
+        </div>
+        <div class="col-sm-3">
+            <label class="visually-hidden" for="specificSizeInputGroupUsername">기존번호</label>
+            <div class="input-group">
+                <div class="input-group-text">기존번호</div>
+                <input type="text" class="form-control" id="quiz_org_number" name="quiz_org_number"
+                       th:value="${session.quiz_org_number}">
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <label class="visually-hidden" for="specificSizeInputGroupUsername">문서분류</label>
+            <div class="input-group">
                 <span class="input-group-text" id="basic-addon2">문서분류</span> <select
                     class="form-select" aria-label="문서분류" th:name="doc_code">
                 <option th:each="val:${docCatehogryList}"
@@ -49,30 +69,6 @@
             </select>
             </div>
         </div>
-        <!--<div class="row">
-            <div class="col">
-                <span class="input-group-text" id="basic-addon3">문항방식</span> <select
-                    class="form-select" th:field="*{quiz_code}" aria-label="문항방식">
-                <option th:each="qc:${quizCodeList}" th:value="${qc.code_id}"
-                        th:text="${qc.code_name}"></option>
-            </select>
-            </div>
-            <div class="col">
-                <span class="input-group-text" id="basic-addon4">문제패턴</span> <select
-                    class="form-select" aria-label="문제패턴" th:field="*{pattern_code}">
-                <option th:each="ptn:${ptnCodeList}" th:value="${ptn.code_id}"
-                        th:text="${ptn.code_name}"></option>
-            </select>
-            </div>
-            <div class="col">
-                <span class="input-group-text" id="basic-addon5">난이도&nbsp;&nbsp;&nbsp;</span>
-                <select class="form-select" aria-label="문제난이도"
-                        th:field="*{quiz_level}">
-                    <option th:each="lvl:${lvlCodeList}" th:value="${lvl.code_id}"
-                            th:text="${lvl.code_name}" th:selected="${lvl.code_id == '11'}"></option>
-                </select>
-            </div>
-        </div>-->
         <div class="mb-3">
 				<textarea name="quiz_title" id="quiz_title" class="ck_editor_txt"
                           placeholder="문제 제목을 적으세요."></textarea>
@@ -81,17 +77,6 @@
 				<textarea name="quiz_subtitle" id="quiz_subtitle"
                           class="ck_editor_txt" placeholder="문제 설명을 적으세요."></textarea>
         </div>
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon10">문제정답</span>
-            <select
-                    class="form-select" aria-label="문제정답" th:name="quiz_answer">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-            </select>
-        </div>
-
         <div class="row">
             <div class="col">
                 <span class="input-group-text" id="basic-addon6">1)번</span>
@@ -116,7 +101,7 @@
                           class="ck_editor_txt"></textarea>
             </div>
         </div>
-
+<!--
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon11">문제해설</span>
             <textarea name="quiz_desc" id="quiz_desc" class="ck_editor_txt"
@@ -124,7 +109,7 @@
         </div>
         <br/>
 
-
+-->
         <div class="d-grid gap-2 d-md-flex justify-content-md-center">
             <button class="btn btn-primary me-md-2" type="button"
                     onclick="insert();">등록하기

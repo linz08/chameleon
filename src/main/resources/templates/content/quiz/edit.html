@@ -18,34 +18,73 @@
         </div>
     </div>
     <form th:action="@{/quiz/update}" th:object="${quizModel}"
-          id="updateForm" method="POST">
+          id="updateForm" method="POST" class="row gx-3 gy-2 align-items-center">
         <input type="hidden" th:value="${quizModel.quiz_number}"
                id="quiz_number" name="quiz_number"/>
-        <div class="row">
-            <div class="col">
-                <span class="input-group-text" id="basic-addon1">출처</span> <select
-                    class="form-select" aria-label="출처" th:name="quiz_source">
-                <option th:each="src:${srcCodeList}" th:value="${src.code_id}"
-                        th:selected="${src.code_id} == ${quizModel.quiz_source}"
-                        th:utext="${src.code_name}"></option>
-            </select>
-            </div>
-            <div class="col">
-                <span class="input-group-text" id="inputGroup-sizing-default">기존번호</span>
-                <input type="text" name="quiz_org_number" id="quiz_org_number"
-                       class="form-control" aria-label="Sizing example input"
-                       th:value="${quizModel.quiz_org_number}"
-                       aria-describedby="inputGroup-sizing-default">
+        <input type="hidden" th:value="${quizModel.quiz_level}"
+               id="quiz_level" name="quiz_level"/>
+        <input type="hidden" th:value="${quizModel.pattern_code}"
+               id="pattern_code" name="pattern_code"/>
+        <input type="hidden" th:value="${quizModel.quiz_code}"
+               id="quiz_code" name="quiz_code"/>
+        <div class="col-sm-3">
+            <label class="visually-hidden" for="specificSizeInputGroupUsername">출처</label>
+            <div class="input-group">
+                <div class="input-group-text">출처</div>
+                <select
+                        class="form-select" aria-label="출처" th:name="quiz_source">
+                    <option th:each="src:${srcCodeList}" th:value="${src.code_id}"
+                            th:selected="${src.code_id} == ${quizModel.quiz_source}"
+                            th:utext="${src.code_name}"></option>
+                </select>
             </div>
         </div>
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon2">문서분류</span> <select
-                class="form-select" aria-label="분류" id="doc_code" th:name="doc_code">
-            <option th:each="val:${docCatehogryList}"
-                    th:value="${val.doc_code}"
-                    th:selected="${val.doc_code==quizModel.doc_code}"
-                    th:utext="${val.category_name}"></option>
-        </select>
+        <div class="col-sm-3">
+            <label class="visually-hidden" for="specificSizeInputGroupUsername">기존번호</label>
+            <div class="input-group">
+                <div class="input-group-text">기존번호</div>
+                <input type="text" class="form-control" id="quiz_org_number" name="quiz_org_number"
+                       th:value="${quizModel.quiz_org_number}">
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <label class="visually-hidden" for="specificSizeInputGroupUsername">문서분류</label>
+            <div class="input-group">
+                <span class="input-group-text" id="basic-addon2">문서분류</span> <select
+                    class="form-select" aria-label="분류" id="doc_code" th:name="doc_code">
+                <option th:each="val:${docCatehogryList}"
+                        th:value="${val.doc_code}"
+                        th:selected="${val.doc_code==quizModel.doc_code}"
+                        th:utext="${val.category_name}"></option>
+            </select>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <label class="visually-hidden" for="specificSizeInputGroupUsername">문제정답</label>
+            <div class="input-group">
+                <div class="input-group-text">문제정답</div>
+                <input type="text" name="quiz_answer"
+                       id="quiz_answer"
+                       class="form-control"
+                       th:value="${quizModel.quiz_answer}">
+            </div>
+        </div>
+        <br/>
+        <div class="col-sm-3">
+            <label class="visually-hidden" for="specificSizeInputGroupUsername">이미지URL</label>
+            <div class="input-group">
+                <div class="input-group-text">이미지URL</div>
+                <input type="text" name="gd-url" id="gd-url" class="form-control" onfocus="this.value='';document.getElementById('result').value='';">
+                <input id="btn-convert" class="btn btn-primary" type="button" value="변환">
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <label class="visually-hidden" for="specificSizeInputGroupUsername">이미지URL</label>
+            <div class="input-group">
+                <div class="input-group-text">이미지소스</div>
+                <input type="text" id="result" name="result" readonly class="form-control">
+                <input class="btn btn-primary" type="button" value="Copy"  data-clipboard-target="#result">
+            </div>
         </div>
         <div class="mb-3">
 				<textarea name="quiz_title" id="quiz_title"
@@ -55,33 +94,6 @@
 				<textarea name="quiz_subtitle" id="quiz_subtitle"
                           th:value="${quizModel.quiz_subtitle}"
                           th:text="${quizModel.quiz_subtitle}" class="ck_editor_txt"></textarea>
-        </div>
-        <div class="row">
-            <div class="col">
-                <span class="input-group-text" id="basic-addon3">문항방식</span> <select
-                    class="form-select" th:field="*{quiz_code}" aria-label="문항방식">
-                <option th:each="qc:${quizCodeList}" th:value="${qc.code_id}"
-                        th:selected="${qc.code_id == quizModel.quiz_code}"
-                        th:text="${qc.code_name}"></option>
-            </select>
-            </div>
-            <div class="col">
-                <span class="input-group-text" id="basic-addon4">문제패턴</span> <select
-                    class="form-select" aria-label="문제패턴" th:field="*{pattern_code}">
-                <option th:each="ptn:${ptnCodeList}" th:value="${ptn.code_id}"
-                        th:selected="${ptn.code_id} == ${quizModel.pattern_code}"
-                        th:text="${ptn.code_name}"></option>
-            </select>
-            </div>
-        </div>
-        <div class="input-group mb-3">
-            <span class="input-group-text" id="basic-addon5">난이도&nbsp;&nbsp;&nbsp;</span>
-            <select class="form-select" aria-label="문제난이도"
-                    th:field="*{quiz_level}">
-                <option th:each="lvl:${lvlCodeList}" th:value="${lvl.code_id}"
-                        th:selected="${lvl.code_id == quizModel.quiz_level}"
-                        th:text="${lvl.code_name}"></option>
-            </select>
         </div>
         <div class="textgroup">
 
@@ -104,12 +116,6 @@
                       th:text="${quizModel.quiz_desc}"></textarea>
         </div>
         <div class="row">
-            <div class="col">
-                <span class="input-group-text" id="basic-addon8">문제정답</span> <input type="text" name="quiz_answer"
-                                                                                    id="quiz_answer"
-                                                                                    class="form-control"
-                                                                                    th:value="${quizModel.quiz_answer}">
-            </div>
             <div class="col">
                 <span class="input-group-text" id="basic-addon9">관련문서</span>
                 <table class="table">
@@ -162,6 +168,7 @@
             integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
             crossorigin="anonymous"></script>
     <script src="/js/ckeditor5-31/quiz/ckeditor.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
     <script>
         $(window).on('load', function () {
             $('#loader').hide();
@@ -294,7 +301,7 @@
                     let str = '<tr>';
                     let row_idx = 1;
                     $(data).each(function () {
-                        str += '<th scope="row">'+ row_idx +'</th>';
+                        str += '<th scope="row">' + row_idx + '</th>';
                         str += '<td>' + this.doc_name + '</td>';
                         str += '<td><button type="button" class="btn btn-secondary btn-sm" onclick=doc_del("' + this.doc_name + '")>삭제</button>';
                         str += '</td></tr>';
@@ -310,7 +317,64 @@
                 }
             });
         }
-    </script>
+
+        // 이미지 경로 추출
+        let gdUrl = $("#gd-url");
+        $("#btn-convert").on("click", function(event) {
+
+            if (!isValidUrl(gdUrl.val())) {
+                alert("You have inputted invalid path.");
+                gdUrl.val("");
+                return;
+            }
+
+            let gdId = extractFileId(gdUrl.val());
+            let prefix = "http://drive.google.com/uc?export=view&id=";
+            $("#result").val(prefix + gdId);
+            $("#result-img-tag").val(
+                "<img src='" +
+                prefix + gdId +
+                "' /><br>");
+            $("#preview").attr("src", prefix + gdId);
+        });
+
+        let clipboard = new Clipboard('.btn');
+
+        clipboard.on('success', function(e) {
+            /*console.info('Action:', e.action);
+            console.info('Text:', e.text);
+            console.info('Trigger:', e.trigger);
+            */
+            e.clearSelection();
+        });
+
+        clipboard.on('error', function(e) {
+        /*console.error('Action:', e.action);
+        console.error('Trigger:', e.trigger);*/
+    });
+
+    // validity check. ref: https://gist.github.com/jlong/2428561
+    function isValidUrl(url) {
+        // to be impl...
+        let parser = document.createElement('a');
+        parser.href = url;
+
+        if(url === '' || parser.hostname !== "drive.google.com" || !parser.pathname.includes("/file/d/"))
+            return false;
+
+        return true;
+    }
+
+    function extractFileId(url) {
+        if (!url)
+            url = window.location.href;
+
+        let strip = url.replace(/https:\/\/drive.google.com\/file\/d\//gi, "")
+            .replace(/\/view\?[a-zA-Z=\/]+/gi, "");
+
+        return strip;
+    }
+</script>
 </div>
 </body>
 </html>

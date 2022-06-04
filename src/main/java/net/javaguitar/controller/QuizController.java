@@ -228,7 +228,9 @@ public class QuizController {
         quizNumber = ss.selectOne("net.javaguitar.mapper.QuizMapper.selectMaxQuizNumber");
         quizModel.setQuiz_number(quizNumber);
         quizModel.setQuiz_title(quizModel.getQuiz_title().replaceAll("<table>", "<table style='width:100%';>"));
+        quizModel.setQuiz_title(quizModel.getQuiz_title().replaceAll("<td>","<td style='border:1px solid hsl(0, 0%, 0%);text-align:center;'>"));
         quizModel.setQuiz_subtitle(quizModel.getQuiz_subtitle().replaceAll("<table>", "<table style='width:100%';>"));
+        quizModel.setQuiz_subtitle(quizModel.getQuiz_subtitle().replaceAll("<td>","<td style='border:1px solid hsl(0, 0%, 0%);text-align:center;'>"));
         ss.insert("net.javaguitar.mapper.QuizMapper.insertQuiz", quizModel);
 
         if (quizModel.getQuiz_code() == 2) { // 객관식인 경우
@@ -237,6 +239,7 @@ public class QuizController {
 
             for (int i = 0; i < quiz_object_name.length; i++) {
                 quizModel.setQuiz_object_name(quiz_object_name[i].replaceAll("<table>", "<table style='width:100%';>"));
+                quizModel.setQuiz_object_name(quiz_object_name[i].replaceAll("<td>","<td style='border:1px solid hsl(0, 0%, 0%);text-align:center;'>"));
                 quizModel.setQuiz_object_num(i + 1);
                 ss.insert("net.javaguitar.mapper.QuizObjectiveMapper.insertQuizObjective", quizModel);
             }
@@ -270,6 +273,11 @@ public class QuizController {
             }
 
         }
+
+        //세션 만들기
+        HttpSession session = request.getSession();
+        session.setAttribute("quiz_source", quizModel.getQuiz_source());
+
         return "redirect:/index/" + quizModel.getDoc_code() + "/" + quizModel.getQuiz_number();
     }
 
