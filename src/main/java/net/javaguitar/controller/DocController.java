@@ -44,16 +44,18 @@ public class DocController {
             String referrer = (request.getHeader("Referer"));
             if (referrer.indexOf("/doc/") > 0) {
                 String decodeResult = URLDecoder.decode(referrer.substring(referrer.indexOf("/doc/") + 5), "UTF-8");
+                decodeResult = decodeResult.replaceAll("edit/","").replaceAll("index","");
                 //세션 만들기
-                HttpSession session = request.getSession();
-                String doc_path = "";
-                if (session.getAttribute("doc_path") != null) {
-                    doc_path = session.getAttribute("doc_path").toString();
+                if (!decodeResult.equals("edit")) {
+                    HttpSession session = request.getSession();
+                    String doc_path = "";
+                    if (session.getAttribute("doc_path") != null) {
+                        doc_path = session.getAttribute("doc_path").toString();
+                    }
+                    if (!doc_path.contains(decodeResult)) {
+                        session.setAttribute("doc_path", doc_path + "/" + decodeResult);
+                    }
                 }
-                if (!doc_path.contains(decodeResult)) {
-                    session.setAttribute("doc_path", doc_path + "/" + decodeResult);
-                }
-                doc_path = session.getAttribute("doc_path").toString();
             }
         }
         ModelAndView mav = new ModelAndView();

@@ -5,6 +5,21 @@
       layout:decorate="~{layout/default_layout}">
 <head>
     <title>문서목록</title>
+    <style>
+        .doc_title {
+            margin-top: 10px;
+            margin-left: 30px;
+        }
+
+        .doc_content {
+            margin-top: 30px;
+            margin-left: 30px;
+        }
+
+        .doc_path {
+            padding: 0.5rem 1rem;
+        }
+    </style>
 </head>
 <body>
 <h1 th:text="${Quiz}">Thymeleaf Test Page</h1>
@@ -15,10 +30,8 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <!--<a class="nav-link active" aria-current="page">편집</a>-->
                         </li>
                         <li class="nav-item">
-                            <!--<a class="nav-link" href="#">Link</a>-->
                         </li>
                     </ul>
                     <form class="d-flex" role="search">
@@ -28,6 +41,11 @@
                 </div>
             </div>
         </nav>
+        <div class="doc_path">이동경로 :
+            <th:block th:each="doc_word : ${#strings.arraySplit(session.doc_path, '/')}">
+                / <a th:href="@{'/doc/'+${doc_word}}" th:text="${doc_word}"></a>
+            </th:block>
+        </div>
     </div>
     <table class="table table-dark">
         <tbody>
