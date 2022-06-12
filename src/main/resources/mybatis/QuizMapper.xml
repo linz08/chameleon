@@ -2,7 +2,8 @@
 <mapper namespace="net.javaguitar.mapper.QuizMapper">
 	<select id="selectQuiz" resultType="QuizModel">
 		SELECT A.*,
-		fnc_common_code(A.QUIZ_SOURCE) AS QUIZ_SOURCE_NAME
+		fnc_common_code(A.QUIZ_SOURCE) AS QUIZ_SOURCE_NAME,
+		(SELECT CATEGORY_NAME FROM DOCUMENT_CATEGORY WHERE DOC_CODE=A.DOC_CODE) AS CATEGORY_NAME
 		FROM QUIZ A
 		LEFT OUTER JOIN QUIZ_ANSWER B
 		ON A.DOC_CODE = B.DOC_CODE

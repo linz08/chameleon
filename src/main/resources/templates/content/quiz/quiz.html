@@ -46,7 +46,7 @@
             class="badge rounded-pill bg-secondary">문제통계</span> <span
             class="badge rounded-pill bg-success">메모내용</span> <span
             class="badge rounded-pill bg-danger"
-            th:utext="'출처: '+${quizModel.quiz_source_name}+ ' '+${quizModel.quiz_org_number}+'번'"></span>
+            th:utext="''+${quizModel.quiz_source_name}+ ': ['+${quizModel.category_name}+'] '+${quizModel.quiz_org_number}+'번'"></span>
     </div>
     <hr/>
     <table class="table">
@@ -75,11 +75,22 @@
     </table>
     <script>
         let quiz_answer = function (answer) {
-            if (answer === [[${quizModel.quiz_answer}]]) {
-                alert("정답");
-            } else {
-                alert("오답");
+            let retV = "오답";
+            const dap = "[[${quizModel.quiz_answer}]]";
+            const dap_arr = dap.split(',');
+            if (dap_arr.length === 1) {
+                if (answer === Number(dap_arr[0])) {
+                    retV = "정답";
+                }
             }
+            else {
+                for(let i=0; i<dap_arr.length;i++){
+                     if (answer === Number(dap_arr[i])) {
+                          retV = "[정답갯수="+dap_arr.length+"개 중]  정답";
+                      }
+                }
+            }
+              alert(retV);
         }
 
         let openWindowPop = function() {

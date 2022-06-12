@@ -17,11 +17,22 @@
     </div>
     <script>
         function insert() {
+            if (document.forms["insertForm"]["quiz_answer"].value === "") {
+                alert("문제정답을 입력하세요.");
+                document.forms["insertForm"]["quiz_answer"].focus();
+                return false;
+            }
+            let doc_code = document.getElementById("doc_code");
+            if(doc_code.options[doc_code.selectedIndex].value=== '1'){
+                alert("문서분류를 선택해 주세요");
+                return false;
+        }
+
             document.getElementById("insertForm").submit();
         }
     </script>
     <form th:action="@{/quiz/insert}" th:object="${quizModel}"
-          id="insertForm" method="POST" class="row gx-3 gy-2 align-items-center">
+          id="insertForm" name="insertForm" method="POST" class="row gx-3 gy-2 align-items-center">
         <input type="hidden" id="quiz_code" name="quiz_code" value="2"><!-- 문항방식 -->
         <input type="hidden" id="pattern_code" name="pattern_code" value="6"><!-- 문제패턴 -->
         <input type="hidden" id="quiz_level" name="quiz_level" value="10"><!-- 난이도 -->
@@ -29,13 +40,7 @@
             <label class="visually-hidden" for="specificSizeInputGroupUsername">문제정답</label>
             <div class="input-group">
                 <div class="input-group-text">문제정답</div>
-                <select
-                        class="form-select" aria-label="문제정답" th:name="quiz_answer">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                </select>
+                <input type="text" class="form-control" id="quiz_answer" name="quiz_answer">
             </div>
         </div>
         <div class="col-sm-3">
@@ -62,7 +67,7 @@
             <label class="visually-hidden" for="specificSizeInputGroupUsername">문서분류</label>
             <div class="input-group">
                 <span class="input-group-text" id="basic-addon2">문서분류</span> <select
-                    class="form-select" aria-label="문서분류" th:name="doc_code">
+                    class="form-select" aria-label="문서분류" th:id="doc_code" th:name="doc_code">
                 <option th:each="val:${docCatehogryList}"
                         th:value="${val.doc_code}" th:utext="${val.category_name}"
                         th:selected="${val.doc_code==session.doc_code}"></option>
@@ -130,14 +135,7 @@
         var allEditors = document.querySelectorAll('.ck_editor_txt');
         for (var i = 0; i < allEditors.length; ++i) {
             ClassicEditor.create((allEditors[i]),
-                {
-                    simpleUpload:
-                        {
-                            uploadUrl: "/attach/image",
-                            withCredentials: true,
-                        },
-                    autoParagraph: false
-                })
+                {})
                 .then(newEditor => {
                     editr = newEditor;
                 })
