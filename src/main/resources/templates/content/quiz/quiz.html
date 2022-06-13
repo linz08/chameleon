@@ -93,6 +93,29 @@
               alert(retV);
         }
 
+        function quiz_stat(success_yn) {
+            $.ajax({
+                type: "POST",
+                url: "/quiz_stat_insert",
+                beforeSend: function (jqXHR, settings) {
+                    let header = $("meta[name='_csrf_header']").attr("content");
+                    let token = $("meta[name='_csrf']").attr("content");
+                    jqXHR.setRequestHeader(header, token);
+                },
+                data: {
+                    "success_yn": success_yn,
+                    "doc_code": '[[${quizModel.doc_code}]]',
+                    "quiz_number": '[[${quizModel.quiz_number}]]'
+                },
+                success: function () {
+                    console.log('성공');
+                }, error: function () {
+                    console.log('실패');
+                }
+            });
+        }
+
+
         let openWindowPop = function() {
             let urls = "/quiz/desc/[[${quizModel.doc_code}]]/[[${quizModel.quiz_number}]]";
             let options = 'top=10, left=10, width=500, height=600, status=no, menubar=no, toolbar=no, resizable=yes';
