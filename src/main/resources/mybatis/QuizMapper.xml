@@ -15,6 +15,7 @@
 	<select id="selectQuizEdit" parameterType="QuizModel"
 		resultType="QuizModel">
 		SELECT fnc_common_code(A.QUIZ_SOURCE) AS QUIZ_SOURCE_NAME,
+			   (SELECT CATEGORY_NAME FROM DOCUMENT_CATEGORY WHERE DOC_CODE=A.DOC_CODE) AS CATEGORY_NAME,
 		A.* FROM QUIZ A WHERE DOC_CODE=#{doc_code} AND
 		QUIZ_NUMBER =
 		#{quiz_number}
