@@ -29,7 +29,7 @@
 		QUIZ_SOURCE=#{quiz_source}
 		AND A.DOC_CODE = B.DOC_CODE
 		ORDER BY
-		CAST(QUIZ_ORG_NUMBER AS INTEGER) ASC
+		CAST(QUIZ_ORG_NUMBER AS INTEGER)
 	</select>
 
 	<insert id="insertQuiz" parameterType="QuizModel">
