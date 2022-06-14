@@ -12,6 +12,7 @@ public class QuizStatModel {
     private String quiz_date;
     private int doc_code;
     private int quiz_number;
+    private int quiz_seq;
     private int quiz_num;
     private String success_yn;
     private int quiz_time;

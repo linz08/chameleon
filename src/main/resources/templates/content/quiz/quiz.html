@@ -76,21 +76,25 @@
     <script>
         let quiz_answer = function (answer) {
             let retV = "오답";
+            let success_yn = "N";
             const dap = "[[${quizModel.quiz_answer}]]";
             const dap_arr = dap.split(',');
             if (dap_arr.length === 1) {
                 if (answer === Number(dap_arr[0])) {
                     retV = "정답";
+                    success_yn = "Y";
                 }
             }
             else {
                 for(let i=0; i<dap_arr.length;i++){
                      if (answer === Number(dap_arr[i])) {
                           retV = "[정답갯수="+dap_arr.length+"개 중]  정답";
+                         success_yn = "Y";
                       }
                 }
             }
               alert(retV);
+            quiz_stat(success_yn);
         }
 
         function quiz_stat(success_yn) {

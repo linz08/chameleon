@@ -21,10 +21,7 @@
     </div>
     <div class="nav-scroller bg-body shadow-sm">
         <nav class="nav nav-underline" aria-label="Secondary navigation">
-            <a class="nav-link active" aria-current="page" href="/doc/index">메인</a>
-            <a class="nav-link active" aria-current="page"
-               th:href="@{'/doc/edit/'+${docModel.doc_name}}">편집</a>
-            <a class="nav-link active" aria-current="page">관련퀴즈</a>
+            <button type="button" class="btn btn-outline-primary" onclick="location.href='/doc/index'">문서메인</button>
         </nav>
     </div>
     <form th:action="@{/doc/update}" th:object="${docModel}"

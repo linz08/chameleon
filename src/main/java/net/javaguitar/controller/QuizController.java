@@ -354,14 +354,14 @@ public class QuizController {
 
     @RequestMapping(value = {"/docAdd"}, method = {RequestMethod.POST})
     public @ResponseBody
-    void docAdd(HttpServletRequest request, @ModelAttribute("quizDocumentModel") QuizDocumentModel quizDocumentModelModel) throws Exception {
-        ss.insert("net.javaguitar.mapper.QuizDocumentMapper.insertQuizDocument", quizDocumentModelModel);
+    void docAdd(HttpServletRequest request, @ModelAttribute("quizDocumentModel") QuizDocumentModel quizDocumentModel) throws Exception {
+        ss.insert("net.javaguitar.mapper.QuizDocumentMapper.insertQuizDocument", quizDocumentModel);
     }
 
     @RequestMapping(value = {"/docDel"}, method = {RequestMethod.POST})
     public @ResponseBody
-    void docDel(HttpServletRequest request, @ModelAttribute("quizDocumentModel") QuizDocumentModel quizDocumentModelModel) throws Exception {
-        ss.delete("net.javaguitar.mapper.QuizDocumentMapper.deleteQuizDocument", quizDocumentModelModel);
+    void docDel(HttpServletRequest request, @ModelAttribute("quizDocumentModel") QuizDocumentModel quizDocumentModel) throws Exception {
+        ss.delete("net.javaguitar.mapper.QuizDocumentMapper.deleteQuizDocument", quizDocumentModel);
     }
 
     @RequestMapping(value = {"/quiz/doc/list"}, method = RequestMethod.POST)
