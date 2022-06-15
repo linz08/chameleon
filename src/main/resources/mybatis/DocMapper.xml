@@ -20,7 +20,7 @@
             resultType="DocModel">
         SELECT A.DOC_NAME
         FROM DOCUMENT A
-        WHERE DOC_NAME LIKE CONCAT(#{doc_name},'%')
+        WHERE DOC_NAME LIKE CONCAT('%',#{doc_name},'%')
     </select>
     <update id="updateDoc" parameterType="DocModel">
 	<![CDATA[

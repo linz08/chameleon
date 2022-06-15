@@ -2,20 +2,22 @@ package net.javaguitar.controller;
 
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.google.gson.Gson;
+import net.javaguitar.model.QuizDocumentModel;
 import net.javaguitar.model.QuizModel;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -44,7 +46,11 @@ public class DocController {
             String referrer = (request.getHeader("Referer"));
             if (referrer.indexOf("/doc/") > 0) {
                 String decodeResult = URLDecoder.decode(referrer.substring(referrer.indexOf("/doc/") + 5), "UTF-8");
-                decodeResult = decodeResult.replaceAll("edit/","").replaceAll("index","");
+                decodeResult = decodeResult.replaceAll("edit/", "").replaceAll("index", "");
+                decodeResult = decodeResult.replaceAll("사업관리", "").replaceAll("감리", "");
+                decodeResult = decodeResult.replaceAll("소프트웨어공학", "").replaceAll("데이터베이스", "");
+                decodeResult = decodeResult.replaceAll("시스템구조", "").replaceAll("보안", "");
+                decodeResult = decodeResult.replaceAll("기타", "");
                 //세션 만들기
                 if (!decodeResult.equals("edit")) {
                     HttpSession session = request.getSession();
@@ -114,6 +120,46 @@ public class DocController {
         String docName = URLEncoder.encode(docModel.getDoc_name(), java.nio.charset.StandardCharsets.UTF_8.toString());
         docName = docName.replaceAll("\\+", "%20");
         return "redirect:/doc/" + docName;
+    }
+
+    @RequestMapping(value = {"/docSearch"}, method = {RequestMethod.POST})
+    public @ResponseBody
+    Map<String, Object> docSearch(@RequestParam Map<String, Object> paramMap,
+                                  @RequestParam String doc_name) throws Exception {
+        Gson gson = new Gson();
+        Map<String, Object> data = new HashMap<String, Object>();
+        String retVal = null;
+
+        /* 추후 json을 object로 전환하는 방식으로 변경 필요 (2022.02.22) */
+        data.put("doc_name", doc_name);
+        List<Map> resultList = ss.selectList("net.javaguitar.mapper.DocMapper.selectDocSearch", doc_name);
+        paramMap.put("resultList", resultList);
+        return paramMap;
+    }
+
+    @RequestMapping(value = {"/docAdd"}, method = {RequestMethod.POST})
+    public @ResponseBody
+    void docAdd(HttpServletRequest request, @ModelAttribute("quizDocumentModel") QuizDocumentModel quizDocumentModel) throws Exception {
+        ss.insert("net.javaguitar.mapper.QuizDocumentMapper.insertQuizDocument", quizDocumentModel);
+    }
+
+    @RequestMapping(value = {"/docDel"}, method = {RequestMethod.POST})
+    public @ResponseBody
+    void docDel(HttpServletRequest request, @ModelAttribute("quizDocumentModel") QuizDocumentModel quizDocumentModel) throws Exception {
+        ss.delete("net.javaguitar.mapper.QuizDocumentMapper.deleteQuizDocument", quizDocumentModel);
+    }
+
+    @RequestMapping(value = {"/quiz/doc/list"}, method = RequestMethod.POST)
+    public @ResponseBody
+    List<QuizDocumentModel> quizDocument(@ModelAttribute("quizDocumentModel") QuizDocumentModel quizDocumentModel) throws Exception {
+        ModelAndView mav = new ModelAndView();
+        List<QuizDocumentModel> quizDocumentModelList = new ArrayList<QuizDocumentModel>();
+        quizDocumentModelList = ss
+                .selectList("net.javaguitar.mapper.QuizDocumentMapper.selectQuizDocumentListByQuiz", quizDocumentModel);
+        // mav.addObject("quizDocumentModelList", quizDocumentModelList);
+
+        return quizDocumentModelList;
+
     }
 
 }

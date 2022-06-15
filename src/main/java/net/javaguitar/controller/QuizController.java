@@ -4,7 +4,6 @@ import java.io.File;
 import java.time.LocalDate;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import net.javaguitar.model.*;
@@ -12,7 +11,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,7 +51,7 @@ public class QuizController {
     }
 
     @RequestMapping(value = {"/quiz/desc/{doc_code}/{quiz_number}"}, method = RequestMethod.GET)
-    public ModelAndView quiz_desc(HttpServletRequest request, @ModelAttribute("quizModel") QuizModel quizModel,
+    public ModelAndView quiz_desc(@ModelAttribute("quizModel") QuizModel quizModel,
                                   @PathVariable int doc_code, @PathVariable int quiz_number) {
         ModelAndView mav = new ModelAndView();
 
@@ -68,7 +66,7 @@ public class QuizController {
     }
 
     @RequestMapping(value = {"/quiz/desc/edit/{doc_code}/{quiz_number}"}, method = RequestMethod.GET)
-    public ModelAndView quiz_desc_edit(HttpServletRequest request, @ModelAttribute("quizModel") QuizModel quizModel,
+    public ModelAndView quiz_desc_edit(@ModelAttribute("quizModel") QuizModel quizModel,
                                        @PathVariable int doc_code, @PathVariable int quiz_number) {
         ModelAndView mav = new ModelAndView();
 
@@ -259,7 +257,7 @@ public class QuizController {
 
 
     @RequestMapping(value = {"/quiz/update"}, method = {RequestMethod.POST, RequestMethod.GET})
-    public String quizUpdate(@ModelAttribute("quizModel") QuizModel quizModel, ModelMap model,
+    public String quizUpdate(@ModelAttribute("quizModel") QuizModel quizModel,
                              HttpServletRequest request, RedirectAttributes redirectAttributes) throws Exception {
         String[] quiz_object_name = null;
         quizModel.setQuiz_title(quizModel.getQuiz_title().replaceAll("<table>", "<table style='width:100%';>"));
@@ -313,71 +311,5 @@ public class QuizController {
         uploadFile.transferTo(new File(uploadDir + uploadId));
         paramMap.put("url", "/upload/images/" + today + "/" + uploadId);
         return paramMap;
-    }
-
-    @GetMapping("/ajax")
-    @ResponseBody
-    public void ajax(@ModelAttribute("quizModel") QuizModel quizModel, HttpServletResponse response,
-                     @RequestParam String doc_code, @RequestParam String quiz_number, String object_num) throws Exception {
-        Gson gson = new Gson();
-        Map<String, Object> data = new HashMap<String, Object>();
-
-        /* 추후 json을 object로 전환하는 방식으로 변경 필요 (2022.02.22) */
-        data.put("doc_code", doc_code);
-        data.put("quiz_number", quiz_number);
-        data.put("object_num", object_num);
-
-        quizModel.setDoc_code(Integer.parseInt(doc_code));
-        quizModel.setQuiz_number(Integer.parseInt(quiz_number));
-
-        int quizAnswer = 0;
-        quizAnswer = ss.selectOne("net.javaguitar.mapper.QuizMapper.selectQuizAnswer", quizModel);
-
-        if (quizAnswer > 0) {
-            data.put("result", "success");
-        } else {
-            data.put("result", "fail");
-        }
-        response.getWriter().print(gson.toJson(data));
-    }
-
-    @RequestMapping(value = {"/docSearch"}, method = {RequestMethod.POST})
-    public @ResponseBody
-    Map<String, Object> docSearch(@RequestParam Map<String, Object> paramMap,
-                                  @RequestParam String doc_name) throws Exception {
-        Gson gson = new Gson();
-        Map<String, Object> data = new HashMap<String, Object>();
-        String retVal = null;
-
-        /* 추후 json을 object로 전환하는 방식으로 변경 필요 (2022.02.22) */
-        data.put("doc_name", doc_name);
-        List<Map> resultList = ss.selectList("net.javaguitar.mapper.DocMapper.selectDocSearch", doc_name);
-        paramMap.put("resultList", resultList);
-        return paramMap;
-    }
-
-    @RequestMapping(value = {"/docAdd"}, method = {RequestMethod.POST})
-    public @ResponseBody
-    void docAdd(HttpServletRequest request, @ModelAttribute("quizDocumentModel") QuizDocumentModel quizDocumentModel) throws Exception {
-        ss.insert("net.javaguitar.mapper.QuizDocumentMapper.insertQuizDocument", quizDocumentModel);
-    }
-
-    @RequestMapping(value = {"/docDel"}, method = {RequestMethod.POST})
-    public @ResponseBody
-    void docDel(HttpServletRequest request, @ModelAttribute("quizDocumentModel") QuizDocumentModel quizDocumentModel) throws Exception {
-        ss.delete("net.javaguitar.mapper.QuizDocumentMapper.deleteQuizDocument", quizDocumentModel);
-    }
-
-    @RequestMapping(value = {"/quiz/doc/list"}, method = RequestMethod.POST)
-    public @ResponseBody
-    List<QuizDocumentModel> quizDocument(@ModelAttribute("quizDocumentModel") QuizDocumentModel quizDocumentModel) throws Exception {
-        ModelAndView mav = new ModelAndView();
-        List<QuizDocumentModel> quizDocumentModelList = new ArrayList<QuizDocumentModel>();
-        quizDocumentModelList = ss
-                .selectList("net.javaguitar.mapper.QuizDocumentMapper.selectQuizDocumentListByQuiz", quizDocumentModel);
-        // mav.addObject("quizDocumentModelList", quizDocumentModelList);
-
-        return quizDocumentModelList;
-
     }
 }

@@ -177,12 +177,6 @@
         for (let i = 0; i < allEditors.length; ++i) {
             ClassicEditor.create((allEditors[i]),
                 {
-                    simpleUpload:
-                        {
-                            uploadUrl: "/attach/image",
-                            withCredentials: true,
-                        },
-                    autoParagraph: false
                 })
                 .then(newEditor => {
                     editr = newEditor;

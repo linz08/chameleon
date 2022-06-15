@@ -5,6 +5,7 @@
       layout:decorate="~{layout/default_layout}">
 <head>
     <title th:text="${docModel.doc_name}">page title</title>
+    <link href="https://releases.jquery.com/git/ui/jquery-ui-git.css"/>
     <style>
         .doc_title {
             margin-top: 10px;
@@ -29,12 +30,20 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <button type="button" class="btn btn-outline-primary" onclick="location.href='/doc/index'">메인</button>&nbsp;
-                        <button type="button" class="btn btn-outline-secondary" th:onclick="'location.href=\'/doc/edit/'+@{${docModel.doc_name}}+'\''">편집</button>&nbsp;
+                        <button type="button" class="btn btn-outline-secondary" th:onclick="'location.href=\'/doc/edit/'+@{${docModel.doc_name}}+'\''">편집</button>
                         <!--<button type="button" class="btn btn-outline-success">관련퀴즈</button>-->
                     </ul>
+                    <div><span class="badge rounded-pill bg-primary" style="cursor:pointer" onclick="location.href='/doc/감리'">감리</span>
+                    <span class="badge rounded-pill bg-secondary" style="cursor:pointer" onclick="location.href='/doc/사업관리'">사업관리</span>
+                    <span class="badge rounded-pill bg-success" style="cursor:pointer" onclick="location.href='/doc/소프트웨어공학'">소프트웨어공학</span>
+                    <span class="badge rounded-pill bg-danger" style="cursor:pointer" onclick="location.href='/doc/데이터베이스'">데이터베이스</span>
+                        <span class="badge rounded-pill bg-warning" style="cursor:pointer" onclick="location.href='/doc/시스템구조'">시스템구조</span>
+                        <span class="badge rounded-pill bg-info" style="cursor:pointer" onclick="location.href='/doc/보안'">보안</span>
+                        <span class="badge rounded-pill bg-primary" style="cursor:pointer" onclick="location.href='/doc/기타'">기타</span>
+                    </div>&nbsp;&nbsp;
                     <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-success" type="submit">Search</button>
+                        <input class="form-control me-2" type="search" id="doc_search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="button" onclick="doc_move()">Search</button>
                     </form>
                 </div>
             </div>
@@ -54,15 +63,61 @@
     <div class="doc_title">
         <h3>관련퀴즈</h3>
     </div>
-</div>
-<!-- jQuery (부트스트랩의 자바스크립트 플러그인을 위해 필요합니다) -->
-<script
-        src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
-<script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
-        crossorigin="anonymous"></script>
+    <script
+            src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script
+            src="https://releases.jquery.com/git/ui/jquery-ui-git.js"></script>
+    <!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
+    <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+            crossorigin="anonymous"></script>
+    <script src="/js/ckeditor5-31/quiz/ckeditor.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+    <script>
+        $('#doc_search').autocomplete({
+            source: function (request, response) { //source: 입력시 보일 목록
+                $.ajax({
+                    url: "/docSearch"
+                    , type: "POST"
+                    , dataType: "JSON"
+                    , data: {doc_name: $("#doc_search").val()}	// 검색 키워드
+                    , beforeSend: function (jqXHR, settings) {
+                        let header = $("meta[name='_csrf_header']").attr("content");
+                        let token = $("meta[name='_csrf']").attr("content");
+                        jqXHR.setRequestHeader(header, token);
+                    }
+                }).done(function (rData, textStatus, jqXHR) {
+                    response(
+                        $.map(rData.resultList, function (item) {
+                            return {
+                                label: item.doc_name    	// 목록에 표시되는 값
+                                , value: item.doc_name 		// 선택 시 input창에 표시되는 값
+                                //, idx : item.SEQ // index
+                            };
+                        })
+                    );
+                }).fail(function (rData, textStatus, errorThrown) {
+                    alert("오류가 발생했습니다.");
+                }).always(function (rData, textStatus, jqXHR) {
+                });
+            }
+            , focus: function (evt, ui) { // 방향키로 자동완성단어 선택 가능하게 만들어줌
+                return false;
+            },
+            minLength: 1,// 최소 글자수
+            delay: 100	//autocomplete 딜레이 시간(ms),
+            , select: function (evt, ui) {
+                // 아이템 선택시 실행 ui.item 이 선택된 항목을 나타내는 객체, lavel/value/idx를 가짐
+                console.log(ui.item.label);
+                //console.log(ui.item.idx);
+            }
+        });
 
+        let doc_move = function () {
+            location.href="/doc/"+($("#doc_search").val());
+        }
+    </script>
+</div>
 </body>
 </html>
