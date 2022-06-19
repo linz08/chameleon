@@ -40,10 +40,12 @@
 		<![CDATA[
         INSERT INTO DOCUMENT (DOC_NAME,
                               SORT_NUM,
-                              DOC_CONTENT)
+                              DOC_CONTENT,
+                              CREATE_DATE)
         VALUES (#{doc_name}
                    , 1,
-                '내용을 입력해 주세요.')
+                '꽉꽉 채워주세요~',
+                now())
         ]]>
 	</insert>
 </mapper>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.javaguitar.mapper.StatMapper">
+    <select id="selectQuizCount" resultType="StatModel">
+	  <![CDATA[
+        SELECT FORMAT(CURRENT_COUNT, 0) AS CURRENT_COUNT, FORMAT(TOTAL_COUNT, 0) AS TOTAL_COUNT
+        FROM (SELECT COUNT(*) AS TOTAL_COUNT FROM QUIZ) A,
+             (SELECT COUNT(*) AS CURRENT_COUNT FROM QUIZ WHERE DATE_FORMAT(CREATE_DATE, "%Y-%m-%d") = CURDATE()) B
+        ]]>
+	</select>
+	<select id="selectDocCount" resultType="StatModel">
+	  <![CDATA[
+		SELECT FORMAT(CURRENT_COUNT, 0) AS CURRENT_COUNT, FORMAT(TOTAL_COUNT, 0) AS TOTAL_COUNT
+		FROM (SELECT COUNT(*) AS TOTAL_COUNT FROM DOCUMENT) A,
+			 (SELECT COUNT(*) AS CURRENT_COUNT FROM DOCUMENT WHERE DATE_FORMAT(CREATE_DATE, "%Y-%m-%d") = CURDATE()) B
+		]]>
+	</select>
+</mapper>

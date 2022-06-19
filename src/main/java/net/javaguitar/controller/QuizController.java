@@ -240,10 +240,12 @@ public class QuizController {
             quiz_object_name = request.getParameterValues("quiz_object_name");
 
             for (int i = 0; i < quiz_object_name.length; i++) {
-                quizModel.setQuiz_object_name(quiz_object_name[i].replaceAll("<table>", "<table style='width:100%';>"));
-                quizModel.setQuiz_object_name(quiz_object_name[i].replaceAll("<td>", "<td style='border:1px solid hsl(0, 0%, 0%);text-align:center;'>"));
-                quizModel.setQuiz_object_num(i + 1);
-                ss.insert("net.javaguitar.mapper.QuizObjectiveMapper.insertQuizObjective", quizModel);
+                if(!quiz_object_name[i].equals("")) {
+                    quizModel.setQuiz_object_name(quiz_object_name[i].replaceAll("<table>", "<table style='width:100%';>"));
+                    quizModel.setQuiz_object_name(quiz_object_name[i].replaceAll("<td>", "<td style='border:1px solid hsl(0, 0%, 0%);text-align:center;'>"));
+                    quizModel.setQuiz_object_num(i + 1);
+                    ss.insert("net.javaguitar.mapper.QuizObjectiveMapper.insertQuizObjective", quizModel);
+                }
             }
 
         }

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/default_layout}">
+      layout:decorate="~{layout/default_layout}" lang="ko">
 <head>
     <title th:text="${docModel.doc_name}">page title</title>
     <link href="https://releases.jquery.com/git/ui/jquery-ui-git.css"/>
@@ -30,8 +30,8 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <button type="button" class="btn btn-outline-primary" onclick="location.href='/doc/index'">메인</button>&nbsp;
-                        <button type="button" class="btn btn-outline-secondary" th:onclick="'location.href=\'/doc/edit/'+@{${docModel.doc_name}}+'\''">편집</button>
-                        <!--<button type="button" class="btn btn-outline-success">관련퀴즈</button>-->
+                        <button type="button" class="btn btn-outline-secondary" th:onclick="'location.href=\'/doc/edit/'+@{${docModel.doc_name}}+'\''">편집</button> &nbsp;
+                        <button type="button" class="btn btn-outline-success">관련퀴즈</button>
                     </ul>
                     <div><span class="badge rounded-pill bg-primary" style="cursor:pointer" onclick="location.href='/doc/감리'">감리</span>
                     <span class="badge rounded-pill bg-secondary" style="cursor:pointer" onclick="location.href='/doc/사업관리'">사업관리</span>
@@ -55,13 +55,10 @@
         </div>
     </div>
     <div class="doc_title">
-        <h2><span th:utext="${docModel.doc_name}"></span></h2>
+        <h1><span th:utext="':: '+${docModel.doc_name}"></span></h1>
     </div>
     <div class="doc_content">
         <span th:utext="${docModel.doc_content}"></span>
-    </div>
-    <div class="doc_title">
-        <h3>관련퀴즈</h3>
     </div>
     <script
             src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>

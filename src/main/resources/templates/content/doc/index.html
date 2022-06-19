@@ -29,11 +29,16 @@
             <div class="container-fluid">
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                        </li>
-                        <li class="nav-item">
-                        </li>
+                        <div><span class="badge rounded-pill bg-primary" style="cursor:pointer" onclick="location.href='/doc/감리'">감리</span>
+                            <span class="badge rounded-pill bg-secondary" style="cursor:pointer" onclick="location.href='/doc/사업관리'">사업관리</span>
+                            <span class="badge rounded-pill bg-success" style="cursor:pointer" onclick="location.href='/doc/소프트웨어공학'">소프트웨어공학</span>
+                            <span class="badge rounded-pill bg-danger" style="cursor:pointer" onclick="location.href='/doc/데이터베이스'">데이터베이스</span>
+                            <span class="badge rounded-pill bg-warning" style="cursor:pointer" onclick="location.href='/doc/시스템구조'">시스템구조</span>
+                            <span class="badge rounded-pill bg-info" style="cursor:pointer" onclick="location.href='/doc/보안'">보안</span>
+                            <span class="badge rounded-pill bg-primary" style="cursor:pointer" onclick="location.href='/doc/기타'">기타</span>
+                        </div>&nbsp;
                     </ul>
+                    &nbsp;
                     <form class="d-flex" role="search">
                         <input class="form-control me-2" type="search" id="doc_search" placeholder="Search" aria-label="Search">
                         <button class="btn btn-outline-success" type="button" onclick="doc_move()">Search</button>
@@ -41,22 +46,40 @@
                 </div>
             </div>
         </nav>
-        <div class="doc_path">이동경로 :
-            <th:block th:each="doc_word : ${#strings.arraySplit(session.doc_path, '/')}">
-                / <a th:href="@{'/doc/'+${doc_word}}" th:text="${doc_word}"></a>
-            </th:block>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">:: 등록된 퀴즈 (오늘 / 전체)</h5>
+                    <p class="card-text"><h1><span th:text="${statModel.current_count}"></span> / <span th:text="${statModel.total_count}"></span>개</h1></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">:: 등록된 문서 (오늘 / 전체)</h5>
+                    <p class="card-text"><h1><span th:text="${statModel_doc.current_count}"></span> / <span th:text="${statModel_doc.total_count}"></span>개</h1></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">:: 오늘 퀴즈 (전체 / 맞힘 / 틀림)</h5>
+                    <p class="card-text"><h1></h1></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">:: 미정</h5>
+                </div>
+            </div>
         </div>
     </div>
-    <table class="table table-dark">
-        <tbody>
-        <tr th:each="docList : ${docList}">
-            <td><a class="link-light"
-                   th:href="@{'/doc/'+${docList.doc_name}}"
-                   th:text="${docList.doc_name}"/></td>
-        </tr>
-
-        </tbody>
-    </table>
     <script
             src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script

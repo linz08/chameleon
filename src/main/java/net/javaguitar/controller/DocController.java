@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import com.google.gson.Gson;
 import net.javaguitar.model.QuizDocumentModel;
 import net.javaguitar.model.QuizModel;
+import net.javaguitar.model.StatModel;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,10 +33,13 @@ public class DocController {
     @RequestMapping(value = "/doc/index", method = RequestMethod.GET)
     public ModelAndView docList(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
+        //List<DocModel> docList = ss.selectList("net.javaguitar.mapper.DocMapper.selectDocIndex");
+        StatModel statModel = ss.selectOne("net.javaguitar.mapper.StatMapper.selectQuizCount");
+        StatModel statModel_doc = ss.selectOne("net.javaguitar.mapper.StatMapper.selectDocCount");
 
-        List<DocModel> docList = ss.selectList("net.javaguitar.mapper.DocMapper.selectDocIndex");
-        mav.addObject("docList", docList);
-        mav.setViewName("content/doc/list");
+        mav.addObject("statModel", statModel);
+        mav.addObject("statModel_doc", statModel_doc);
+        mav.setViewName("content/doc/index");
         return mav;
     }
 
