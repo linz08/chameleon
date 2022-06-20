@@ -45,7 +45,7 @@
     <div>
         <span class="badge rounded-pill bg-primary" style="cursor:pointer" onclick="openWindowPop()">문제해설</span> <span
             class="badge rounded-pill bg-secondary">문제통계</span> <span
-            class="badge rounded-pill bg-success">메모내용</span> <span class="badge rounded-pill bg-warning"
+            class="badge rounded-pill bg-success">북마크</span> <span class="badge rounded-pill bg-warning"
                                                                     style="cursor:pointer" onclick="quiz_stat('X');">skip</span>
         <span
                 class="badge rounded-pill bg-danger" style="cursor:pointer" th:onclick="'location.href=\'/quiz/list/'+@{${quizModel.quiz_source}}+'\''"
@@ -100,7 +100,7 @@
             quiz_stat(success_yn);
         }
 
-        function quiz_stat(success_yn) {
+        let quiz_stat = function (success_yn) {
             $.ajax({
                 type: "POST",
                 url: "/quiz_stat_insert",
