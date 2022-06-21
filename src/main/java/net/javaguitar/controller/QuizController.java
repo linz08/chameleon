@@ -2,6 +2,7 @@ package net.javaguitar.controller;
 
 import java.io.File;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -285,33 +286,15 @@ public class QuizController {
         return "redirect:/index/" + quizModel.getDoc_code() + "/" + quizModel.getQuiz_number();
     }
 
-    @ResponseBody
-    @PostMapping("/attach/image")
-    public Map<String, Object> attachImage(@RequestParam Map<String, Object> paramMap, MultipartRequest multiRequest,
-                                           HttpServletRequest request) throws Exception {
-        MultipartFile uploadFile = multiRequest.getFile("upload");
-        String uploadDir = null;
-        LocalDate now = LocalDate.now();
-        String today = now.toString().replace("-", "");
-        if (request.getServerName().equals("javaguitar1.cafe24.com")) {
-            uploadDir = "/javaguitar1/tomcat/webapps/upload/images/" + today + "/";
-        } else {
-            uploadDir = "C:\\temp\\upload\\images\\" + today + "\\";
+
+    @RequestMapping(value = {"/quiz_bookmark_insert"}, method = {RequestMethod.POST})
+    public @ResponseBody
+    void quizBookMarkInsert(HttpServletRequest request, @ModelAttribute("quizBMModel") QuizBMModel quizBMModel) throws Exception {
+        int quizBMCnt = 0;
+
+        quizBMCnt = ss.selectOne("net.javaguitar.mapper.QuizBMMapper.selectQuizBMCnt", quizBMModel);
+        if (quizBMCnt == 0) {
+            ss.insert("net.javaguitar.mapper.QuizBMMapper.insertQuizBM", quizBMModel);
         }
-        File Folder = new File(uploadDir);
-        if (!Folder.exists()) {
-            try {
-                Folder.mkdir();
-            } catch (Exception e) {
-                e.getStackTrace();
-            }
-        }
-        String orgName = uploadFile.getOriginalFilename();
-        int ext_idx = uploadFile.getOriginalFilename().lastIndexOf(".");
-        String fileExt = orgName.substring(ext_idx + 1);
-        String uploadId = UUID.randomUUID().toString() + "." + fileExt;
-        uploadFile.transferTo(new File(uploadDir + uploadId));
-        paramMap.put("url", "/upload/images/" + today + "/" + uploadId);
-        return paramMap;
     }
 }

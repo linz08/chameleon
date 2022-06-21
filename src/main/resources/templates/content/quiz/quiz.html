@@ -45,7 +45,7 @@
     <div>
         <span class="badge rounded-pill bg-primary" style="cursor:pointer" onclick="openWindowPop()">문제해설</span> <span
             class="badge rounded-pill bg-secondary">문제통계</span> <span
-            class="badge rounded-pill bg-success">북마크</span> <span class="badge rounded-pill bg-warning"
+            class="badge rounded-pill bg-success" style="cursor:pointer" onclick="quiz_boorkmark()">북마크</span> <span class="badge rounded-pill bg-warning"
                                                                     style="cursor:pointer" onclick="quiz_stat('X');">skip</span>
         <span
                 class="badge rounded-pill bg-danger" style="cursor:pointer" th:onclick="'location.href=\'/quiz/list/'+@{${quizModel.quiz_source}}+'\''"
@@ -122,6 +122,26 @@
             });
         }
 
+        let quiz_boorkmark = function () {
+            $.ajax({
+                type: "POST",
+                url: "/quiz_bookmark_insert",
+                beforeSend: function (jqXHR, settings) {
+                    let header = $("meta[name='_csrf_header']").attr("content");
+                    let token = $("meta[name='_csrf']").attr("content");
+                    jqXHR.setRequestHeader(header, token);
+                },
+                data: {
+                    "doc_code": '[[${quizModel.doc_code}]]',
+                    "quiz_number": '[[${quizModel.quiz_number}]]'
+                },
+                success: function () {
+                    console.log('성공');
+                }, error: function () {
+                    console.log('실패');
+                }
+            });
+        }
 
         let openWindowPop = function () {
             let urls = "/quiz/desc/[[${quizModel.doc_code}]]/[[${quizModel.quiz_number}]]";
