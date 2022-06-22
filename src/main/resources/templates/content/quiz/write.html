@@ -139,8 +139,8 @@
         $(window).on('load', function () {
             $('#loader').hide();
         });
-        var allEditors = document.querySelectorAll('.ck_editor_txt');
-        for (var i = 0; i < allEditors.length; ++i) {
+        let allEditors = document.querySelectorAll('.ck_editor_txt');
+        for (let i = 0; i < allEditors.length; ++i) {
             ClassicEditor.create((allEditors[i]),
                 {})
                 .then(newEditor => {
