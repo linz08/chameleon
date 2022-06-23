@@ -45,10 +45,12 @@
     <div>
         <span class="badge rounded-pill bg-primary" style="cursor:pointer" onclick="openWindowPop()">문제해설</span> <span
             class="badge rounded-pill bg-secondary">문제통계</span> <span
-            class="badge rounded-pill bg-success" style="cursor:pointer" onclick="quiz_boorkmark()">북마크</span> <span class="badge rounded-pill bg-warning"
-                                                                    style="cursor:pointer" onclick="quiz_stat('X');">skip</span>
+            class="badge rounded-pill bg-success" style="cursor:pointer" onclick="quiz_boorkmark()">북마크</span> <span
+            class="badge rounded-pill bg-warning"
+            style="cursor:pointer" onclick="quiz_stat('X');">skip</span>
         <span
-                class="badge rounded-pill bg-danger" style="cursor:pointer" th:onclick="'location.href=\'/quiz/list/'+@{${quizModel.quiz_source}}+'\''"
+                class="badge rounded-pill bg-danger" style="cursor:pointer"
+                th:onclick="'location.href=\'/quiz/list/'+@{${quizModel.quiz_source}}+'\''"
                 th:utext="''+${quizModel.quiz_source_name}+ ': ['+${quizModel.category_name}+'] '+${quizModel.quiz_org_number}+'번'"></span>
         <select
                 aria-label="문제패턴" id="pattern_code" th:name="pattern_code">
@@ -91,6 +93,22 @@
             </tr>
         </th:block>
     </table>
+    <div class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 11">
+        <div id="liveToast" class="toast hide align-items-center text-white bg-primary border-0" role="alert"
+             aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">알람</strong>
+                <small></small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                하이루 용진이야~
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
     <script>
         let quiz_answer = function (answer) {
             let retV = "오답";
@@ -110,7 +128,11 @@
                     }
                 }
             }
-            alert(retV);
+            if (retV === "오답") {
+                toastAlert(retV, 1);
+            } else {
+                toastAlert(retV, 0);
+            }
             quiz_stat(success_yn);
         }
 
@@ -129,9 +151,11 @@
                     "quiz_number": '[[${quizModel.quiz_number}]]'
                 },
                 success: function () {
-                    console.log('성공');
+                    if (success_yn === 'X') {
+                        toastAlert("skip 저장", 0);
+                    }
                 }, error: function () {
-                    console.log('실패');
+                    toastAlert('저장 실패', 1);
                 }
             });
         }
@@ -150,9 +174,9 @@
                     "quiz_number": '[[${quizModel.quiz_number}]]'
                 },
                 success: function () {
-                    console.log('성공');
+                    toastAlert("북마크 저장", 0);
                 }, error: function () {
-                    console.log('실패');
+                    toastAlert("북마크 실패", 1);
                 }
             });
         }
@@ -175,9 +199,9 @@
                     "quiz_level": quiz_level
                 },
                 success: function () {
-                    console.log('성공');
+                    toastAlert("퀴즈 난이도/패턴 저장", 0);
                 }, error: function () {
-                    console.log('실패');
+                    toastAlert("퀴즈 난이도/패턴 실패", 1);
                 }
             });
         }
@@ -186,6 +210,21 @@
             let urls = "/quiz/desc/[[${quizModel.doc_code}]]/[[${quizModel.quiz_number}]]";
             let options = 'top=10, left=10, width=500, height=600, status=no, menubar=no, toolbar=no, resizable=yes';
             window.open(urls, "description", options);
+        }
+        let toastAlert = function (msg, color_val) {
+            let toastElList = [].slice.call(document.querySelectorAll('.toast'))
+            let toastList = toastElList.map(function (toastEl) {
+                return new bootstrap.Toast(toastEl)
+            })
+            $('.toast-body').text(msg);
+            //class="toast hide align-items-center text-white bg-primary border-0"
+            if (color_val === 1) {
+                $('.toast').removeClass("bg-primary").addClass("bg-danger");
+            }
+            else {
+                $('.toast').removeClass("bg-danger").addClass("bg-primary");
+            }
+            toastList.forEach(toast => toast.show())
         }
     </script>
 </div>
