@@ -20,11 +20,21 @@
         .doc_path {
             padding: 0.5rem 1rem;
         }
+
+        #sub_header {
+            position: fixed;
+            top: 50px;
+            /* width: 100% */
+            left: 0;
+            right: 0;
+
+            /* 생략 */
+        }
     </style>
 </head>
 <body>
 <div layout:fragment="content" class="content">
-    <div class="nav-scroller bg-body shadow-sm">
+    <div id="sub_header" class="nav-scroller bg-body shadow-sm">
         <nav class="navbar navbar-expand-lg bg-light">
             <div class="container-fluid">
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -54,6 +64,7 @@
             </th:block>
         </div>
     </div>
+    <br/><br/><br/>
     <div class="doc_title">
         <h1><span th:utext="':: '+${docModel.doc_name}"></span></h1>
     </div>

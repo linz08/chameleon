@@ -50,6 +50,20 @@
         <span
                 class="badge rounded-pill bg-danger" style="cursor:pointer" th:onclick="'location.href=\'/quiz/list/'+@{${quizModel.quiz_source}}+'\''"
                 th:utext="''+${quizModel.quiz_source_name}+ ': ['+${quizModel.category_name}+'] '+${quizModel.quiz_org_number}+'번'"></span>
+        <select
+                aria-label="문제패턴" id="pattern_code" th:name="pattern_code">
+            <option th:each="val:${ptnCodeList}"
+                    th:value="${val.code_id}"
+                    th:selected="${val.code_id}==${quizModel.pattern_code}"
+                    th:utext="${val.code_name}"></option>
+        </select>&nbsp;<select
+            aria-label="난이도" id="quiz_level" th:name="quiz_level">
+        <option th:each="val:${lvlCodeList}"
+                th:value="${val.code_id}"
+                th:selected="${val.code_id}==${quizModel.quiz_level}"
+                th:utext="${val.code_name}"></option>
+    </select>&nbsp;&nbsp;<span
+            class="badge rounded-pill bg-secondary" style="cursor:pointer" onclick="quiz_etc()">적용</span>
     </div>
     <hr/>
     <table class="table">
@@ -134,6 +148,31 @@
                 data: {
                     "doc_code": '[[${quizModel.doc_code}]]',
                     "quiz_number": '[[${quizModel.quiz_number}]]'
+                },
+                success: function () {
+                    console.log('성공');
+                }, error: function () {
+                    console.log('실패');
+                }
+            });
+        }
+
+        let quiz_etc = function () {
+            let pattern_code = $("#pattern_code option:selected").val();
+            let quiz_level = $("#quiz_level option:selected").val();
+            $.ajax({
+                type: "POST",
+                url: "/quiz_etc_update",
+                beforeSend: function (jqXHR, settings) {
+                    let header = $("meta[name='_csrf_header']").attr("content");
+                    let token = $("meta[name='_csrf']").attr("content");
+                    jqXHR.setRequestHeader(header, token);
+                },
+                data: {
+                    "doc_code": '[[${quizModel.doc_code}]]',
+                    "quiz_number": '[[${quizModel.quiz_number}]]',
+                    "pattern_code": pattern_code,
+                    "quiz_level": quiz_level
                 },
                 success: function () {
                     console.log('성공');

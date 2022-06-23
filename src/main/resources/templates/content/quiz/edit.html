@@ -64,7 +64,7 @@
                     class="form-select" aria-label="분류" id="doc_code" th:name="doc_code">
                 <option th:each="val:${docCatehogryList}"
                         th:value="${val.doc_code}"
-                        th:selected="${val.doc_code==quizModel.doc_code}"
+                        th:selected="${val.doc_code}==${quizModel.doc_code}"
                         th:utext="${val.category_name}"></option>
             </select>
             </div>

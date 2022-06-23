@@ -44,7 +44,13 @@ public class QuizController {
                     .selectList("net.javaguitar.mapper.QuizObjectiveMapper.selectQuizObjective", quizModel);
             mav.addObject("objectList", ObjectList);
         }
+        // 문제패턴
+        List<CodeModel> ptnCodeList = ss.selectList("net.javaguitar.mapper.CodeMapper.selectCode", 5);
+        // 난이도
+        List<CodeModel> lvlCodeList = ss.selectList("net.javaguitar.mapper.CodeMapper.selectCode", 9);
 
+        mav.addObject("ptnCodeList", ptnCodeList);
+        mav.addObject("lvlCodeList", lvlCodeList);
         mav.addObject("quizModel", quizModel);
 
         mav.setViewName("content/quiz/quiz");
@@ -141,7 +147,13 @@ public class QuizController {
                     .selectList("net.javaguitar.mapper.QuizObjectiveMapper.selectQuizObjective", quizModel);
             mav.addObject("objectList", ObjectList);
         }
+        // 문제패턴
+        List<CodeModel> ptnCodeList = ss.selectList("net.javaguitar.mapper.CodeMapper.selectCode", 5);
+        // 난이도
+        List<CodeModel> lvlCodeList = ss.selectList("net.javaguitar.mapper.CodeMapper.selectCode", 9);
 
+        mav.addObject("ptnCodeList", ptnCodeList);
+        mav.addObject("lvlCodeList", lvlCodeList);
         mav.addObject("quizModel", quizModel);
 
         mav.setViewName("content/quiz/quiz");
@@ -169,7 +181,7 @@ public class QuizController {
         mav.addObject("docCatehogryList", docCatehogryList);
         mav.addObject("quizCodeList", quizCodeList);
         mav.addObject("ptnCodeList", ptnCodeList);
-        mav.addObject("lvlCodeList", lvlCodeList);
+        mav.addObject("", lvlCodeList);
 
         mav.setViewName("content/quiz/write");
         return mav;
@@ -241,7 +253,7 @@ public class QuizController {
             quiz_object_name = request.getParameterValues("quiz_object_name");
 
             for (int i = 0; i < quiz_object_name.length; i++) {
-                if(!quiz_object_name[i].equals("")) {
+                if (!quiz_object_name[i].equals("")) {
                     quizModel.setQuiz_object_name(quiz_object_name[i].replaceAll("<table>", "<table style='width:100%';>"));
                     quizModel.setQuiz_object_name(quiz_object_name[i].replaceAll("<td>", "<td style='border:1px solid hsl(0, 0%, 0%);text-align:center;'>"));
                     quizModel.setQuiz_object_num(i + 1);
@@ -296,5 +308,11 @@ public class QuizController {
         if (quizBMCnt == 0) {
             ss.insert("net.javaguitar.mapper.QuizBMMapper.insertQuizBM", quizBMModel);
         }
+    }
+
+    @RequestMapping(value = {"/quiz_etc_update"}, method = {RequestMethod.POST})
+    public @ResponseBody
+    void quizEtcUpdate(HttpServletRequest request, @ModelAttribute("quizModel") QuizModel quizModel) throws Exception {
+        ss.update("net.javaguitar.mapper.QuizMapper.updateQuizEtc", quizModel);
     }
 }

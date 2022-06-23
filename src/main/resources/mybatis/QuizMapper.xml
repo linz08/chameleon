@@ -9,6 +9,7 @@
 		ON A.DOC_CODE = B.DOC_CODE
 		AND
 		A.QUIZ_NUMBER = B.QUIZ_NUMBER
+		WHERE NOT EXISTS (SELECT * FROM QUIZ_DOCUMENT C WHERE C.DOC_CODE = A.DOC_CODE AND C.QUIZ_NUMBER = A.QUIZ_NUMBER)
 		ORDER BY RAND() LIMIT 1
 	</select>
 
@@ -86,6 +87,16 @@
 		QUIZ_DESC = #{quiz_desc}
 		WHERE QUIZ_NUMBER = #{quiz_number}
 	]]>
+	</update>
+	<update id="updateQuizEtc" parameterType="QuizModel">
+	<![CDATA[
+		UPDATE
+			QUIZ
+		SET
+			PATTERN_CODE = #{pattern_code},
+			QUIZ_LEVEL = #{quiz_level}
+		WHERE DOC_CODE= #{doc_code} AND QUIZ_NUMBER = #{quiz_number}
+		]]>
 	</update>
 	<update id="updateQuizDesc" parameterType="QuizModel">
 	<![CDATA[
