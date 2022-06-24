@@ -26,21 +26,22 @@
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
     <style>
-        .doc_content {
-            margin-top: 30px;
-            margin-left: 30px;
+        body {
+            margin-top: 20px;
+            margin-left: 20px;
         }
 
     </style>
 </head>
 <body>
+<div>
+    <button type="button" class="btn btn-outline-secondary" th:onclick="'location.href=\'/quiz/desc/edit/'+@{${quizModel.doc_code}}+'/'+@{${quizModel.quiz_number}}+'\''">편집</button> &nbsp;
+    <button type="button" class="btn btn-outline-success" onclick="window.close()">닫기</button>
+</div>
+<br/>
 <div class="doc_content">
     <span th:utext="${quizModel.quiz_desc}"></span>
 </div>
-<div>
-    <a class="nav-link active" aria-current="page"
-       th:href="@{'/quiz/desc/edit/'+${quizModel.doc_code}+'/'+${quizModel.quiz_number}}">편집</a>
-    <button type="button" class="btn btn-secondary btn-lg" onclick="window.close()">닫기</button>
-</div>
+
 </body>
 </html>

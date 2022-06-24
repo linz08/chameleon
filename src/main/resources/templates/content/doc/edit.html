@@ -34,6 +34,22 @@
             <span class="visually-hidden">Loading...</span>
         </div>
     </div>
+    <div id="sub_header" class="nav-scroller bg-body shadow-sm">
+        <nav class="navbar navbar-expand-lg bg-light">
+            <div class="container-fluid">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        상위문서:
+                    </ul>
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="search" id="up_doc_name" placeholder="상위문서명" aria-label="Search">
+                        <input class="form-control me-2" type="text" id="self_doc_name" placeholder="문서명" aria-label="Search">
+                        <button class="btn btn-outline-success" type="button" onclick="doc_move()">rename</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+    </div>
     <div class="doc_title">
         <h1><span th:utext="${docModel.doc_name}"></span></h1>
     </div>

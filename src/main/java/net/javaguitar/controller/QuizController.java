@@ -49,9 +49,17 @@ public class QuizController {
         // 난이도
         List<CodeModel> lvlCodeList = ss.selectList("net.javaguitar.mapper.CodeMapper.selectCode", 9);
 
+        QuizDocumentModel quizDocumentModel = new QuizDocumentModel();
+        quizDocumentModel.setDoc_code(quizModel.getDoc_code());
+        quizDocumentModel.setQuiz_number(quizModel.getQuiz_number());
+        // 관련문서
+        List<QuizDocumentModel> quizDocumentModelList = ss
+                .selectList("net.javaguitar.mapper.QuizDocumentMapper.selectQuizDocumentListByQuiz", quizDocumentModel);
+
         mav.addObject("ptnCodeList", ptnCodeList);
         mav.addObject("lvlCodeList", lvlCodeList);
         mav.addObject("quizModel", quizModel);
+        mav.addObject("quizDocumentModelList", quizDocumentModelList);
 
         mav.setViewName("content/quiz/quiz");
         return mav;
@@ -152,9 +160,17 @@ public class QuizController {
         // 난이도
         List<CodeModel> lvlCodeList = ss.selectList("net.javaguitar.mapper.CodeMapper.selectCode", 9);
 
+        QuizDocumentModel quizDocumentModel = new QuizDocumentModel();
+        quizDocumentModel.setDoc_code(doc_code);
+        quizDocumentModel.setQuiz_number(quiz_number);
+        // 관련문서
+        List<QuizDocumentModel> quizDocumentModelList = ss
+                .selectList("net.javaguitar.mapper.QuizDocumentMapper.selectQuizDocumentListByQuiz", quizDocumentModel);
+
         mav.addObject("ptnCodeList", ptnCodeList);
         mav.addObject("lvlCodeList", lvlCodeList);
         mav.addObject("quizModel", quizModel);
+        mav.addObject("quizDocumentModelList", quizDocumentModelList);
 
         mav.setViewName("content/quiz/quiz");
         return mav;
