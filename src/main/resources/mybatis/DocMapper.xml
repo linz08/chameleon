@@ -31,6 +31,32 @@
         WHERE DOC_NAME = #{doc_name}
         ]]>
 	</update>
+    <update id="updateUpperDocName" parameterType="DocModel">
+	<![CDATA[
+        UPDATE
+            DOCUMENT
+        SET UPPER_DOC_NAME = #{upper_doc_name},
+            MODIFY_DATE = now()
+        WHERE DOC_NAME = #{doc_name}
+        ]]>
+	</update>
+    <update id="updateNewDocName" parameterType="DocModel">
+	<![CDATA[
+        UPDATE
+            DOCUMENT
+        SET DOC_NAME = #{new_doc_name},
+            MODIFY_DATE = now()
+        WHERE DOC_NAME = #{doc_name}
+        ]]>
+	</update>
+    <update id="updateNewDocNameQuiz" parameterType="DocModel">
+	<![CDATA[
+        UPDATE
+            QUIZ_DOCUMENT
+        SET DOC_NAME = #{new_doc_name}
+        WHERE DOC_NAME = #{doc_name}
+        ]]>
+	</update>
     <select id="selectDocCheck" resultType="java.lang.Integer">
         SELECT COUNT(*)
         FROM DOCUMENT

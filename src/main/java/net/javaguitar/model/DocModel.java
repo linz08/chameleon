@@ -10,6 +10,7 @@ public class DocModel {
 	}
 
 	private String doc_name;
+	private String new_doc_name;
 	private String upper_doc_name;
 	private int sort_num;
 	private String doc_content;

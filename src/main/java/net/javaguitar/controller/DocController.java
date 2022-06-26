@@ -166,4 +166,17 @@ public class DocController {
 
     }
 
+    @RequestMapping(value = {"/upper_doc_name_update"}, method = {RequestMethod.POST})
+    public @ResponseBody
+    void upper_doc_name_Update(HttpServletRequest request, @ModelAttribute("docModel") DocModel docModel) throws Exception {
+        ss.update("net.javaguitar.mapper.DocMapper.updateUpperDocName", docModel);
+    }
+
+    @RequestMapping(value = {"/new_doc_name_update"}, method = {RequestMethod.POST})
+    public @ResponseBody
+    void new_doc_name_Update(HttpServletRequest request, @ModelAttribute("docModel") DocModel docModel) throws Exception {
+        ss.update("net.javaguitar.mapper.DocMapper.updateNewDocName", docModel);
+        ss.update("net.javaguitar.mapper.DocMapper.updateNewDocNameQuiz", docModel);
+    }
+
 }
