@@ -5,7 +5,7 @@
       layout:decorate="~{layout/default_layout}" lang="ko">
 <head>
     <title th:text="${docModel.doc_name}">page title</title>
-    <link href="https://releases.jquery.com/git/ui/jquery-ui-git.css"/>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
     <style>
         .doc_title {
             margin-top: 10px;
@@ -71,6 +71,34 @@
     <div class="doc_content">
         <span th:utext="${docModel.doc_content}"></span>
     </div>
+    <br/>
+    <div class="doc_title"><span
+            class="badge rounded-pill bg-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal" style="cursor:pointer" >유사명</span>
+        <th:block th:each="docKeywordModelList,index : ${docKeywordModelList}">
+            <span th:onclick="del_keyword([[${docKeywordModelList.keyword}]])"  th:text="${docKeywordModelList.keyword}"></span>&nbsp;&nbsp;
+        </th:block>
+    </div>
+    <br/>
+    <!-- 키워드 등록 모달 -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">키워드 추가</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <input type="text" class="form-control" id="keyword">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="btn_doc_add" class="btn btn-primary">저장</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script
             src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script
@@ -81,45 +109,57 @@
             integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
             crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+    <script src="/js/content/doc.js"></script>
     <script>
-        $('#doc_search').autocomplete({
-            source: function (request, response) { //source: 입력시 보일 목록
-                $.ajax({
-                    url: "/docSearch"
-                    , type: "POST"
-                    , dataType: "JSON"
-                    , data: {doc_name: $("#doc_search").val()}	// 검색 키워드
-                    , beforeSend: function (jqXHR, settings) {
-                        let header = $("meta[name='_csrf_header']").attr("content");
-                        let token = $("meta[name='_csrf']").attr("content");
-                        jqXHR.setRequestHeader(header, token);
-                    }
-                }).done(function (rData, textStatus, jqXHR) {
-                    response(
-                        $.map(rData.resultList, function (item) {
-                            return {
-                                label: item.doc_name    	// 목록에 표시되는 값
-                                , value: item.doc_name 		// 선택 시 input창에 표시되는 값
-                                //, idx : item.SEQ // index
-                            };
-                        })
-                    );
-                }).fail(function (rData, textStatus, errorThrown) {
-                    alert("오류가 발생했습니다.");
-                }).always(function (rData, textStatus, jqXHR) {
-                });
-            }
-            , focus: function (evt, ui) { // 방향키로 자동완성단어 선택 가능하게 만들어줌
-                return false;
-            },
-            minLength: 1,// 최소 글자수
-            delay: 100	//autocomplete 딜레이 시간(ms),
-            , select: function (evt, ui) {
-                // 아이템 선택시 실행 ui.item 이 선택된 항목을 나타내는 객체, lavel/value/idx를 가짐
-                console.log(ui.item.label);
-                //console.log(ui.item.idx);
-            }
+        let exampleModal = document.getElementById('exampleModal')
+        exampleModal.addEventListener('show.bs.modal', function (event) {
+            // Button that triggered the modal
+            let button = event.relatedTarget
+            let modalTitle = exampleModal.querySelector('.modal-title')
+            modalTitle.textContent = '유사문서명'
+        })
+
+        $('#btn_doc_add').click(function () {
+            $.ajax({
+                type: "POST",
+                url: "/docKeywordAdd",
+                beforeSend: function (jqXHR, settings) {
+                    let header = $("meta[name='_csrf_header']").attr("content");
+                    let token = $("meta[name='_csrf']").attr("content");
+                    jqXHR.setRequestHeader(header, token);
+                },
+                data: {
+                    "doc_name": '[[${docModel.doc_name}]]',
+                    "keyword": $('#keyword').val()
+                },
+                success: function () {
+                    document.location.reload();
+                }, error: function () {
+                    alert('실패');
+                }
+            });
         });
+
+        let del_keyword = function (keyword_name) {
+            $.ajax({
+                type: "POST",
+                url: "/docKeywordDel",
+                beforeSend: function (jqXHR, settings) {
+                    let header = $("meta[name='_csrf_header']").attr("content");
+                    let token = $("meta[name='_csrf']").attr("content");
+                    jqXHR.setRequestHeader(header, token);
+                },
+                data: {
+                    "doc_name": '[[${docModel.doc_name}]]',
+                    "keyword": keyword_name
+                },
+                success: function () {
+                    document.location.reload();
+                }, error: function () {
+                    alert('키워드 삭제 실패');
+                }
+            });
+        }
 
         let doc_move = function () {
             location.href="/doc/"+($("#doc_search").val());

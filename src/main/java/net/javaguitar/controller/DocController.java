@@ -11,9 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
-import net.javaguitar.model.QuizDocumentModel;
-import net.javaguitar.model.QuizModel;
-import net.javaguitar.model.StatModel;
+import net.javaguitar.model.*;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,8 +19,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import net.javaguitar.model.DocModel;
 
 @Controller
 public class DocController {
@@ -74,9 +70,24 @@ public class DocController {
         if (docCheck == 0) {
             docModel.setDoc_name(doc_name);
             ss.insert("net.javaguitar.mapper.DocMapper.insertDoc", docModel);
+
+
+            DocKeywordModel docKeywordModel = new DocKeywordModel();
+            docKeywordModel.setKeyword(docModel.getDoc_name());
+            docKeywordModel.setDoc_name(docModel.getDoc_name());
+            ss.insert("net.javaguitar.mapper.DocKeywordMapper.insertDocKeyword", docKeywordModel);
         }
         docModel = ss.selectOne("net.javaguitar.mapper.DocMapper.selectDoc", doc_name);
+
+        //유사 문서명
+        DocKeywordModel docKeywordModel = new DocKeywordModel();
+        docKeywordModel.setDoc_name(doc_name);
+        List<DocKeywordModel> docKeywordModelList = ss
+                .selectList("net.javaguitar.mapper.DocKeywordMapper.selectDocKeyword", docKeywordModel);
+
+
         mav.addObject("docModel", docModel);
+        mav.addObject("docKeywordModelList", docKeywordModelList);
         mav.setViewName("content/doc/view");
         return mav;
     }
@@ -91,35 +102,19 @@ public class DocController {
         return mav;
     }
 
-    /**
-     * @param
-     * @return
-     * @throws Exception
-     * @Method Name: boardWrite
-     * @Method 설명 : 게시글 등록폼
-     * @작성자 : 최용진
-     * @작성일 : 2016. 6. 23.
-     */
-    @RequestMapping(value = {"/doc/write"}, method = RequestMethod.GET)
-    public String docWrite(@ModelAttribute("docVO") DocModel docVO, ModelMap model) throws Exception {
 
-        return "content/doc/write";
+    @RequestMapping(value = {"/doc/write"}, method = RequestMethod.GET)
+    public ModelAndView docWrite() {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("content/doc/write");
+        return mav;
 
     }
 
-    /**
-     * @param
-     * @return
-     * @throws Exception
-     * @Method Name: quizUpdatejava.nio.charset.StandardCharsets.UTF_8.toString()
-     * @Method 설명 : 문제 수정
-     * @author : javaguitar
-     * @version : 0.1
-     * @since : 1.0
-     */
+
     @RequestMapping(value = {"/doc/update"}, method = {RequestMethod.POST})
-    public String docUpdate(@ModelAttribute("docModel") DocModel docModel, ModelMap model,
-                            HttpServletRequest request, RedirectAttributes redirectAttributes) throws Exception {
+    public String docUpdate(@ModelAttribute("docModel") DocModel docModel
+    ) throws Exception {
         ss.update("net.javaguitar.mapper.DocMapper.updateDoc", docModel);
         String docName = URLEncoder.encode(docModel.getDoc_name(), java.nio.charset.StandardCharsets.UTF_8.toString());
         docName = docName.replaceAll("\\+", "%20");
@@ -129,38 +124,47 @@ public class DocController {
     @RequestMapping(value = {"/docSearch"}, method = {RequestMethod.POST})
     public @ResponseBody
     Map<String, Object> docSearch(@RequestParam Map<String, Object> paramMap,
-                                  @RequestParam String doc_name) throws Exception {
-        Gson gson = new Gson();
-        Map<String, Object> data = new HashMap<String, Object>();
-        String retVal = null;
+                                  @RequestParam String doc_name) {
+        Map<String, Object> data = new HashMap<>();
 
         /* 추후 json을 object로 전환하는 방식으로 변경 필요 (2022.02.22) */
         data.put("doc_name", doc_name);
-        List<Map> resultList = ss.selectList("net.javaguitar.mapper.DocMapper.selectDocSearch", doc_name);
+        List<Map> resultList = ss.selectList("net.javaguitar.mapper.DocKeywordMapper.selectDocSearch", doc_name);
         paramMap.put("resultList", resultList);
         return paramMap;
     }
 
     @RequestMapping(value = {"/docAdd"}, method = {RequestMethod.POST})
     public @ResponseBody
-    void docAdd(HttpServletRequest request, @ModelAttribute("quizDocumentModel") QuizDocumentModel quizDocumentModel) throws Exception {
+    void docAdd(@ModelAttribute("quizDocumentModel") QuizDocumentModel quizDocumentModel) {
         ss.insert("net.javaguitar.mapper.QuizDocumentMapper.insertQuizDocument", quizDocumentModel);
+
+    }
+
+    @RequestMapping(value = {"/docKeywordAdd"}, method = {RequestMethod.POST})
+    public @ResponseBody
+    void docKeywordAdd(@ModelAttribute("docKeywordModel") DocKeywordModel docKeywordModel) {
+        ss.insert("net.javaguitar.mapper.DocKeywordMapper.insertDocKeyword", docKeywordModel);
     }
 
     @RequestMapping(value = {"/docDel"}, method = {RequestMethod.POST})
     public @ResponseBody
-    void docDel(HttpServletRequest request, @ModelAttribute("quizDocumentModel") QuizDocumentModel quizDocumentModel) throws Exception {
+    void docDel(@ModelAttribute("quizDocumentModel") QuizDocumentModel quizDocumentModel) {
         ss.delete("net.javaguitar.mapper.QuizDocumentMapper.deleteQuizDocument", quizDocumentModel);
+    }
+
+    @RequestMapping(value = {"/docKeywordDel"}, method = {RequestMethod.POST})
+    public @ResponseBody
+    void docKeywordDel(@ModelAttribute("docKeywordModel") DocKeywordModel docKeywordModel) {
+        ss.delete("net.javaguitar.mapper.DocKeywordMapper.deleteDocKeyword", docKeywordModel);
     }
 
     @RequestMapping(value = {"/quiz/doc/list"}, method = RequestMethod.POST)
     public @ResponseBody
-    List<QuizDocumentModel> quizDocument(@ModelAttribute("quizDocumentModel") QuizDocumentModel quizDocumentModel) throws Exception {
-        ModelAndView mav = new ModelAndView();
-        List<QuizDocumentModel> quizDocumentModelList = new ArrayList<QuizDocumentModel>();
+    List<QuizDocumentModel> quizDocument(@ModelAttribute("quizDocumentModel") QuizDocumentModel quizDocumentModel) {
+        List<QuizDocumentModel> quizDocumentModelList;
         quizDocumentModelList = ss
                 .selectList("net.javaguitar.mapper.QuizDocumentMapper.selectQuizDocumentListByQuiz", quizDocumentModel);
-        // mav.addObject("quizDocumentModelList", quizDocumentModelList);
 
         return quizDocumentModelList;
 
@@ -168,13 +172,13 @@ public class DocController {
 
     @RequestMapping(value = {"/upper_doc_name_update"}, method = {RequestMethod.POST})
     public @ResponseBody
-    void upper_doc_name_Update(HttpServletRequest request, @ModelAttribute("docModel") DocModel docModel) throws Exception {
+    void upper_doc_name_Update(@ModelAttribute("docModel") DocModel docModel) {
         ss.update("net.javaguitar.mapper.DocMapper.updateUpperDocName", docModel);
     }
 
     @RequestMapping(value = {"/new_doc_name_update"}, method = {RequestMethod.POST})
     public @ResponseBody
-    void new_doc_name_Update(HttpServletRequest request, @ModelAttribute("docModel") DocModel docModel) throws Exception {
+    void new_doc_name_Update(@ModelAttribute("docModel") DocModel docModel) {
         ss.update("net.javaguitar.mapper.DocMapper.updateNewDocName", docModel);
         ss.update("net.javaguitar.mapper.DocMapper.updateNewDocNameQuiz", docModel);
     }
