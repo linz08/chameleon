@@ -7,8 +7,19 @@
         WHERE A.DOC_CODE = #{doc_code}
           AND A.QUIZ_NUMBER = #{quiz_number}
     </select>
-    <select id="selectQuizDocumentListByDoc" parameterType="QuizDocumentModel" resultType="QuizDocumentModel">
-        SELECT A.*
+    <select id="selectQuizDocumentListByDoc" parameterType="QuizDocumentModel" resultType="QuizModel">
+        SELECT A.DOC_CODE,A.QUIZ_NUMBER,FNC_COMMON_CODE(B.QUIZ_SOURCE) AS QUIZ_SOURCE_NAME, B.QUIZ_ORG_NUMBER,
+               FNC_COMMON_CODE(B.QUIZ_LEVEL) AS QUIZ_LEVEL_NAME,
+               FNC_COMMON_CODE(B.PATTERN_CODE) AS PATTERN_CODE_NAME,
+               FNC_DOC_CATEGORY(B.DOC_CODE) AS DOC_CODE_NAME
+        FROM QUIZ_DOCUMENT A, QUIZ B
+        WHERE A.DOC_NAME = #{doc_name}
+          AND A.DOC_CODE = B.DOC_CODE
+          AND A.QUIZ_NUMBER = B.QUIZ_NUMBER
+        ORDER BY FNC_COMMON_CODE(B.QUIZ_SOURCE) DESC
+    </select>
+    <select id="selectQuizDocumentCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
         FROM QUIZ_DOCUMENT A
         WHERE A.DOC_NAME = #{doc_name}
     </select>

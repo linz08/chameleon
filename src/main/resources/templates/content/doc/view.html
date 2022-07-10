@@ -39,10 +39,10 @@
             <div class="container-fluid">
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <button type="button" class="btn btn-outline-primary" onclick="location.href='/doc/index'">메인</button>&nbsp;
-                        <button type="button" class="btn btn-outline-secondary" th:onclick="'location.href=\'/doc/edit/'+@{${docModel.doc_name}}+'\''">편집</button> &nbsp;
-                        <button type="button" class="btn btn-outline-success">관련퀴즈</button>
-                    </ul>
+                        <a href="/doc/index" class="btn btn-outline-primary" role="button">메인</a>&nbsp;
+                        <a th:href="@{/doc/edit/{id}(id=${docModel.doc_name})}" class="btn btn-outline-secondary" role="button" aria-pressed="true">편집</a>&nbsp;
+                        <a th:href="@{/quiz/doc/{id}(id=${docModel.doc_name})}" target="_blank" class="btn btn-outline-success" role="button"  th:text="'관련퀴즈('+${quizCnt}+')'">관련퀴즈</a>
+                   </ul>
                     <div><span class="badge rounded-pill bg-primary" style="cursor:pointer" onclick="location.href='/doc/감리'">감리</span>
                     <span class="badge rounded-pill bg-secondary" style="cursor:pointer" onclick="location.href='/doc/사업관리'">사업관리</span>
                     <span class="badge rounded-pill bg-success" style="cursor:pointer" onclick="location.href='/doc/소프트웨어공학'">소프트웨어공학</span>

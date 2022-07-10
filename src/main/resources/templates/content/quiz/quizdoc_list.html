@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}" lang="ko">
+<head>
+    <title>문제목록</title>
+<body>
+<div layout:fragment="content" class="content">
+    <div class="doc_title">
+        <h1><span th:utext="':: '+${doc_name}"></span></h1>
+    </div>
+
+    <table class="table table-dark table-hover">
+        <thead>
+        <tr>
+            <th scope="col">No</th>
+            <th scope="col">출처</th>
+            <th scope="col">번호</th>
+            <th scope="col">레벨</th>
+            <th scope="col">문제패턴</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="quizList,index : ${quizList}">
+            <th scope="row" th:text="${index.index}">1</th>
+            <td th:text="${quizList.quiz_source_name}">출처</td>
+            <td><a class="link-light" target="_blank"
+                   th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
+                   th:text="'[' + ${quizList.doc_code_name} +'] '+${quizList.quiz_org_number}"/>
+            </td>
+            <td th:text="${quizList.quiz_level_name}">레벨</td>
+            <td th:text="${quizList.pattern_code_name}">문제패턴</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+
+</html>

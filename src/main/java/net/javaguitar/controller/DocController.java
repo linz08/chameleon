@@ -79,6 +79,9 @@ public class DocController {
         }
         docModel = ss.selectOne("net.javaguitar.mapper.DocMapper.selectDoc", doc_name);
 
+        //관련퀴즈 카운트
+        int quizCnt = ss.selectOne("net.javaguitar.mapper.QuizDocumentMapper.selectQuizDocumentCount", doc_name);
+
         //유사 문서명
         DocKeywordModel docKeywordModel = new DocKeywordModel();
         docKeywordModel.setDoc_name(doc_name);
@@ -88,6 +91,7 @@ public class DocController {
 
         mav.addObject("docModel", docModel);
         mav.addObject("docKeywordModelList", docKeywordModelList);
+        mav.addObject("quizCnt", quizCnt);
         mav.setViewName("content/doc/view");
         return mav;
     }

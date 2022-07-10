@@ -10,13 +10,16 @@ public class QuizModel {
 	}
 
 	private int doc_code;
+	private String doc_code_name;
 	private int quiz_number;
 	private int quiz_code;
 	private String category_name;
 	private String quiz_title;
 	private String quiz_subtitle;
 	private int pattern_code;
+	private String pattern_code_name;
 	private int quiz_level;
+	private String quiz_level_name;
 	private int quiz_source;
 	private String quiz_source_name;
 	private String quiz_memo;

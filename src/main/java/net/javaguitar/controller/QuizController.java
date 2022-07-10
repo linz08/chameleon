@@ -117,6 +117,16 @@ public class QuizController {
         return mav;
     }
 
+    @RequestMapping(value = {"/quiz/doc/{doc_name}"}, method = RequestMethod.GET)
+    public ModelAndView quizDocList(@PathVariable String doc_name) {
+        ModelAndView mav = new ModelAndView();
+        List<QuizModel> quizList = ss.selectList("net.javaguitar.mapper.QuizDocumentMapper.selectQuizDocumentListByDoc", doc_name);
+        mav.addObject("doc_name", doc_name);
+        mav.addObject("quizList", quizList);
+        mav.setViewName("content/quiz/quizdoc_list");
+        return mav;
+    }
+
     @RequestMapping(value = {"/quiz/list/{quiz_source}"}, method = RequestMethod.GET)
     public ModelAndView quizListDetail(@PathVariable int quiz_source, HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
