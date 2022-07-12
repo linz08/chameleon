@@ -16,15 +16,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		//http.authorizeRequests().antMatchers("/").permitAll();
-		http.authorizeRequests().antMatchers("/css/**", "/js/**", "/images/**").permitAll().antMatchers("/auth/admin/**")
+		http.authorizeRequests().antMatchers("/").permitAll();
+		/*http.authorizeRequests().antMatchers("/css/**", "/js/**", "/images/**").permitAll().antMatchers("/auth/admin/**")
 				.hasRole("ADMIN").antMatchers("/auth/**").hasAnyRole("ADMIN", "USER").anyRequest().authenticated();
 		
 		http.formLogin().loginPage("/login").loginProcessingUrl("/authenticate").failureUrl("/login?error")
 				.defaultSuccessUrl("/index").usernameParameter("user_id").passwordParameter("user_pwd").permitAll();
 
 		http.logout();
-
+		*/
 	}
 
 	@Override
