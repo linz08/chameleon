@@ -64,7 +64,15 @@
                               CREATE_DATE)
         VALUES (#{doc_name}
                    , 1,
-                '꽉꽉 채워주세요~',
+                '<h2>
+    &nbsp;
+</h2>
+<h2>
+    관련자료
+</h2>
+<p>
+    &nbsp;
+</p>',
                 now())
         ]]>
 	</insert>

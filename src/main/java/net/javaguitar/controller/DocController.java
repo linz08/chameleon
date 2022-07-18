@@ -42,6 +42,7 @@ public class DocController {
     @RequestMapping(value = "/doc/{doc_name}", method = RequestMethod.GET)
     public ModelAndView docName(@PathVariable String doc_name, HttpServletRequest request) throws Exception {
 
+        /* 세션 생성 주석
         if (request.getHeader("Referer") != null) {
             String referrer = (request.getHeader("Referer"));
             if (referrer.indexOf("/doc/") > 0) {
@@ -63,7 +64,7 @@ public class DocController {
                     }
                 }
             }
-        }
+        }*/
         ModelAndView mav = new ModelAndView();
         int docCheck = ss.selectOne("net.javaguitar.mapper.DocMapper.selectDocCheck", doc_name);
         DocModel docModel = new DocModel();
