@@ -85,15 +85,11 @@
                 </div>
             </div>
         </nav>
-        <div class="doc_path">상위 : 시스템구조
-            &nbsp;&nbsp;
+        <div th:unless="${docModel.upper_doc_name.toString().equals('index')}" class="doc_path"><a th:unless="${docModel.upper_doc_name.toString().equals('index')}" th:href="@{/doc/{id}(id=${docModel.upper_doc_name})}" th:text="${docModel.upper_doc_name}">상위 : </a> &nbsp;&nbsp;
                 <select class="form-select">
-                    <option selected>무개념</option>
-                    <option value="1">초짜</option>
-                    <option value="2">개념파악</option>
-                    <option value="3">재개념</option>
-                    <option value="3">암기</option>
-                    <option value="3">마스터</option>
+                    <option th:each="src:${docLevelList}" th:value="${src.code_id}"
+                            th:selected="${src.code_id} == ${docModel.doc_level}"
+                            th:utext="${src.code_name}"></option>
                 </select>
         </div>
     </div>

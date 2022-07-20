@@ -69,6 +69,10 @@ public class DocController {
         int docCheck = ss.selectOne("net.javaguitar.mapper.DocMapper.selectDocCheck", doc_name);
         DocModel docModel = new DocModel();
         if (docCheck == 0) {
+            String referer = request.getHeader("Referer");
+            String upper_doc_name = referer.substring(referer.lastIndexOf("/")+1);
+            upper_doc_name = URLDecoder.decode(upper_doc_name, java.nio.charset.StandardCharsets.UTF_8.toString());
+            docModel.setUpper_doc_name(upper_doc_name);
             docModel.setDoc_name(doc_name);
             ss.insert("net.javaguitar.mapper.DocMapper.insertDoc", docModel);
 
@@ -78,6 +82,9 @@ public class DocController {
             docKeywordModel.setDoc_name(docModel.getDoc_name());
             ss.insert("net.javaguitar.mapper.DocKeywordMapper.insertDocKeyword", docKeywordModel);
         }
+        // 문서레벨
+        List<CodeModel> docLevelList = ss.selectList("net.javaguitar.mapper.CodeMapper.selectCode", 27);
+
         docModel = ss.selectOne("net.javaguitar.mapper.DocMapper.selectDoc", doc_name);
 
         //관련퀴즈 카운트
@@ -91,6 +98,7 @@ public class DocController {
 
 
         mav.addObject("docModel", docModel);
+        mav.addObject("docLevelList", docLevelList);
         mav.addObject("docKeywordModelList", docKeywordModelList);
         mav.addObject("quizCnt", quizCnt);
         mav.setViewName("content/doc/view");
