@@ -25,6 +25,15 @@
         WHERE DOC_NAME = #{doc_name}
         ]]>
 	</update>
+    <update id="updateDocLevel" parameterType="DocModel">
+	<![CDATA[
+        UPDATE
+            DOCUMENT
+        SET DOC_LEVEL = #{doc_level},
+            MODIFY_DATE = now()
+        WHERE DOC_NAME = #{doc_name}
+        ]]>
+	</update>
     <update id="updateUpperDocName" parameterType="DocModel">
 	<![CDATA[
         UPDATE

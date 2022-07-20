@@ -17,4 +17,5 @@ public class DocModel {
 	private int read_num;
 	private String read_date;
 	private String main_show;
+	private int doc_level;
 }
