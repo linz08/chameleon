@@ -1,3 +1,21 @@
+//토스트 창
+let toastAlert = function (msg, color_val) {
+	let toastElList = [].slice.call(document.querySelectorAll('.toast'))
+	let toastList = toastElList.map(function (toastEl) {
+		return new bootstrap.Toast(toastEl)
+	})
+	$('.toast-body').text(msg);
+	//class="toast hide align-items-center text-white bg-primary border-0"
+	if (color_val === 1) {
+		$('.toast').removeClass("bg-primary").addClass("bg-danger");
+	}
+	else {
+		$('.toast').removeClass("bg-danger").addClass("bg-primary");
+	}
+	toastList.forEach(toast => toast.show())
+}
+
+//문서 검색
 $('#doc_search').autocomplete({
 	source: function (request, response) { //source: 입력시 보일 목록
 		$.ajax({
@@ -37,7 +55,7 @@ $('#doc_search').autocomplete({
 		console.log(ui.item.label);
 		//console.log(ui.item.idx);
 	},
-	clse : function(event){
+	close : function(event){
 		console.log(event);
 	}
 });
