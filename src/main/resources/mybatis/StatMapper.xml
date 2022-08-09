@@ -8,11 +8,35 @@
              (SELECT COUNT(*) AS CURRENT_COUNT FROM QUIZ WHERE DATE_FORMAT(CREATE_DATE, "%Y-%m-%d") = CURDATE()) B
         ]]>
 	</select>
-	<select id="selectDocCount" resultType="StatModel">
+    <select id="selectDocCount" resultType="StatModel">
 	  <![CDATA[
-		SELECT FORMAT(CURRENT_COUNT, 0) AS CURRENT_COUNT, FORMAT(TOTAL_COUNT, 0) AS TOTAL_COUNT
-		FROM (SELECT COUNT(*) AS TOTAL_COUNT FROM DOCUMENT) A,
-			 (SELECT COUNT(*) AS CURRENT_COUNT FROM DOCUMENT WHERE DATE_FORMAT(CREATE_DATE, "%Y-%m-%d") = CURDATE()) B
-		]]>
+        SELECT FORMAT(CURRENT_COUNT, 0) AS CURRENT_COUNT, FORMAT(TOTAL_COUNT, 0) AS TOTAL_COUNT
+        FROM (SELECT COUNT(*) AS TOTAL_COUNT FROM DOCUMENT) A,
+             (SELECT COUNT(*) AS CURRENT_COUNT FROM DOCUMENT WHERE DATE_FORMAT(CREATE_DATE, "%Y-%m-%d") = CURDATE()) B
+        ]]>
+	</select>
+    <select id="selectQuizAnswerCount" resultType="StatModel">
+	  <![CDATA[
+        SELECT FORMAT(TOTAL_COUNT, 0)   AS TOTAL_COUNT,
+               FORMAT(CURRENT_COUNT, 0) AS CURRENT_COUNT,
+               FORMAT(FAULT_COUNT, 0)   AS FAULT_COUNT
+        FROM (SELECT COUNT(*) AS TOTAL_COUNT FROM QUIZ_STAT WHERE DATE_FORMAT(QUIZ_DATE, "%Y-%m-%d") = CURDATE()) A,
+             (SELECT COUNT(*) AS CURRENT_COUNT
+              FROM QUIZ_STAT
+              WHERE DATE_FORMAT(QUIZ_DATE, "%Y-%m-%d") = CURDATE()
+                AND SUCCESS_YN = 'Y') B,
+             (SELECT COUNT(*) AS FAULT_COUNT
+              FROM QUIZ_STAT
+              WHERE DATE_FORMAT(QUIZ_DATE, "%Y-%m-%d") = CURDATE() AND SUCCESS_YN <> 'Y') C
+        ]]>
+	</select>
+    <select id="selectQuizAnswerRatio" resultType="StatModel">
+	<![CDATA[
+        SELECT FORMAT(TOTAL_COUNT, 0)                      AS TOTAL_COUNT,
+               FORMAT(CURRENT_COUNT, 0)                    AS CURRENT_COUNT,
+               ROUND(CURRENT_COUNT / TOTAL_COUNT * 100, 2) AS FAULT_COUNT
+        FROM (SELECT COUNT(*) AS TOTAL_COUNT FROM QUIZ_STAT) A,
+             (SELECT COUNT(*) AS CURRENT_COUNT FROM QUIZ_STAT WHERE SUCCESS_YN = 'Y') B
+        ]]>
 	</select>
 </mapper>

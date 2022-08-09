@@ -1,24 +1,18 @@
 package net.javaguitar.controller;
 
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import com.google.gson.Gson;
 import net.javaguitar.model.*;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class DocController {
@@ -32,9 +26,13 @@ public class DocController {
         //List<DocModel> docList = ss.selectList("net.javaguitar.mapper.DocMapper.selectDocIndex");
         StatModel statModel = ss.selectOne("net.javaguitar.mapper.StatMapper.selectQuizCount");
         StatModel statModel_doc = ss.selectOne("net.javaguitar.mapper.StatMapper.selectDocCount");
+        StatModel statModel_answer = ss.selectOne("net.javaguitar.mapper.StatMapper.selectQuizAnswerCount");
+        StatModel statModel_ratio = ss.selectOne("net.javaguitar.mapper.StatMapper.selectQuizAnswerRatio");
 
         mav.addObject("statModel", statModel);
         mav.addObject("statModel_doc", statModel_doc);
+        mav.addObject("statModel_answer", statModel_answer);
+        mav.addObject("statModel_ratio", statModel_ratio);
         mav.setViewName("content/doc/index");
         return mav;
     }
@@ -138,10 +136,6 @@ public class DocController {
     public @ResponseBody
     Map<String, Object> docSearch(@RequestParam Map<String, Object> paramMap,
                                   @RequestParam String doc_name) {
-        Map<String, Object> data = new HashMap<>();
-
-        /* 추후 json을 object로 전환하는 방식으로 변경 필요 (2022.02.22) */
-        data.put("doc_name", doc_name);
         List<Map> resultList = ss.selectList("net.javaguitar.mapper.DocKeywordMapper.selectDocSearch", doc_name);
         paramMap.put("resultList", resultList);
         return paramMap;
@@ -194,6 +188,11 @@ public class DocController {
     void new_doc_name_Update(@ModelAttribute("docModel") DocModel docModel) {
         ss.update("net.javaguitar.mapper.DocMapper.updateNewDocName", docModel);
         ss.update("net.javaguitar.mapper.DocMapper.updateNewDocNameQuiz", docModel);
+    }
+    @RequestMapping(value = {"/doc_level_update"}, method = {RequestMethod.POST})
+    public @ResponseBody
+    void doc_level_Update(@ModelAttribute("docModel") DocModel docModel) {
+        ss.update("net.javaguitar.mapper.DocMapper.updateDocLevel", docModel);
     }
 
 }

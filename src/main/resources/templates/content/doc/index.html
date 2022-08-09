@@ -20,6 +20,10 @@
         .doc_path {
             padding: 0.5rem 1rem;
         }
+
+        .answer_ratio {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -69,7 +73,7 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">:: 오늘 퀴즈 (전체 / 맞힘 / 틀림)</h5>
-                    <p class="card-text"><h1></h1></p>
+                    <p class="card-text"><h1><span th:text="${statModel_answer.total_count}"></span> / <span th:text="${statModel_answer.current_count}"></span> / <span th:text="${statModel_answer.fault_count}"></span>개</h1></p>
                 </div>
             </div>
         </div>
@@ -77,6 +81,14 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">:: 오늘 문서</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">:: 전체 퀴즈 (성공율)</h5>
+                    <p class="card-text"><h1><span th:text="${statModel_ratio.current_count}"></span> / <span th:text="${statModel_ratio.total_count}"></span> (<span class="answer_ratio" th:text="${statModel_ratio.fault_count}"></span> %)</h1></p>
                 </div>
             </div>
         </div>
@@ -92,7 +104,6 @@
             crossorigin="anonymous"></script>
     <script src="/js/ckeditor5-31/quiz/ckeditor.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
-    <script src="/js/content/doc.js"></script>
     <script>
         let doc_move = function () {
             location.href="/doc/"+($("#doc_search").val());
