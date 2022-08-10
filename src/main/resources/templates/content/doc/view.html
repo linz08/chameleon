@@ -92,11 +92,13 @@
             </div>
         </nav>
         <div th:unless="${docModel.upper_doc_name.toString().equals('index')}" class="doc_path"><a class="doc_name"  th:unless="${docModel.upper_doc_name.toString().equals('index')}" th:href="@{/doc/{id}(id=${docModel.upper_doc_name})}" th:text="${docModel.upper_doc_name}">상위 : </a> &nbsp;&nbsp;
-                <select class="form-select">
+            <label>
+                <select class="form-select"  th:id="doc_level" th:onchange="doc_level()">
                     <option th:each="src:${docLevelList}" th:value="${src.code_id}"
                             th:selected="${src.code_id} == ${docModel.doc_level}"
                             th:utext="${src.code_name}"></option>
                 </select>
+            </label>
         </div>
     </div>
     <br/><br/><br/>
@@ -131,6 +133,20 @@
                     <button type="button" id="btn_doc_add" class="btn btn-primary">저장</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                 </div>
+            </div>
+        </div>
+    </div>
+    <!-- 토스트 메시지 -->
+    <div class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 11">
+        <div id="liveToast" class="toast hide align-items-center text-white bg-primary border-0" role="alert"
+             aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">알람</strong>
+                <small></small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                하이루 용진이야~
             </div>
         </div>
     </div>
@@ -187,6 +203,30 @@
 
         let doc_move = function () {
             location.href="/doc/"+($("#doc_search").val());
+        }
+
+        let doc_level = function () {
+            let doc_lvl_val = $("#doc_level option:selected").val();
+            let doc_lvl_txt = $("#doc_level option:selected").text();
+
+            $.ajax({
+                type: "POST",
+                url: "/doc_level_update",
+                beforeSend: function (jqXHR, settings) {
+                    let header = $("meta[name='_csrf_header']").attr("content");
+                    let token = $("meta[name='_csrf']").attr("content");
+                    jqXHR.setRequestHeader(header, token);
+                },
+                data: {
+                    "doc_name": '[[${docModel.doc_name}]]',
+                    "doc_level": doc_lvl_val
+                },
+                success: function () {
+                    toastAlert("문제 수준 "+doc_lvl_txt+"로 저장", 0);
+                }, error: function () {
+                    toastAlert("문제 수준 저장 실패", 1);
+                }
+            });
         }
     </script>
 </div>
