@@ -22,6 +22,15 @@
             #{keyword})
         ]]>
 	</insert>
+    <update id="updateDocKeyword" parameterType="DocKeywordModel">
+	<![CDATA[
+        UPDATE
+            DOCUMENT_KEYWORD
+        SET DOC_NAME = #{keyword},
+            KEYWORD = #{keyword}
+        WHERE DOC_NAME = #{doc_name}
+        ]]>
+	</update>
     <delete id="deleteDocKeyword" parameterType="DocKeywordModel">
         DELETE FROM DOCUMENT_KEYWORD
         WHERE DOC_NAME = #{doc_name} AND KEYWORD = #{keyword}
