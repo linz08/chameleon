@@ -180,14 +180,22 @@ public class DocController {
     @RequestMapping(value = {"/upper_doc_name_update"}, method = {RequestMethod.POST})
     public @ResponseBody
     void upper_doc_name_Update(@ModelAttribute("docModel") DocModel docModel) {
+
+
         ss.update("net.javaguitar.mapper.DocMapper.updateUpperDocName", docModel);
+
     }
 
     @RequestMapping(value = {"/new_doc_name_update"}, method = {RequestMethod.POST})
     public @ResponseBody
     void new_doc_name_Update(@ModelAttribute("docModel") DocModel docModel) {
+        DocKeywordModel docKeywordModel = new DocKeywordModel();
+        docKeywordModel.setDoc_name(docModel.getDoc_name());
+        docKeywordModel.setKeyword(docModel.getNew_doc_name());
+
         ss.update("net.javaguitar.mapper.DocMapper.updateNewDocName", docModel);
         ss.update("net.javaguitar.mapper.DocMapper.updateNewDocNameQuiz", docModel);
+        ss.update("net.javaguitar.mapper.DocKeywordMapper.updateDocKeyword",docKeywordModel);
     }
     @RequestMapping(value = {"/doc_level_update"}, method = {RequestMethod.POST})
     public @ResponseBody
