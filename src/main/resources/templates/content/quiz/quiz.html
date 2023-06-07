@@ -121,15 +121,13 @@
                 <small></small>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
-            <div class="toast-body">
-                하이루 용진이야~
-            </div>
+            <div class="toast-body"></div>
         </div>
     </div>
     <div><span id="keyword_icon"
             class="badge rounded-pill bg-secondary" style="cursor:pointer">키워드</span>
         <th:block th:each="quizDocumentModelList,index : ${quizDocumentModelList}">
-            <a th:href="'/doc/'+${quizDocumentModelList.doc_name}" target="_blank"> <span th:text="${quizDocumentModelList.doc_name}"></span></a>&nbsp;&nbsp;
+            <a th:href="'/doc/'+${quizDocumentModelList.doc_name}" target="_blank"> <span th:text="${quizDocumentModelList.doc_name}"></span></a>&nbsp;
         </th:block>
     </div>
     <br/>
@@ -142,7 +140,6 @@
             $('#keyword_button').removeClass('invisible');
             $('#keyword_button').addClass('visible');
             return false;
-            console.log(1);
         });
 
         $('#btn_doc_add').click(function () {
@@ -160,7 +157,8 @@
                     "quiz_number": '[[${quizModel.quiz_number}]]'
                 },
                 success: function () {
-                    document.location.reload();
+                    //document.location.reload();
+                    toastAlert("키워드 추가", 0);
                 }, error: function () {
                     alert('실패');
                 }

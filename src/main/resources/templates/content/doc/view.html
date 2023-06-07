@@ -91,15 +91,26 @@
                 </div>
             </div>
         </nav>
-        <div th:unless="${docModel.upper_doc_name.toString().equals('index')}" class="doc_path"><a class="doc_name"  th:unless="${docModel.upper_doc_name.toString().equals('index')}" th:href="@{/doc/{id}(id=${docModel.upper_doc_name})}" th:text="${docModel.upper_doc_name}">상위 : </a> &nbsp;&nbsp;
+        <div th:unless="${docModel.upper_doc_name.toString().equals('index')}" class="doc_path">
+            <a class="doc_name"  th:unless="${docModel.upper_doc_name.toString().equals('index')}" th:href="@{/doc/{id}(id=${docModel.upper_doc_name})}" th:text="${docModel.upper_doc_name}">상위 : </a> &nbsp;&nbsp;
             <label>
                 <select class="form-select"  th:id="doc_level" th:onchange="doc_level()">
                     <option th:each="src:${docLevelList}" th:value="${src.code_id}"
                             th:selected="${src.code_id} == ${docModel.doc_level}"
                             th:utext="${src.code_name}"></option>
                 </select>
-            </label>
+           </label>
+            <select class="form-select"  id="doc_root" onchange="doc_root()">
+                <option value="">--</option>
+                <option value="/doc/감리">감리</option>
+                <option value="/doc/사업관리">사업</option>
+                <option value="/doc/소프트웨어공학">소공</option>
+                <option value="/doc/데이터베이스">DB</option>
+                <option value="/doc/시스템구조">시구</option>
+                <option value="/doc/보안">보안</option>
+            </select>
         </div>
+
     </div>
     <br/><br/><br/>
     <div class="doc_title">
@@ -228,6 +239,9 @@
                 }
             });
         }
+        let doc_root = function () {
+            document.location.href =$("#doc_root option:selected").val();
+         }
     </script>
 </div>
 </body>
