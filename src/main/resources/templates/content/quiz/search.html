@@ -48,57 +48,11 @@
             </tbody>
         </table>
     </div>
-    <div style="width:20%;float:left;">
+    <div style="width:100%;float:left;">
         <table class="table table-dark">
             <tbody>
-            <tr th:each="quizList : ${quizList}" th:if="${quizList.doc_code}==4">
-                <td><a class="link-light"
-                       th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
-                       th:text="'[' + ${quizList.category_name} +'] '+${quizList.quiz_org_number}"/>
-                    &nbsp;&nbsp;<a class="link-light"
-                                   th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}">[편집]</a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <div style="width:20%;float:left;">
-        <table class="table table-dark">
-            <tbody>
-            <tr th:each="quizList : ${quizList}" th:if="${quizList.doc_code}==5">
-                <td><a class="link-light"
-                       th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
-                       th:text="'[' + ${quizList.category_name} +'] '+${quizList.quiz_org_number}"/>
-                    &nbsp;&nbsp;<a class="link-light"
-                                   th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}">[편집]</a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <div style="width:20%;float:left;">
-        <table class="table table-dark">
-            <tbody>
-            <tr th:each="quizList : ${quizList}" th:if="${quizList.doc_code}==6">
-                <td><a class="link-light"
-                       th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
-                       th:text="'[' + ${quizList.category_name} +'] '+${quizList.quiz_org_number}"/>
-                    &nbsp;&nbsp;<a class="link-light"
-                                   th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}">[편집]</a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <div style="width:20%;float:left;">
-        <table class="table table-dark">
-            <tbody>
-            <tr th:each="quizList : ${quizList}" th:if="${quizList.doc_code}==7">
-                <td><a class="link-light"
-                       th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
-                       th:text="'[' + ${quizList.category_name} +'] '+${quizList.quiz_org_number}"/>
-                    &nbsp;&nbsp;<a class="link-light"
-                                   th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}">[편집]</a>
+            <tr th:each="quizList : ${quizList}">
+                <td><a class="link-light" th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}" th:text="${quizList.quiz_title}"/>
                 </td>
             </tr>
             </tbody>

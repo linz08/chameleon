@@ -79,6 +79,9 @@
             <button class="btn btn-secondary me-md-2" type="button"
                     onclick="doc_view();">보기
             </button>
+            <button class="btn btn-secondary me-md-2" type="button"
+                    onclick="google_img();">구글이미지
+            </button>
         </div>
     </form>
     <script src="/js/ckeditor5-31/doc/ckeditor.js"></script>
@@ -100,6 +103,9 @@
             document.location.href = "/doc/[[${docModel.doc_name}]]";
         }
 
+        function google_img(){
+            window.open("/google.html", "_blank", "menubar=no, toolbar=no");
+        }
 
         // 상위문서명 바뀌기
         $('#upper_doc_name').autocomplete({

@@ -32,7 +32,13 @@
 		ORDER BY
 		CAST(QUIZ_ORG_NUMBER AS INTEGER)
 	</select>
-
+	<select id="selectQuizSearch" parameterType="String" resultType="QuizModel">
+		SELECT DISTINCT A.QUIZ_TITLE, A.DOC_CODE, A.QUIZ_NUMBER
+		FROM QUIZ A, QUIZ_OBJECTIVE B
+		WHERE A.QUIZ_TITLE LIKE CONCAT('%',#{quiz_title},'%')
+		OR (A.DOC_CODE = B.DOC_CODE AND
+			A.QUIZ_NUMBER  = B.QUIZ_NUMBER AND B.QUIZ_OBJECT_NAME  LIKE CONCAT('%',#{quiz_title},'%'))
+	</select>
 	<insert id="insertQuiz" parameterType="QuizModel">
 		<![CDATA[
 			INSERT INTO QUIZ(
