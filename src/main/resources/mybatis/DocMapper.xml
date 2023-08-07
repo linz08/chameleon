@@ -3,11 +3,13 @@
 <mapper namespace="net.javaguitar.mapper.DocMapper">
     <select id="selectDocIndex" resultType="DocModel">
 	  <![CDATA[
-        SELECT DOC_NAME
-        FROM DOCUMENT
-        WHERE DOC_NAME <> 'index'
-        AND MAIN_SHOW='Y'
-        ORDER BY SORT_NUM
+
+                SELECT DOC_NAME
+                FROM DOCUMENT
+                WHERE DOC_NAME <> 'index'
+                AND MAIN_SHOW='Y'
+                ORDER BY SORT_NUM
+
         ]]>
 	</select>
     <select id="selectDoc" parameterType="String"
@@ -16,48 +18,64 @@
         FROM DOCUMENT A
         WHERE DOC_NAME = #{doc_name}
     </select>
+    <select id="selectDocToDay"
+            resultType="DocModel">
+        SELECT DOC_NAME FROM DOCUMENT WHERE (DATE_FORMAT(CREATE_DATE,'%Y-%m') = DATE_FORMAT(CURDATE(),'%Y-%m')
+            OR DATE_FORMAT(MODIFY_DATE,'%Y-%m') = DATE_FORMAT(CURDATE(),'%Y-%m')) AND MAIN_SHOW = 'N'
+            ORDER BY CREATE_DATE DESC, MODIFY_DATE DESC
+    </select>
     <update id="updateDoc" parameterType="DocModel">
 	<![CDATA[
-        UPDATE
-            DOCUMENT
-        SET DOC_CONTENT = #{doc_content},
-            MODIFY_DATE = now()
-        WHERE DOC_NAME = #{doc_name}
+
+                UPDATE
+                    DOCUMENT
+                SET DOC_CONTENT = #{doc_content},
+                    MODIFY_DATE = now()
+                WHERE DOC_NAME = #{doc_name}
+
         ]]>
 	</update>
     <update id="updateDocLevel" parameterType="DocModel">
 	<![CDATA[
-        UPDATE
-            DOCUMENT
-        SET DOC_LEVEL = #{doc_level},
-            MODIFY_DATE = now()
-        WHERE DOC_NAME = #{doc_name}
+
+                UPDATE
+                    DOCUMENT
+                SET DOC_LEVEL = #{doc_level},
+                    MODIFY_DATE = now()
+                WHERE DOC_NAME = #{doc_name}
+
         ]]>
 	</update>
     <update id="updateUpperDocName" parameterType="DocModel">
 	<![CDATA[
-        UPDATE
-            DOCUMENT
-        SET UPPER_DOC_NAME = #{upper_doc_name},
-            MODIFY_DATE = now()
-        WHERE DOC_NAME = #{doc_name}
+
+                UPDATE
+                    DOCUMENT
+                SET UPPER_DOC_NAME = #{upper_doc_name},
+                    MODIFY_DATE = now()
+                WHERE DOC_NAME = #{doc_name}
+
         ]]>
 	</update>
     <update id="updateNewDocName" parameterType="DocModel">
 	<![CDATA[
-        UPDATE
-            DOCUMENT
-        SET DOC_NAME = #{new_doc_name},
-            MODIFY_DATE = now()
-        WHERE DOC_NAME = #{doc_name}
+
+                UPDATE
+                    DOCUMENT
+                SET DOC_NAME = #{new_doc_name},
+                    MODIFY_DATE = now()
+                WHERE DOC_NAME = #{doc_name}
+
         ]]>
 	</update>
     <update id="updateNewDocNameQuiz" parameterType="DocModel">
 	<![CDATA[
-        UPDATE
-            QUIZ_DOCUMENT
-        SET DOC_NAME = #{new_doc_name}
-        WHERE DOC_NAME = #{doc_name}
+
+                UPDATE
+                    QUIZ_DOCUMENT
+                SET DOC_NAME = #{new_doc_name}
+                WHERE DOC_NAME = #{doc_name}
+
         ]]>
 	</update>
     <select id="selectDocCheck" resultType="java.lang.Integer">
@@ -67,16 +85,18 @@
     </select>
     <insert id="insertDoc" parameterType="DocModel">
 		<![CDATA[
-        INSERT INTO DOCUMENT (DOC_NAME,
-                              UPPER_DOC_NAME,
-                              SORT_NUM,
-                              DOC_CONTENT,
-                              CREATE_DATE)
-        VALUES (#{doc_name},
-                #{upper_doc_name}
-                   , 1,
-                '<h2>정의</h2><p>&nbsp;</p><p>&nbsp;</p><h2>관련자료</h2>',
-                now())
+
+                INSERT INTO DOCUMENT (DOC_NAME,
+                                      UPPER_DOC_NAME,
+                                      SORT_NUM,
+                                      DOC_CONTENT,
+                                      CREATE_DATE)
+                VALUES (#{doc_name},
+                        #{upper_doc_name}
+                           , 1,
+                        '<h2>정의</h2><p>&nbsp;</p><p>&nbsp;</p><h2>관련자료</h2>',
+                        now())
+
         ]]>
 	</insert>
 </mapper>

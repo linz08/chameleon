@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.text.Document;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.HashMap;
@@ -28,11 +29,13 @@ public class DocController {
         StatModel statModel_doc = ss.selectOne("net.javaguitar.mapper.StatMapper.selectDocCount");
         StatModel statModel_answer = ss.selectOne("net.javaguitar.mapper.StatMapper.selectQuizAnswerCount");
         StatModel statModel_ratio = ss.selectOne("net.javaguitar.mapper.StatMapper.selectQuizAnswerRatio");
+        List<DocModel> docTodayList = ss.selectList("net.javaguitar.mapper.DocMapper.selectDocToDay");
 
         mav.addObject("statModel", statModel);
         mav.addObject("statModel_doc", statModel_doc);
         mav.addObject("statModel_answer", statModel_answer);
         mav.addObject("statModel_ratio", statModel_ratio);
+        mav.addObject("docTodayList", docTodayList);
         mav.setViewName("content/doc/index");
         return mav;
     }

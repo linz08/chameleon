@@ -80,7 +80,14 @@
         <div class="col-sm-6">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">:: 오늘 문서</h5>
+                    <h5 class="card-title">:: 이달 문서</h5>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row row-cols-auto">
+                    <div th:each="todayList : ${docTodayList}" class="col">
+                        <a  th:text="${todayList.doc_name}" th:href="@{'/doc/'+${todayList.doc_name}}" th:target="_blank"></a>
+                    </div>
                 </div>
             </div>
         </div>
