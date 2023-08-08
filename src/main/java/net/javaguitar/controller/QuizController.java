@@ -117,6 +117,19 @@ public class QuizController {
         return mav;
     }
 
+    @RequestMapping(value = {"/quiz/date/{quiz_date}"}, method = RequestMethod.GET)
+    public ModelAndView quizDate(@PathVariable String quiz_date, HttpServletRequest request) throws Exception {
+        ModelAndView mav = new ModelAndView();
+
+
+        List<QuizModel> quizList = ss.selectList("net.javaguitar.mapper.QuizMapper.selectQuizDayList", quiz_date);
+
+        mav.addObject("quizList", quizList);
+
+        mav.setViewName("content/quiz/quiz_stat");
+        return mav;
+    }
+
     @RequestMapping(value = {"/quiz/doc/{doc_name}"}, method = RequestMethod.GET)
     public ModelAndView quizDocList(@PathVariable String doc_name) {
         ModelAndView mav = new ModelAndView();

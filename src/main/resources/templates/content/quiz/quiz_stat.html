@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}" lang="ko">
+<head>
+    <title>문제목록</title>
+<body>
+<div layout:fragment="content" class="content">
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">출처</span> <select
+            class="form-select" aria-label="출처1" th:name="quiz_source"
+            th:id="quiz_source">
+        <option th:each="src:${srcCodeList}" th:value="${src.code_id}"
+                th:selected="${src.code_id} == ${session.quiz_source}"
+                th:utext="${src.code_name}"></option>
+    </select>
+        <button class="btn btn-outline-secondary" type="button"
+                id="srcSelector" onclick="moveSource()">선택
+        </button>&nbsp;
+        <button class="btn btn-outline-warning" type="button"
+                id="srcRegister" onclick="moveRegister()">신규등록
+        </button> &nbsp;
+        <button type="button" class="btn btn-outline-dark" onclick="location.href='/sys/index'">코드관리</button>
+        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+            <input type="search" class="form-control form-control-dark" id="quiz_title" placeholder="Search..." aria-label="Search">
+        </form>
+        <div class="text-end">
+            <button type="button" class="btn btn-outline-light me-2" onclick="moveSearch()">검색</button>
+        </div>
+    </div>
+    <div>
+        <span class="badge rounded-pill bg-primary" style="cursor:pointer" onclick="openWindowPop()">북마크목록</span>  <a
+            onclick="date_move(-1)">&lt;</a> <span
+            class="badge rounded-pill bg-secondary"><a th:href="@{'/quiz/date/'+${#calendars.format(#calendars.createNow(),'yyyy-MM-dd')}}">오늘목록</a></span><a
+            onclick="date_move(1)">&gt;</a><span
+            class="badge rounded-pill bg-success" style="cursor:pointer" onclick="quiz_boorkmark()">안푼목록</span>
+     </div>
+    <div style="width:100%;float:left;">
+        <table class="table table-dark">
+            <tbody>
+            <tr th:each="quizList : ${quizList}">
+                <td><span th:text="${quizList.quiz_number}"></span></td>
+                <td><a class="link-light" th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}" th:text="${quizList.quiz_title}"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <script type="text/javaScript">
+        let moveSource = function () {
+            let quiz_source = $("#quiz_source option:selected").val();
+            document.location.href = "/quiz/list/" + quiz_source;
+        }
+        let moveRegister = function () {
+            document.location.href = "/quiz/write";
+        }
+        let moveSearch = function () {
+
+            location.href="/quiz/search/"+($("#quiz_title").val());
+        }
+        let date_move = function (iDay) {
+            const protocol = window.location.protocol +"//";
+
+            const host = window.location.host
+            let cUrl = window.location.href;
+            const arr  = cUrl.split('/');
+            const cDate = arr[arr.length - 1];
+            let wade = StringToDate(cDate,iDay);
+            let leftUrl = "";
+            for(let j=2;j < arr.length-1;j++) {
+                if (j > 2) {
+                  leftUrl = leftUrl +"/"+ arr[j];
+                }
+            }
+            document.location.href = (protocol+host+leftUrl+"/"+wade);
+        }
+        let date_next = function () {
+            alert(window.location.href);
+        }
+        let StringToDate = function(date, n) {
+            let yyyy = date.substring(0, 4);
+            let mm = date.substring(5, 7);
+            let dd = date.substring(8, 10);
+            mm = Number(mm) - 1;
+
+            let stringNewDate = new Date(yyyy, mm, dd);
+            stringNewDate.setDate(stringNewDate.getDate() + n);
+
+            return stringNewDate.getFullYear() +
+                "-" + ((stringNewDate.getMonth() + 1) > 9 ? (stringNewDate.getMonth() + 1).toString() : "0" + (stringNewDate.getMonth() + 1)) +
+                "-" + (stringNewDate.getDate() > 9 ? stringNewDate.getDate().toString() : "0" + stringNewDate.getDate().toString());
+        }
+    </script>
+</div>
+</body>
+
+</html>
