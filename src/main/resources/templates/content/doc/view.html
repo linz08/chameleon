@@ -31,6 +31,16 @@
             /* 생략 */
         }
 
+        #sub_left_center {
+            position: fixed;
+            top: 500px;
+            /* width: 100% */
+            left: 0;
+            right: 0;
+
+            /* 생략 */
+        }
+
         .form-select {
             display: inline;
             width: 120px;
@@ -71,19 +81,6 @@
         <nav class="navbar navbar-expand-lg bg-light">
             <div class="container-fluid">
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <a href="/doc/index" class="btn btn-outline-primary" role="button">메인</a>&nbsp;
-                        <a th:href="@{/doc/edit/{id}(id=${docModel.doc_name})}" class="btn btn-outline-secondary" role="button" aria-pressed="true">편집</a>&nbsp;
-                        <a th:href="@{/quiz/doc/{id}(id=${docModel.doc_name})}" target="_blank" class="btn btn-outline-success" role="button"  th:text="'퀴즈('+${quizCnt}+')'">관련퀴즈</a>
-                    </ul>
-                    <!--<div><span class="badge rounded-pill bg-primary" style="cursor:pointer" onclick="location.href='/doc/감리'">감리</span>
-                    <span class="badge rounded-pill bg-secondary" style="cursor:pointer" onclick="location.href='/doc/사업관리'">사업관리</span>
-                    <span class="badge rounded-pill bg-success" style="cursor:pointer" onclick="location.href='/doc/소프트웨어공학'">소프트웨어공학</span>
-                    <span class="badge rounded-pill bg-danger" style="cursor:pointer" onclick="location.href='/doc/데이터베이스'">데이터베이스</span>
-                        <span class="badge rounded-pill bg-warning" style="cursor:pointer" onclick="location.href='/doc/시스템구조'">시스템구조</span>
-                        <span class="badge rounded-pill bg-info" style="cursor:pointer" onclick="location.href='/doc/보안'">보안</span>
-                        <span class="badge rounded-pill bg-primary" style="cursor:pointer" onclick="location.href='/doc/기타'">기타</span>
-                    </div>&nbsp;&nbsp;-->
                     <form class="d-flex" role="search">
                         <input class="form-control me-2" type="search" id="doc_search" placeholder="Search" aria-label="Search">
                         <button class="btn btn-outline-success" type="button" onclick="doc_move()">Search</button>
@@ -112,9 +109,11 @@
         </div>
 
     </div>
+    <div id="sub_left_center" class="nav-scroller"><a class="doc_name" th:href="@{/doc/edit/{id}(id=${docModel.doc_name})}"><span class="badge badge-light">E</span></a></div>
     <br/><br/><br/>
     <div class="doc_title">
-        <h1><a class="doc_name" th:href="@{/doc/edit/{id}(id=${docModel.doc_name})}"><span th:utext="':: '+${docModel.doc_name}"></span></a></h1>
+        <h1><a class="doc_name" th:href="@{/doc/edit/{id}(id=${docModel.doc_name})}"><span th:utext="':: '+${docModel.doc_name}"></span></a>
+            <a class="doc_name" th:href="@{/quiz/doc/{id}(id=${docModel.doc_name})}" target="_blank"><span th:utext="'('+${quizCnt}+')'"></span></a></h1>
     </div>
     <div class="doc_content">
         <span th:utext="${docModel.doc_content}"></span>
@@ -169,7 +168,6 @@
             let modalTitle = exampleModal.querySelector('.modal-title')
             modalTitle.textContent = '유사문서명'
         })
-
         $('#btn_doc_add').click(function () {
             $.ajax({
                 type: "POST",
@@ -215,7 +213,9 @@
         let doc_move = function () {
             location.href="/doc/"+($("#doc_search").val());
         }
-
+        let doc_edit = function () {
+            location.href="/doc/edit/[[${docModel.doc_name}]]"
+        }
         let doc_level = function () {
             let doc_lvl_val = $("#doc_level option:selected").val();
             let doc_lvl_txt = $("#doc_level option:selected").text();
@@ -242,6 +242,7 @@
         let doc_root = function () {
             document.location.href =$("#doc_root option:selected").val();
          }
+
     </script>
 </div>
 </body>

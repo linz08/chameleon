@@ -180,7 +180,9 @@
         for (let i = 0; i < allEditors.length; ++i) {
             ClassicEditor.create((allEditors[i]),
                 {
-                })
+                    link: {
+                        addTargetToExternalLinks: true
+                    }})
                 .then(newEditor => {
                     editr = newEditor;
                 })

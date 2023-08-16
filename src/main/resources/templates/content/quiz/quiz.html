@@ -22,19 +22,22 @@
         }
 
         a:link {
-            color : black;
+            color: black;
             text-decoration: none;
         }
+
         a:visited {
-            color : black;
+            color: black;
             text-decoration: none;
         }
+
         a:hover {
-            color : black;
+            color: black;
             text-decoration: underline;
         }
+
         a:active {
-            color : black;
+            color: black;
             text-decoration: none;
         }
 
@@ -92,7 +95,9 @@
         <tr>
             <td><a class="nounderline"
                    th:href="'/quiz/edit/'+${quizModel.doc_code}+'/'+${quizModel.quiz_number}"
-                   th:utext="${quizModel.quiz_org_number}+'. '"></a><span th:utext="${quizModel.quiz_title}"></span>
+                   th:utext="${quizModel.quiz_org_number}+'. '"></a><a class="nounderline"
+                                                                       th:href="'/index/'+${quizModel.doc_code}+'/'+${quizModel.quiz_number}"><span
+                    th:utext="${quizModel.quiz_title}"></span></a>
             </td>
         </tr>
         <tr th:if="${quizModel.quiz_subtitle != null and quizModel.quiz_subtitle != '' } ">
@@ -125,18 +130,20 @@
         </div>
     </div>
     <div><span id="keyword_icon"
-            class="badge rounded-pill bg-secondary" style="cursor:pointer">키워드</span>
+               class="badge rounded-pill bg-secondary" style="cursor:pointer">키워드</span>
         <th:block th:each="quizDocumentModelList,index : ${quizDocumentModelList}">
-            <a th:href="'/doc/'+${quizDocumentModelList.doc_name}" target="_blank"> <span th:text="${quizDocumentModelList.doc_name}"></span></a>&nbsp;
+            <a th:href="'/doc/'+${quizDocumentModelList.doc_name}" target="_blank"> <span
+                    th:text="${quizDocumentModelList.doc_name}"></span></a>&nbsp;
         </th:block>
     </div>
     <br/>
     <div id="keyword_button" class="input-group mb-3 invisible">
-        <input type="text" id="doc_search" class="form-control" placeholder="키워드명" aria-label="키워드명" aria-describedby="button-addon2">
+        <input type="text" id="doc_search" class="form-control" placeholder="키워드명" aria-label="키워드명"
+               aria-describedby="button-addon2">
         <button class="btn btn-outline-secondary" type="button" id="btn_doc_add">키워드 등록</button>
     </div>
     <script>
-        $('#keyword_icon').click(function() {
+        $('#keyword_icon').click(function () {
             $('#keyword_button').removeClass('invisible');
             $('#keyword_button').addClass('visible');
             return false;
@@ -260,10 +267,10 @@
                 }
             });
         }
-        let openNext = function() {
+        let openNext = function () {
             let nextNumber = [[${quizModel.quiz_number}]] + 1;
-            let nextUrls = "/index/[[${quizModel.doc_code}]]/"+nextNumber;
-            document.location.href=nextUrls;
+            let nextUrls = "/index/[[${quizModel.doc_code}]]/" + nextNumber;
+            document.location.href = nextUrls;
         }
         let openWindowPop = function () {
             let urls = "/quiz/desc/[[${quizModel.doc_code}]]/[[${quizModel.quiz_number}]]";

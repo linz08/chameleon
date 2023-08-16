@@ -23,6 +23,15 @@
 
             /* 생략 */
         }
+        #sub_left_center {
+            position: fixed;
+            top: 400px;
+            z-index: 2;
+            /* width: 100% */
+            left: 0;
+            right: 0;
+
+        }
     </style>
 </head>
 <body>
@@ -34,6 +43,7 @@
             <span class="visually-hidden">Loading...</span>
         </div>
     </div>
+    <div id="sub_left_center" class="nav-scroller"><span class="badge badge-light" onclick="doc_update();">S</span></div>
     <div class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 11">
         <div id="liveToast" class="toast hide align-items-center text-white bg-primary border-0" role="alert"
              aria-live="assertive" aria-atomic="true">
@@ -91,7 +101,11 @@
         })
 
         let allEditors = document.querySelector('.ck_editor_txt');
-        ClassicEditor.create(allEditors)
+        ClassicEditor.create((allEditors),
+        {
+            link: {
+            addTargetToExternalLinks: true
+        }})
             .catch(error => {
                 //console.log( error );
             });
