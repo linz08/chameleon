@@ -84,10 +84,10 @@
         <br/>
         <div class="d-grid gap-2 d-md-flex justify-content-md-center">
             <button class="btn btn-primary me-md-2" type="button"
-                    onclick="doc_update();">편집완료
+                    onclick="doc_update();">완료
             </button>
             <button class="btn btn-secondary me-md-2" type="button"
-                    onclick="doc_view();">보기
+                    onclick="doc_delete();">삭제
             </button>
             <button class="btn btn-secondary me-md-2" type="button"
                     onclick="google_img();">구글이미지
@@ -113,8 +113,10 @@
         let doc_update = function () {
             document.getElementById("updateForm").submit();
         }
-        let doc_view = function () {
-            document.location.href = "/doc/[[${docModel.doc_name}]]";
+        let doc_delete = function () {
+            if(confirm("해당 문서를 삭제할까요?")) {
+                document.location.href = "/doc/delete/[[${docModel.doc_name}]]";
+            }
         }
 
         function google_img(){

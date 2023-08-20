@@ -42,30 +42,6 @@ public class DocController {
 
     @RequestMapping(value = "/doc/{doc_name}", method = RequestMethod.GET)
     public ModelAndView docName(@PathVariable String doc_name, HttpServletRequest request) throws Exception {
-
-        /* 세션 생성 주석
-        if (request.getHeader("Referer") != null) {
-            String referrer = (request.getHeader("Referer"));
-            if (referrer.indexOf("/doc/") > 0) {
-                String decodeResult = URLDecoder.decode(referrer.substring(referrer.indexOf("/doc/") + 5), "UTF-8");
-                decodeResult = decodeResult.replaceAll("edit/", "").replaceAll("index", "");
-                decodeResult = decodeResult.replaceAll("사업관리", "").replaceAll("감리", "");
-                decodeResult = decodeResult.replaceAll("소프트웨어공학", "").replaceAll("데이터베이스", "");
-                decodeResult = decodeResult.replaceAll("시스템구조", "").replaceAll("보안", "");
-                decodeResult = decodeResult.replaceAll("기타", "");
-                //세션 만들기
-                if (!decodeResult.equals("edit")) {
-                    HttpSession session = request.getSession();
-                    String doc_path = "";
-                    if (session.getAttribute("doc_path") != null) {
-                        doc_path = session.getAttribute("doc_path").toString();
-                    }
-                    if (!doc_path.contains(decodeResult)) {
-                        session.setAttribute("doc_path", doc_path + "/" + decodeResult);
-                    }
-                }
-            }
-        }*/
         ModelAndView mav = new ModelAndView();
         int docCheck = ss.selectOne("net.javaguitar.mapper.DocMapper.selectDocCheck", doc_name);
         DocModel docModel = new DocModel();
@@ -115,7 +91,13 @@ public class DocController {
         mav.setViewName("content/doc/edit");
         return mav;
     }
-
+    @RequestMapping(value = {"/doc/delete/{doc_name}"}, method = {RequestMethod.GET})
+    public String docDelete(@ModelAttribute("docModel") DocModel docModel
+    ) throws Exception {
+        ss.update("net.javaguitar.mapper.DocMapper.deleteDoc", docModel);
+        ss.update("net.javaguitar.mapper.DocMapper.deleteDocbyQuiz", docModel);
+          return "redirect:/doc/index";
+    }
 
     @RequestMapping(value = {"/doc/write"}, method = RequestMethod.GET)
     public ModelAndView docWrite() {
@@ -134,6 +116,7 @@ public class DocController {
         docName = docName.replaceAll("\\+", "%20");
         return "redirect:/doc/" + docName;
     }
+
 
     @RequestMapping(value = {"/docSearch"}, method = {RequestMethod.POST})
     public @ResponseBody

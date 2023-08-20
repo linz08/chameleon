@@ -35,6 +35,14 @@
 
         ]]>
 	</update>
+    <delete id="deleteDoc" parameterType="DocModel">
+        DELETE FROM DOCUMENT
+        WHERE DOC_NAME = #{doc_name}
+    </delete>
+    <delete id="deleteDocbyQuiz" parameterType="DocModel">
+        DELETE FROM QUIZ_DOCUMENT
+        WHERE DOC_NAME = #{doc_name}
+    </delete>
     <update id="updateDocLevel" parameterType="DocModel">
 	<![CDATA[
 
