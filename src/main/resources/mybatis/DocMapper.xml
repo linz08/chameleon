@@ -22,7 +22,7 @@
             resultType="DocModel">
         SELECT DOC_NAME FROM DOCUMENT WHERE (DATE_FORMAT(CREATE_DATE,'%Y-%m') = DATE_FORMAT(CURDATE(),'%Y-%m')
             OR DATE_FORMAT(MODIFY_DATE,'%Y-%m') = DATE_FORMAT(CURDATE(),'%Y-%m')) AND MAIN_SHOW = 'N'
-            ORDER BY CREATE_DATE DESC, MODIFY_DATE DESC
+            ORDER BY MODIFY_DATE DESC
     </select>
     <update id="updateDoc" parameterType="DocModel">
 	<![CDATA[
@@ -98,12 +98,13 @@
                                       UPPER_DOC_NAME,
                                       SORT_NUM,
                                       DOC_CONTENT,
-                                      CREATE_DATE)
+                                      CREATE_DATE,
+                                      MODIFY_DATE)
                 VALUES (#{doc_name},
                         #{upper_doc_name}
                            , 1,
                         '<h2>정의</h2><p>&nbsp;</p><p>&nbsp;</p><h2>관련자료</h2>',
-                        now())
+                        now(), now())
 
         ]]>
 	</insert>
