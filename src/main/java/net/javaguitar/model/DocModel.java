@@ -17,5 +17,7 @@ public class DocModel {
 	private int read_num;
 	private String read_date;
 	private String main_show;
+	private String doc_month; // 이번달
 	private int doc_level;
+	private String memo; //암기법
 }

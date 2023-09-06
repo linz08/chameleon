@@ -7,6 +7,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+import javax.servlet.http.HttpServletRequest;
+
+
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -17,20 +20,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers("/").permitAll();
-		/*http.authorizeRequests().antMatchers("/css/**", "/js/**", "/images/**").permitAll().antMatchers("/auth/admin/**")
-				.hasRole("ADMIN").antMatchers("/auth/**").hasAnyRole("ADMIN", "USER").anyRequest().authenticated();
-		
-		http.formLogin().loginPage("/login").loginProcessingUrl("/authenticate").failureUrl("/login?error")
-				.defaultSuccessUrl("/index").usernameParameter("user_id").passwordParameter("user_pwd").permitAll();
+		/*
+			http.authorizeRequests().antMatchers("/css/**", "/js/**", "/images/**").permitAll()
+					.antMatchers("/auth/admin/**")
+					.hasRole("ADMIN")
+					.antMatchers("/auth/**").hasAnyRole("ADMIN", "USER").anyRequest().authenticated();
 
-		http.logout();
-		*/
+			http.formLogin().loginPage("/login").loginProcessingUrl("/authenticate").failureUrl("/login?error")
+					.defaultSuccessUrl("/index").usernameParameter("user_id").passwordParameter("user_pwd").permitAll();
+
+			http.logout();
+*/
 	}
+
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) {
 		auth.authenticationProvider(authenticationProvider);
 	}
 
-	
+
 }

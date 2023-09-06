@@ -45,8 +45,8 @@
         <div class="col-sm-6">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">:: 등록된 퀴즈 (오늘 / 전체)</h5>
-                    <p class="card-text"><h1><span th:text="${statModel.current_count}"></span> / <span th:text="${statModel.total_count}"></span>개</h1></p>
+                    <h5 class="card-title">:: 등록된 퀴즈 (오늘 / 미문서 / 전체)</h5>
+                    <p class="card-text"><h1><span th:text="${statModel.current_count}"></span> / <span th:text="${statModel.doc_count}"></span> / <span th:text="${statModel.total_count}"></span>개</h1></p>
                 </div>
             </div>
         </div>
@@ -69,14 +69,17 @@
         <div class="col-sm-6">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">:: 이달 문서</h5>
+                    <h5 class="card-title"><a href="javascript:doc_chk(-1)">&lt;-</a> 이달 문서 <a href="javascript:doc_chk(1)">-&gt;</a></h5>
                 </div>
             </div>
             <div class="container">
                 <div class="row row-cols-auto">
-                    <div th:each="todayList : ${docTodayList}" class="col">
-                        <a  th:text="${todayList.doc_name}" th:href="@{'/doc/'+${todayList.doc_name}}" th:target="_blank"></a>
+                    <!--<div th:each="todayList : ${docTodayList}" class="col">
+                        <a th:text="${todayList.doc_name}" th:href="@{'/doc/'+${todayList.doc_name}}" th:target="_blank"></a>
                     </div>
+                    -->
+                    <div class="col"><span id="month_doc"></span></div>
+                    <input type="hidden" id="month_val" th:value="${month_val}" />
                 </div>
             </div>
         </div>
@@ -104,6 +107,51 @@
         let doc_move = function () {
             location.href="/doc/"+($("#doc_search").val());
         }
+
+        let doc_chk = function (plm) {
+            let doc_month = document.getElementById("month_val").value;
+            let date3 = new Date(doc_month.substr(0,4)+'-'+doc_month.substr(4,2)+'-'+'01');
+            let oneMonthAgo = new Date(date3.setMonth(date3.getMonth()+plm));
+            oneMonthAgo = oneMonthAgo.toISOString().split('T')[0];
+            let str_oneMonthAgo = oneMonthAgo.replace(/\-/g,'').substr(0,6);
+            month_doc(str_oneMonthAgo);
+            document.getElementById("month_val").value = str_oneMonthAgo;
+        }
+
+
+        function month_doc(doc_month) {
+            $.ajax({
+                type: "POST",
+                url: "/quiz/doc/monthlist",
+                beforeSend: function (jqXHR, settings) {
+                    let header = $("meta[name='_csrf_header']").attr("content");
+                    let token = $("meta[name='_csrf']").attr("content");
+                    jqXHR.setRequestHeader(header, token);
+                },
+                data: {
+                    "doc_month": doc_month
+                },
+                success: function (data) {
+                //<a th:text="${todayList.doc_name}" th:href="@{'/doc/'+${todayList.doc_name}}" th:target="_blank"></a>
+                    let str = '';
+                    let row_idx = 1;
+                    $(data).each(function () {
+                        str += '<a href="/doc/'+this.doc_name+'" target="_blank">'+ this.doc_name +'</a>&nbsp;&nbsp;&nbsp;';
+                        row_idx++;
+                    });
+                    $("#month_doc").empty();
+                    $("#month_doc").append(str);
+
+                }, error: function (request, status, error) {
+                    console.log("code:" + request.status + "\n");
+                    console.log("message:" + request.responseText + "\n");
+                    console.log("error:" + error);
+                }
+            });
+        }
+
+
+        month_doc(document.getElementById("month_val").value);
     </script>
 
 </div>

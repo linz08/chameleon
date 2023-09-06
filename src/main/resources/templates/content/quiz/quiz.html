@@ -131,10 +131,12 @@
     </div>
     <div><span id="keyword_icon"
                class="badge rounded-pill bg-secondary" style="cursor:pointer">키워드</span>
+        <span id="keyword_list"></span>
+        <!--
         <th:block th:each="quizDocumentModelList,index : ${quizDocumentModelList}">
             <a th:href="'/doc/'+${quizDocumentModelList.doc_name}" target="_blank"> <span
                     th:text="${quizDocumentModelList.doc_name}"></span></a>&nbsp;
-        </th:block>
+        </th:block>-->
     </div>
     <br/>
     <div id="keyword_button" class="input-group mb-3 invisible">
@@ -163,15 +165,50 @@
                     "doc_code": '[[${quizModel.doc_code}]]',
                     "quiz_number": '[[${quizModel.quiz_number}]]'
                 },
-                success: function () {
-                    //document.location.reload();
-                    toastAlert("키워드 추가", 0);
+                success: function (data) {
+                    let str = '';
+                    let row_idx = 1;
+                    $(data).each(function () {
+                        str += '<a href="/doc/'+this.doc_name+'" target="_blank">'+ this.doc_name +'</a>&nbsp;&nbsp;&nbsp;';
+                        row_idx++;
+                    });
+                    $("#keyword_list").empty();
+                    $("#keyword_list").append(str);
+                    $('#doc_search').val('');
                 }, error: function () {
                     alert('실패');
                 }
             });
         });
-
+        let keyword_list = function() {
+            $.ajax({
+                type: "POST",
+                url: "/quiz/doc/list",
+                beforeSend: function (jqXHR, settings) {
+                    let header = $("meta[name='_csrf_header']").attr("content");
+                    let token = $("meta[name='_csrf']").attr("content");
+                    jqXHR.setRequestHeader(header, token);
+                },
+                data: {
+                    "doc_code": '[[${quizModel.doc_code}]]',
+                    "quiz_number": '[[${quizModel.quiz_number}]]'
+                },
+                success: function (data) {
+                    //document.location.reload();
+                    let str = '';
+                    let row_idx = 1;
+                    $(data).each(function () {
+                        str += '<a href="/doc/'+this.doc_name+'" target="_blank">'+ this.doc_name +'</a>&nbsp;&nbsp;&nbsp;';
+                        row_idx++;
+                    });
+                    $("#keyword_list").empty();
+                    $("#keyword_list").append(str);
+                    //console.log(str);
+                }, error: function () {
+                    alert('실패');
+                }
+            });
+        }
         let quiz_answer = function (answer) {
             let retV = "오답";
             let success_yn = "N";
@@ -277,6 +314,7 @@
             let options = 'top=10, left=10, width=500, height=600, status=no, menubar=no, toolbar=no, resizable=yes';
             window.open(urls, "description", options);
         }
+        keyword_list();
     </script>
 </div>
 </body>

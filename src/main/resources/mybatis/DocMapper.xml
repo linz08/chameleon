@@ -20,8 +20,8 @@
     </select>
     <select id="selectDocToDay"
             resultType="DocModel">
-        SELECT DOC_NAME FROM DOCUMENT WHERE (DATE_FORMAT(CREATE_DATE,'%Y-%m') = DATE_FORMAT(CURDATE(),'%Y-%m')
-            OR DATE_FORMAT(MODIFY_DATE,'%Y-%m') = DATE_FORMAT(CURDATE(),'%Y-%m')) AND MAIN_SHOW = 'N'
+        SELECT DOC_NAME FROM DOCUMENT WHERE (DATE_FORMAT(CREATE_DATE,'%Y-%m') = DATE_FORMAT(CONCAT(#{doc_month},'01'),'%Y-%m')
+            OR DATE_FORMAT(MODIFY_DATE,'%Y-%m') = DATE_FORMAT(CONCAT(#{doc_month},'01'),'%Y-%m')) AND MAIN_SHOW = 'N'
             ORDER BY MODIFY_DATE DESC
     </select>
     <update id="updateDoc" parameterType="DocModel">
@@ -71,6 +71,17 @@
                 UPDATE
                     DOCUMENT
                 SET DOC_NAME = #{new_doc_name},
+                    MODIFY_DATE = now()
+                WHERE DOC_NAME = #{doc_name}
+
+        ]]>
+	</update>
+    <update id="updateDocMemo" parameterType="DocModel">
+	<![CDATA[
+
+                UPDATE
+                    DOCUMENT
+                SET MEMO = #{memo},
                     MODIFY_DATE = now()
                 WHERE DOC_NAME = #{doc_name}
 

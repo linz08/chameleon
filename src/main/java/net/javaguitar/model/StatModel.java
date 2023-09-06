@@ -12,4 +12,5 @@ public class StatModel {
     private String current_count;
     private String total_count;
     private String fault_count;
+    private String doc_count;
 }
