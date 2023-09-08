@@ -49,7 +49,7 @@ $('#doc_search').autocomplete({
 	minLength: 1,// 최소 글자수
 	autoFocus: true,
 	delay: 300,	//autocomplete 딜레이 시간(ms),
-	position: { my : "right top", at: "right bottom" },
+	position: { my : "left top", at: "left bottom" },
 	select: function (evt, ui) {
 		// 아이템 선택시 실행 ui.item 이 선택된 항목을 나타내는 객체, lavel/value/idx를 가짐
 		console.log(ui.item.label);

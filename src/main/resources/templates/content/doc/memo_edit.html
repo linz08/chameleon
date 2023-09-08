@@ -72,6 +72,14 @@
     <form th:action="@{/doc_memo_update}" th:object="${docModel}"
           id="updateForm" method="POST">
         <input type="hidden" name="doc_name" id="doc_name" th:value="${docModel.doc_name}"/>
+        <label class="visually-hidden" for="specificSizeInputGroupUsername">담당자</label>
+        <div class="input-group">
+            <div class="input-group-text">담당자</div>
+            <input type="text" name="manager"
+                   id="manager"
+                   class="form-control"
+                   th:value="${docModel.manager}">
+        </div>
         <textarea name="memo" id="memo"
                   th:text="${docModel.memo}" class="ck_editor_txt"></textarea>
         <br/>

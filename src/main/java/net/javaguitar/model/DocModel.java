@@ -20,4 +20,5 @@ public class DocModel {
 	private String doc_month; // 이번달
 	private int doc_level;
 	private String memo; //암기법
+	private String manager; //담당자
 }

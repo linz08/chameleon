@@ -81,7 +81,7 @@
 
                 UPDATE
                     DOCUMENT
-                SET MEMO = #{memo},
+                SET MEMO = #{memo}, MANAGER = #{manager},
                     MODIFY_DATE = now()
                 WHERE DOC_NAME = #{doc_name}
 
