@@ -27,7 +27,7 @@
             position: fixed;
             top: 400px;
             z-index: 2;
-            /* width: 100% */
+            width: 50px;
             left: 0;
             right: 0;
 
@@ -90,7 +90,7 @@
                     onclick="doc_delete();">삭제
             </button>
             <button class="btn btn-secondary me-md-2" type="button"
-                    onclick="google_img();">구글이미지
+                    onclick="google_img();">이미지
             </button>
         </div>
     </form>
@@ -105,7 +105,23 @@
         {
             link: {
             addTargetToExternalLinks: true
-        }})
+            },
+            codeBlock: {
+                languages: [
+                    { language: 'plaintext', label: 'Plain text' }, // The default language.
+                    { language: 'java', label: 'Java' },
+                    { language: 'sql', label: 'SQL' },
+                    { language: 'javascript', label: 'JavaScript' },
+                    { language: 'xml', label: 'XML' },
+                    { language: 'html', label: 'HTML' },
+                    { language: 'c', label: 'C' },
+                    { language: 'cpp', label: 'C++' },
+                    { language: 'css', label: 'CSS' },
+                    { language: 'python', label: 'Python' }
+
+                ]
+            }
+        })
             .catch(error => {
                 //console.log( error );
             });
@@ -120,7 +136,7 @@
         }
 
         function google_img(){
-            window.open("/google.html", "_blank", "menubar=no, toolbar=no");
+            window.open("/google.html", "_blank", "width=500, height=550, menubar=no, toolbar=no");
         }
 
         // 상위문서명 바뀌기

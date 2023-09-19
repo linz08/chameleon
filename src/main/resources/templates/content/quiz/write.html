@@ -146,7 +146,24 @@
         let allEditors = document.querySelectorAll('.ck_editor_txt');
         for (let i = 0; i < allEditors.length; ++i) {
             ClassicEditor.create((allEditors[i]),
-                {})
+                {link: {
+                        addTargetToExternalLinks: true
+                    },
+                    codeBlock: {
+                        languages: [
+                            { language: 'plaintext', label: 'Plain text' }, // The default language.
+                            { language: 'java', label: 'Java' },
+                            { language: 'sql', label: 'SQL' },
+                            { language: 'javascript', label: 'JavaScript' },
+                            { language: 'xml', label: 'XML' },
+                            { language: 'html', label: 'HTML' },
+                            { language: 'c', label: 'C' },
+                            { language: 'cpp', label: 'C++' },
+                            { language: 'css', label: 'CSS' },
+                            { language: 'python', label: 'Python' }
+
+                        ]
+                    }})
                 .then(newEditor => {
                     editr = newEditor;
                 })

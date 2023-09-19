@@ -11,8 +11,13 @@
     <select id="selectDocSearch" parameterType="String"
             resultType="DocKeywordModel">
         SELECT A.DOC_NAME,A.KEYWORD
-        FROM DOCUMENT_KEYWORD A
-        WHERE KEYWORD LIKE CONCAT('%',#{doc_name},'%')
+        FROM (
+                 SELECT A.DOC_NAME,A.KEYWORD,COUNT(*) AS CNT
+                 FROM DOCUMENT_KEYWORD A, QUIZ_DOCUMENT B
+                 WHERE KEYWORD LIKE CONCAT('%',#{doc_name},'%')
+                   AND A.DOC_NAME = B.DOC_NAME
+                 GROUP BY A.DOC_NAME
+             ) A ORDER BY A.CNT DESC,A.DOC_NAME ASC
     </select>
     <insert id="insertDocKeyword" parameterType="DocKeywordModel">
 		<![CDATA[
@@ -34,5 +39,9 @@
     <delete id="deleteDocKeyword" parameterType="DocKeywordModel">
         DELETE FROM DOCUMENT_KEYWORD
         WHERE DOC_NAME = #{doc_name} AND KEYWORD = #{keyword}
+    </delete>
+    <delete id="deleteDocByKeyword" parameterType="DocKeywordModel">
+        DELETE FROM DOCUMENT_KEYWORD
+        WHERE DOC_NAME = #{doc_name}
     </delete>
 </mapper>

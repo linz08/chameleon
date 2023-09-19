@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
     <style>
         img {
-            width: 600px;
+            max-width: 100%;
             height: auto !important;
         }
 
@@ -40,8 +40,22 @@
             color: black;
             text-decoration: none;
         }
-
+        /* for block of code */
+        .hljs-ln td {
+            padding-right: 10px;
+        }
+        code, kbd, pre, samp {
+            font-family: "JetBrains Mono";
+            font-size: 0.8em;
+            direction: ltr;
+            unicode-bidi: bidi-override;
+        }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
+    <script>hljs.highlightAll();hljs.initLineNumbersOnLoad();</script>
 </head>
 <body>
 <div layout:fragment="content" class="content" th:object="${quizModel}">
@@ -145,6 +159,11 @@
         <button class="btn btn-outline-secondary" type="button" id="btn_doc_add">키워드 등록</button>
     </div>
     <script>
+        $(document).ready(function() {
+            $('code.hljs').each(function(i, block) {
+                hljs.lineNumbersBlock(block);
+            });
+        });
         $('#keyword_icon').click(function () {
             $('#keyword_button').removeClass('invisible');
             $('#keyword_button').addClass('visible');
@@ -175,6 +194,7 @@
                     $("#keyword_list").empty();
                     $("#keyword_list").append(str);
                     $('#doc_search').val('');
+                    document.getElementById("doc_search").focus();
                 }, error: function () {
                     alert('실패');
                 }
@@ -203,6 +223,7 @@
                     });
                     $("#keyword_list").empty();
                     $("#keyword_list").append(str);
+                    document.getElementById("doc_search").focus();
                     //console.log(str);
                 }, error: function () {
                     alert('실패');

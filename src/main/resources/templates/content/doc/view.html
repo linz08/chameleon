@@ -34,7 +34,7 @@
         #sub_left_center {
             position: fixed;
             top: 500px;
-            /* width: 100% */
+            width: 50px;
             left: 0;
             right: 0;
 
@@ -58,11 +58,10 @@
             border-radius: 0.25rem;
             transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
         }
-
-        .table table {
+/**        .table table {
             border: 1px solid black;
         }
-
+*/
         .table th, td {
             border: 1px solid black;
             padding: 5px
@@ -73,7 +72,23 @@
         a.doc_name:hover { text-decoration: none;color:#000000; }
         a.doc_name:active { text-decoration: none;color:#000000; }
 
+        /* for block of code */
+        .hljs-ln td {
+            border: 0px;
+            padding-right: 10px;
+        }
+        code, kbd, pre, samp {
+            font-family: "JetBrains Mono";
+            font-size: 0.8em;
+            direction: ltr;
+            unicode-bidi: bidi-override;
+        }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.8.0/highlightjs-line-numbers.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
+    <script>hljs.highlightAll();hljs.initLineNumbersOnLoad();</script>
 </head>
 <body>
 <div layout:fragment="content" class="content">
@@ -89,7 +104,7 @@
             </div>
         </nav>
         <div th:unless="${docModel.upper_doc_name.toString().equals('index')}" class="doc_path">
-            <a class="doc_name"  th:unless="${docModel.upper_doc_name.toString().equals('index')}" th:href="@{/doc/{id}(id=${docModel.upper_doc_name})}" th:text="${docModel.upper_doc_name}">상위 : </a> &nbsp;&nbsp;
+            <a class="doc_name"  th:unless="${docModel.upper_doc_name.toString().equals('index')}" th:href="@{'/doc/'+${docModel.upper_doc_name}+'/#'+${docModel.doc_name}}" th:text="${docModel.upper_doc_name}">상위 : </a> &nbsp;&nbsp;
             <label>
                 <select class="form-select"  th:id="doc_level" th:onchange="doc_level()">
                     <option th:each="src:${docLevelList}" th:value="${src.code_id}"
@@ -167,6 +182,12 @@
         </div>
     </div>
     <script>
+        $(document).ready(function() {
+            $('code.hljs').each(function(i, block) {
+                hljs.lineNumbersBlock(block);
+            });
+        });
+
         let exampleModal = document.getElementById('exampleModal')
         exampleModal.addEventListener('show.bs.modal', function (event) {
             // Button that triggered the modal

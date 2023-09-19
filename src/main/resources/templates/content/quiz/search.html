@@ -52,7 +52,7 @@
         <table class="table table-dark">
             <tbody>
             <tr th:each="quizList : ${quizList}">
-                <td><a class="link-light" th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}" th:text="${quizList.quiz_title}"/>
+                <td><a class="link-light" target="_blank" th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}" th:text="${quizList.quiz_title}"/>
                 </td>
             </tr>
             </tbody>

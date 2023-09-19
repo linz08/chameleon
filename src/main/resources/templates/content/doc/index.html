@@ -27,7 +27,6 @@
     </style>
 </head>
 <body>
-<h1 th:text="${Quiz}">Thymeleaf Test Page</h1>
 <div layout:fragment="content" class="content">
     <div class="nav-scroller bg-body shadow-sm">
         <nav class="navbar navbar-expand-lg bg-light">
@@ -69,6 +68,14 @@
         <div class="col-sm-6">
             <div class="card">
                 <div class="card-body">
+                    <h5 class="card-title">:: 전체 퀴즈 (성공율)</h5>
+                    <p class="card-text"><h1><span th:text="${statModel_ratio.current_count}"></span> / <span th:text="${statModel_ratio.total_count}"></span> (<span class="answer_ratio" th:text="${statModel_ratio.fault_count}"></span> %)</h1></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
                     <h5 class="card-title"><a href="javascript:doc_chk(-1)">&lt;-</a> 이달 문서 <a href="javascript:doc_chk(1)">-&gt;</a></h5>
                 </div>
             </div>
@@ -83,14 +90,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">:: 전체 퀴즈 (성공율)</h5>
-                    <p class="card-text"><h1><span th:text="${statModel_ratio.current_count}"></span> / <span th:text="${statModel_ratio.total_count}"></span> (<span class="answer_ratio" th:text="${statModel_ratio.fault_count}"></span> %)</h1></p>
-                </div>
-            </div>
-        </div>
+
     </div>
     <script
             src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -136,7 +136,7 @@
                     let str = '';
                     let row_idx = 1;
                     $(data).each(function () {
-                        str += '<a href="/doc/'+this.doc_name+'" target="_blank">'+ this.doc_name +'</a>&nbsp;&nbsp;&nbsp;';
+                        str += '<a href="/doc/'+this.doc_name+'" target="_blank">'+ this.doc_name +'</a><br/>';
                         row_idx++;
                     });
                     $("#month_doc").empty();

@@ -39,11 +39,12 @@ public class DocController {
         mav.addObject("statModel_doc", statModel_doc);
         mav.addObject("statModel_answer", statModel_answer);
         mav.addObject("statModel_ratio", statModel_ratio);
-        mav.addObject("month_val",month_val);
+        mav.addObject("month_val", month_val);
         //mav.addObject("docTodayList", docTodayList);
         mav.setViewName("content/doc/index");
         return mav;
     }
+
     @RequestMapping(value = {"/quiz/doc/monthlist"}, method = RequestMethod.POST)
     public @ResponseBody
     List<DocModel> quizDocTodayList(@ModelAttribute("quizDocumentModel") DocModel docModel) {
@@ -54,6 +55,7 @@ public class DocController {
         return quizTodayList;
 
     }
+
     @RequestMapping(value = "/doc/{doc_name}", method = RequestMethod.GET)
     public ModelAndView docName(@PathVariable String doc_name, HttpServletRequest request) throws Exception {
         ModelAndView mav = new ModelAndView();
@@ -61,7 +63,7 @@ public class DocController {
         DocModel docModel = new DocModel();
         if (docCheck == 0) {
             String referer = request.getHeader("Referer");
-            String upper_doc_name = referer.substring(referer.lastIndexOf("/")+1);
+            String upper_doc_name = referer.substring(referer.lastIndexOf("/") + 1);
             upper_doc_name = URLDecoder.decode(upper_doc_name, java.nio.charset.StandardCharsets.UTF_8.toString());
             docModel.setUpper_doc_name(upper_doc_name);
             docModel.setDoc_name(doc_name);
@@ -105,12 +107,16 @@ public class DocController {
         mav.setViewName("content/doc/edit");
         return mav;
     }
+
     @RequestMapping(value = {"/doc/delete/{doc_name}"}, method = {RequestMethod.GET})
     public String docDelete(@ModelAttribute("docModel") DocModel docModel
     ) throws Exception {
+        DocKeywordModel docKeywordModel = new DocKeywordModel();
+        docKeywordModel.setDoc_name(docModel.getDoc_name());
         ss.update("net.javaguitar.mapper.DocMapper.deleteDoc", docModel);
         ss.update("net.javaguitar.mapper.DocMapper.deleteDocbyQuiz", docModel);
-          return "redirect:/doc/index";
+        ss.update("net.javaguitar.mapper.DocKeywordMapper.deleteDocByKeyword", docKeywordModel);
+        return "redirect:/doc/index";
     }
 
     @RequestMapping(value = {"/doc/write"}, method = RequestMethod.GET)
@@ -125,12 +131,57 @@ public class DocController {
     @RequestMapping(value = {"/doc/update"}, method = {RequestMethod.POST})
     public String docUpdate(@ModelAttribute("docModel") DocModel docModel
     ) throws Exception {
+        if (docModel.getDoc_name().equals("감리") || docModel.getDoc_name().equals("사업관리") ||
+                docModel.getDoc_name().equals("소프트웨어공학") || docModel.getDoc_name().equals("데이터베이스") ||
+                docModel.getDoc_name().equals("시스템구조") || docModel.getDoc_name().equals("보안") ||
+                docModel.getDoc_name().equals("기타")
+
+        ) {
+            String strDoc_content = null;
+            strDoc_content = urlReplace(docModel.getDoc_content());
+
+            //System.out.println(strDoc_content);
+            docModel.setDoc_content(strDoc_content);
+        }
+
         ss.update("net.javaguitar.mapper.DocMapper.updateDoc", docModel);
         String docName = URLEncoder.encode(docModel.getDoc_name(), java.nio.charset.StandardCharsets.UTF_8.toString());
         docName = docName.replaceAll("\\+", "%20");
         return "redirect:/doc/" + docName;
     }
 
+    private String urlReplace(String strDoc_content) {
+        int phase_idx = 0;
+        int start_idx = 0;
+        int idx_end = 0;
+        String sub_content = null;
+        String strUrl = null;
+        String strDocName = null;
+        String strReplaceUrl = null;
+        String strRepCon = strDoc_content;
+        int doc_str_idx = 0;
+        int doc_end_idx = 0;
+        while (phase_idx != -1) {
+            sub_content = strDoc_content.substring(start_idx, strDoc_content.length());
+            //System.out.println("sub_content=" + sub_content);
+
+            phase_idx = sub_content.indexOf("<a href=");
+            if (phase_idx != -1) {
+                idx_end = sub_content.indexOf("</a>");
+                strUrl = sub_content.substring(phase_idx, idx_end + 4);
+                doc_str_idx = strUrl.indexOf("\">");
+                doc_end_idx = strUrl.indexOf("</a>");
+                strDocName = (strUrl.substring(doc_str_idx + 2, doc_end_idx));
+                strReplaceUrl = "<a href=\"/doc/" + strDocName + "\" name=\"" + strDocName + "\">" + strDocName + "</a>";
+
+                strRepCon = strRepCon.replaceAll(strUrl, strReplaceUrl);
+                //System.out.println("strRepCon="+strRepCon);
+
+                start_idx = start_idx + idx_end + 4;
+            }
+        }
+        return strRepCon;
+    }
 
     @RequestMapping(value = {"/docSearch"}, method = {RequestMethod.POST})
     public @ResponseBody
@@ -143,7 +194,7 @@ public class DocController {
 
     @RequestMapping(value = {"/docAdd"}, method = {RequestMethod.POST})
     public @ResponseBody
-    List<QuizDocumentModel>  docAdd(@ModelAttribute("quizDocumentModel") QuizDocumentModel quizDocumentModel) {
+    List<QuizDocumentModel> docAdd(@ModelAttribute("quizDocumentModel") QuizDocumentModel quizDocumentModel) {
         ss.insert("net.javaguitar.mapper.QuizDocumentMapper.insertQuizDocument", quizDocumentModel);
         List<QuizDocumentModel> quizDocumentModelList;
         quizDocumentModelList = ss
@@ -199,7 +250,7 @@ public class DocController {
 
         ss.update("net.javaguitar.mapper.DocMapper.updateNewDocName", docModel);
         ss.update("net.javaguitar.mapper.DocMapper.updateNewDocNameQuiz", docModel);
-        ss.update("net.javaguitar.mapper.DocKeywordMapper.updateDocKeyword",docKeywordModel);
+        ss.update("net.javaguitar.mapper.DocKeywordMapper.updateDocKeyword", docKeywordModel);
     }
 
     @RequestMapping(value = {"/doc_memo_update"}, method = {RequestMethod.POST})
@@ -210,9 +261,10 @@ public class DocController {
         docName = docName.replaceAll("\\+", "%20");
         return "redirect:/doc/memo/" + docName;
     }
+
     @RequestMapping(value = {"/doc/memo/{doc_name}"}, method = RequestMethod.GET)
     public ModelAndView doc_memo_Select(@ModelAttribute("docModel") DocModel docModel,
-                                  @PathVariable String doc_name) {
+                                        @PathVariable String doc_name) {
         ModelAndView mav = new ModelAndView();
 
         docModel.setDoc_name(doc_name);
