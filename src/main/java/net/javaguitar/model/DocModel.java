@@ -15,10 +15,12 @@ public class DocModel {
 	private int sort_num;
 	private String doc_content;
 	private int read_num;
+	private int quiz_cnt; // 퀴즈 갯수
 	private String read_date;
 	private String main_show;
 	private String doc_month; // 이번달
 	private int doc_level;
 	private String memo; //암기법
 	private String manager; //담당자
+	private String modify_date; //수정일
 }

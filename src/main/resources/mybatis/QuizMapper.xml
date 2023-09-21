@@ -1,8 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="net.javaguitar.mapper.QuizMapper">
+    <select id="selectQuiz_Default" resultType="QuizModel">
+     SELECT
+            A.*, /* QuizMapper.selectQuiz  퀴즈 기본 */
+            FNC_COMMON_CODE(A.QUIZ_SOURCE) AS QUIZ_SOURCE_NAME,
+            (
+                SELECT CATEGORY_NAME
+                FROM
+                    DOCUMENT_CATEGORY
+                WHERE
+                    DOC_CODE = A.DOC_CODE
+            ) AS CATEGORY_NAME
+        FROM
+            QUIZ A
+        ORDER BY
+            RAND()
+        LIMIT 1
+    </select>
     <select id="selectQuiz" resultType="QuizModel">
-        SELECT A.*,
+        SELECT
+            A.*, /* QuizMapper.selectQuiz  한번도 안 푼 퀴즈 */
+            FNC_COMMON_CODE(A.QUIZ_SOURCE) AS QUIZ_SOURCE_NAME,
+            (
+                SELECT CATEGORY_NAME
+                FROM
+                    DOCUMENT_CATEGORY
+                WHERE
+                    DOC_CODE = A.DOC_CODE
+            ) AS CATEGORY_NAME
+        FROM
+            QUIZ A WHERE NOT EXISTS (SELECT * FROM QUIZ_STAT B WHERE B.DOC_CODE = A.DOC_CODE
+                                                                 AND B.QUIZ_NUMBER  =A.QUIZ_NUMBER)
+        ORDER BY
+            RAND()
+        LIMIT 1
+    </select>
+    <select id="selectQuiz_NoDoc" resultType="QuizModel">
+        SELECT A.*, /* QuizMapper.selectQuiz_NoDoc  문서 없는 것 */
                fnc_common_code(A.QUIZ_SOURCE)                                            AS QUIZ_SOURCE_NAME,
                (SELECT CATEGORY_NAME FROM DOCUMENT_CATEGORY WHERE DOC_CODE = A.DOC_CODE) AS CATEGORY_NAME
         FROM QUIZ A

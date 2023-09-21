@@ -79,17 +79,18 @@
         </div>
     </div>
     <div>
-        <span class="badge rounded-pill bg-primary" style="cursor:pointer" onclick="openWindowPop()">문제해설</span> <span
-            class="badge rounded-pill bg-secondary">문제통계</span> <span
+        <span class="badge rounded-pill bg-primary" style="cursor:pointer" onclick="openWindowPop()">문제해설</span><!--<span
+            class="badge rounded-pill bg-secondary">문제통계</span>--> <span
             class="badge rounded-pill bg-success" style="cursor:pointer" onclick="quiz_boorkmark()">북마크</span> <span
             class="badge rounded-pill bg-warning"
             style="cursor:pointer" onclick="quiz_stat('X');">skip</span>
+        <span class="badge rounded-pill bg-success"><a href="/index">Shot</a></span>
         <span
                 class="badge rounded-pill bg-danger" style="cursor:pointer"
                 th:onclick="'location.href=\'/quiz/list/'+@{${quizModel.quiz_source}}+'\''"
                 th:utext="''+${quizModel.quiz_source_name}+ ': ['+${quizModel.category_name}+'] '+${quizModel.quiz_org_number}+'번'"></span>
         <span class="badge rounded-pill bg-info" style="cursor:pointer" onclick="openNext()">N</span>
-        <select
+        <!--<select
                 aria-label="문제패턴" id="pattern_code" th:name="pattern_code">
             <option th:each="val:${ptnCodeList}"
                     th:value="${val.code_id}"
@@ -103,6 +104,7 @@
                 th:utext="${val.code_name}"></option>
     </select>&nbsp;&nbsp;<span
             class="badge rounded-pill bg-secondary" style="cursor:pointer" onclick="quiz_etc()">적용</span>
+            -->
     </div>
     <hr/>
     <table class="table">
@@ -158,6 +160,14 @@
                aria-describedby="button-addon2">
         <button class="btn btn-outline-secondary" type="button" id="btn_doc_add">키워드 등록</button>
     </div>
+    <div class="progress">
+        <div class="progress-bar" role="progressbar" th:style="'width:'+${quizStatModel.success_rate}+'%'"
+             aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" th:text="${quizStatModel.success_rate}">25%</div>
+    </div>
+    <ul class="list-group">
+        <li class="list-group-item list-group-item-success" th:text="'성공 : '+${quizStatModel.success_cnt}"></li>
+        <li class="list-group-item list-group-item-danger" th:text="'실패 : '+${quizStatModel.fail_cnt}"></li>
+    </ul>
     <script>
         $(document).ready(function() {
             $('code.hljs').each(function(i, block) {

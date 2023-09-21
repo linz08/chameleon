@@ -20,7 +20,9 @@
     </select>
     <select id="selectDocToDay"
             resultType="DocModel">
-        SELECT DOC_NAME FROM DOCUMENT WHERE (DATE_FORMAT(CREATE_DATE,'%Y-%m') = DATE_FORMAT(CONCAT(#{doc_month},'01'),'%Y-%m')
+        SELECT DOC_NAME,MODIFY_DATE,
+        (SELECT COUNT(*) FROM QUIZ_DOCUMENT B WHERE B.DOC_NAME =A.DOC_NAME ) AS QUIZ_CNT
+        FROM DOCUMENT A WHERE (DATE_FORMAT(CREATE_DATE,'%Y-%m') = DATE_FORMAT(CONCAT(#{doc_month},'01'),'%Y-%m')
             OR DATE_FORMAT(MODIFY_DATE,'%Y-%m') = DATE_FORMAT(CONCAT(#{doc_month},'01'),'%Y-%m')) AND MAIN_SHOW = 'N'
             ORDER BY MODIFY_DATE DESC
     </select>

@@ -13,9 +13,10 @@
         SELECT A.DOC_NAME,A.KEYWORD
         FROM (
                  SELECT A.DOC_NAME,A.KEYWORD,COUNT(*) AS CNT
-                 FROM DOCUMENT_KEYWORD A, QUIZ_DOCUMENT B
-                 WHERE KEYWORD LIKE CONCAT('%',#{doc_name},'%')
-                   AND A.DOC_NAME = B.DOC_NAME
+                 FROM (SELECT * FROM DOCUMENT_KEYWORD
+                       WHERE KEYWORD LIKE CONCAT('%',#{doc_name},'%')) A
+                          LEFT OUTER JOIN QUIZ_DOCUMENT B
+                                          ON A.DOC_NAME = B.DOC_NAME
                  GROUP BY A.DOC_NAME
              ) A ORDER BY A.CNT DESC,A.DOC_NAME ASC
     </select>

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
 import javax.servlet.http.HttpServletRequest;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -21,6 +20,7 @@ public class DocController {
     @Autowired
     SqlSession ss;
 
+    // 문서 기본 페이지
     @RequestMapping(value = "/doc/index", method = RequestMethod.GET)
     public ModelAndView docList(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
@@ -33,8 +33,10 @@ public class DocController {
         // List<DocModel> docTodayList = ss.selectList("net.javaguitar.mapper.DocMapper.selectDocToDay"); 밑으로
         LocalDate now = LocalDate.now();
 
+        // 이번달 체크
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMM");
         String month_val = now.format(formatter);
+
         mav.addObject("statModel", statModel);
         mav.addObject("statModel_doc", statModel_doc);
         mav.addObject("statModel_answer", statModel_answer);
@@ -42,6 +44,38 @@ public class DocController {
         mav.addObject("month_val", month_val);
         //mav.addObject("docTodayList", docTodayList);
         mav.setViewName("content/doc/index");
+        return mav;
+    }
+
+    //월별 문서 정리 -> 나중엔 캘린더로 변경 고려
+    @RequestMapping(value = "/doc/calendar", method = RequestMethod.GET)
+    public ModelAndView docCalendar(HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView();
+        // 이번달 체크
+            LocalDate now = LocalDate.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMM");
+        String month_val = now.format(formatter);
+        DocModel docModel = new DocModel();
+        docModel.setDoc_month(month_val);
+        List<DocModel> quizTodayList;
+        quizTodayList = ss
+                .selectList("net.javaguitar.mapper.DocMapper.selectDocToDay", docModel);
+        mav.addObject("month_val", month_val);
+        mav.addObject("quizTodayList", quizTodayList);
+        mav.setViewName("content/doc/calendar");
+        return mav;
+    }
+    @RequestMapping(value = "/doc/calendar/{yyyymm}", method = RequestMethod.GET)
+    public ModelAndView docCalendarYYYYmm(@PathVariable String yyyymm) {
+        ModelAndView mav = new ModelAndView();
+        DocModel docModel = new DocModel();
+        docModel.setDoc_month(yyyymm);
+        List<DocModel> quizTodayList;
+        quizTodayList = ss
+                .selectList("net.javaguitar.mapper.DocMapper.selectDocToDay", docModel);
+        mav.addObject("month_val", yyyymm);
+        mav.addObject("quizTodayList", quizTodayList);
+        mav.setViewName("content/doc/calendar");
         return mav;
     }
 

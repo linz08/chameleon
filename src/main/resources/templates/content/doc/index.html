@@ -44,15 +44,15 @@
         <div class="col-sm-6">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">:: 등록된 퀴즈 (오늘 / 미문서 / 전체)</h5>
-                    <p class="card-text"><h1><span th:text="${statModel.current_count}"></span> / <span th:text="${statModel.doc_count}"></span> / <span th:text="${statModel.total_count}"></span>개</h1></p>
+                    <h5 class="card-title">:: 등록된 퀴즈 (안푼것 / 오늘 / 미문서 / 전체)</h5>
+                    <p class="card-text"><h1><span th:text="${statModel.no_answer_count}"></span> / <span th:text="${statModel.current_count}"></span> / <span th:text="${statModel.doc_count}"></span> / <span th:text="${statModel.total_count}"></span>개</h1></p>
                 </div>
             </div>
         </div>
         <div class="col-sm-6">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">:: 등록된 문서 (오늘 / 전체)</h5>
+                    <h5 class="card-title">:: <a href="/doc/calendar" target="_blank">등록된 문서</a> (오늘 / 전체)</h5>
                     <p class="card-text"><h1><span th:text="${statModel_doc.current_count}"></span> / <span th:text="${statModel_doc.total_count}"></span>개</h1></p>
                 </div>
             </div>
@@ -117,7 +117,6 @@
             month_doc(str_oneMonthAgo);
             document.getElementById("month_val").value = str_oneMonthAgo;
         }
-
 
         function month_doc(doc_month) {
             $.ajax({

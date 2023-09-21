@@ -16,6 +16,17 @@
           AND DOC_CODE = #{doc_code}
 		      AND QUIZ_NUMBER = #{quiz_number}
     </select>
+    <select id="selectQuizSuccessRate" parameterType="QuizStatModel"
+            resultType="QuizStatModel">
+        <![CDATA[
+        SELECT SUCCESS.CNT AS SUCCESS_CNT,FAIL.CNT AS FAIL_CNT,
+        ROUND(SUCCESS.CNT/(SUCCESS.CNT+FAIL.CNT)*100,2) AS SUCCESS_RATE FROM
+        (SELECT COUNT(*) AS CNT FROM QUIZ_STAT  WHERE DOC_CODE=#{doc_code} AND QUIZ_NUMBER = #{quiz_number}
+        AND SUCCESS_YN <> 'Y')  FAIL,
+        (SELECT COUNT(*) AS CNT FROM QUIZ_STAT  WHERE DOC_CODE=#{doc_code} AND QUIZ_NUMBER = #{quiz_number}
+        AND SUCCESS_YN = 'Y') SUCCESS
+        ]]>
+    </select>
 
     <insert id="insertQuizStat" parameterType="QuizStatModel">
 		<![CDATA[

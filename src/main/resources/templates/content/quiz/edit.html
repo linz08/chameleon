@@ -86,6 +86,10 @@
                 <input class="btn btn-primary" type="button" value="Copy"  data-clipboard-target="#result">
             </div>
         </div>
+        <div class="col-sm-3">
+        <button class="btn btn-primary me-md-2" type="button"
+                onclick="update();">수정완료
+        </button></div>
         <div class="mb-3">
 				<textarea name="quiz_title" id="quiz_title"
                           th:text="${quizModel.quiz_title}" class="ck_editor_txt"></textarea>

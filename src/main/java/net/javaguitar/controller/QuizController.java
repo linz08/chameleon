@@ -43,9 +43,60 @@ public class QuizController {
         List<QuizDocumentModel> quizDocumentModelList = ss
                 .selectList("net.javaguitar.mapper.QuizDocumentMapper.selectQuizDocumentListByQuiz", quizDocumentModel);
 
+        // 퀴즈통계
+        QuizStatModel quizStatModel = new QuizStatModel();
+        quizStatModel.setDoc_code(quizModel.getDoc_code());
+        quizStatModel.setQuiz_number(quizModel.getQuiz_number());
+        quizStatModel = ss.selectOne("net.javaguitar.mapper.QuizStatMapper.selectQuizSuccessRate", quizStatModel);
+
         mav.addObject("ptnCodeList", ptnCodeList);
         mav.addObject("lvlCodeList", lvlCodeList);
         mav.addObject("quizModel", quizModel);
+        mav.addObject("quizStatModel", quizStatModel);
+        mav.addObject("quizDocumentModelList", quizDocumentModelList);
+
+        mav.setViewName("content/quiz/quiz");
+        return mav;
+    }
+
+    @RequestMapping(value = {"/index/{doc_code}/{quiz_number}"}, method = RequestMethod.GET)
+    public ModelAndView quizIndex(@PathVariable int doc_code, @PathVariable int quiz_number, ModelMap model)
+            throws Exception {
+        ModelAndView mav = new ModelAndView();
+
+        QuizModel quizModel = new QuizModel();
+
+        quizModel.setDoc_code(doc_code);
+        quizModel.setQuiz_number(quiz_number);
+        quizModel = ss.selectOne("net.javaguitar.mapper.QuizMapper.selectQuizEdit", quizModel);
+
+        if (quizModel.getQuiz_code() == 2) {
+            List<QuizObjectiveModel> ObjectList = ss
+                    .selectList("net.javaguitar.mapper.QuizObjectiveMapper.selectQuizObjective", quizModel);
+            mav.addObject("objectList", ObjectList);
+        }
+        // 문제패턴
+        List<CodeModel> ptnCodeList = ss.selectList("net.javaguitar.mapper.CodeMapper.selectCode", 5);
+        // 난이도
+        List<CodeModel> lvlCodeList = ss.selectList("net.javaguitar.mapper.CodeMapper.selectCode", 9);
+
+        QuizDocumentModel quizDocumentModel = new QuizDocumentModel();
+        quizDocumentModel.setDoc_code(doc_code);
+        quizDocumentModel.setQuiz_number(quiz_number);
+        // 관련문서
+        List<QuizDocumentModel> quizDocumentModelList = ss
+                .selectList("net.javaguitar.mapper.QuizDocumentMapper.selectQuizDocumentListByQuiz", quizDocumentModel);
+
+        // 퀴즈통계
+        QuizStatModel quizStatModel = new QuizStatModel();
+        quizStatModel.setDoc_code(quizModel.getDoc_code());
+        quizStatModel.setQuiz_number(quizModel.getQuiz_number());
+        quizStatModel = ss.selectOne("net.javaguitar.mapper.QuizStatMapper.selectQuizSuccessRate", quizStatModel);
+
+        mav.addObject("ptnCodeList", ptnCodeList);
+        mav.addObject("lvlCodeList", lvlCodeList);
+        mav.addObject("quizModel", quizModel);
+        mav.addObject("quizStatModel", quizStatModel);
         mav.addObject("quizDocumentModelList", quizDocumentModelList);
 
         mav.setViewName("content/quiz/quiz");
@@ -160,45 +211,6 @@ public class QuizController {
         mav.setViewName("content/quiz/list");
         return mav;
     }
-
-
-    @RequestMapping(value = {"/index/{doc_code}/{quiz_number}"}, method = RequestMethod.GET)
-    public ModelAndView quizIndex(@PathVariable int doc_code, @PathVariable int quiz_number, ModelMap model)
-            throws Exception {
-        ModelAndView mav = new ModelAndView();
-
-        QuizModel quizModel = new QuizModel();
-
-        quizModel.setDoc_code(doc_code);
-        quizModel.setQuiz_number(quiz_number);
-        quizModel = ss.selectOne("net.javaguitar.mapper.QuizMapper.selectQuizEdit", quizModel);
-
-        if (quizModel.getQuiz_code() == 2) {
-            List<QuizObjectiveModel> ObjectList = ss
-                    .selectList("net.javaguitar.mapper.QuizObjectiveMapper.selectQuizObjective", quizModel);
-            mav.addObject("objectList", ObjectList);
-        }
-        // 문제패턴
-        List<CodeModel> ptnCodeList = ss.selectList("net.javaguitar.mapper.CodeMapper.selectCode", 5);
-        // 난이도
-        List<CodeModel> lvlCodeList = ss.selectList("net.javaguitar.mapper.CodeMapper.selectCode", 9);
-
-        QuizDocumentModel quizDocumentModel = new QuizDocumentModel();
-        quizDocumentModel.setDoc_code(doc_code);
-        quizDocumentModel.setQuiz_number(quiz_number);
-        // 관련문서
-        List<QuizDocumentModel> quizDocumentModelList = ss
-                .selectList("net.javaguitar.mapper.QuizDocumentMapper.selectQuizDocumentListByQuiz", quizDocumentModel);
-
-        mav.addObject("ptnCodeList", ptnCodeList);
-        mav.addObject("lvlCodeList", lvlCodeList);
-        mav.addObject("quizModel", quizModel);
-        mav.addObject("quizDocumentModelList", quizDocumentModelList);
-
-        mav.setViewName("content/quiz/quiz");
-        return mav;
-    }
-
 
     @RequestMapping(value = {"/quiz/write"}, method = RequestMethod.GET)
     public ModelAndView quizWrite(@ModelAttribute("quizModel") QuizModel quizModel, ModelMap mode) throws Exception {

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}">
+<head>
+    <title>문서목록</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+<style>
+    a{
+        text-decoration-line: none;
+        color: inherit;
+    }
+
+</style>
+</head>
+<body>
+<div layout:fragment="content" class="content">
+    <figure class="text-center">
+        <blockquote class="blockquote">
+
+            <h1 class="display-3"><a href="javascript:doc_chk(-1)">&lt;</a> [[${month_val.substring(0,4)}+'.'+${month_val.substring(4,6)}]] <a href="javascript:doc_chk(1)">&gt;</a></h1>
+        </blockquote>
+    </figure>
+    <table class="table table-dark table-striped">
+        <thead>
+        <tr>
+            <th scope="col" style="text-align:center">퀴즈</th>
+            <th scope="col">문서명</th>
+            <th scope="col" style="text-align:center">날짜</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="quizTodayList,i : ${quizTodayList}"
+            th:with="today=${#strings.substring(quizTodayList.modify_date,0,10)}">
+            <th scope="row" style="text-align:center"><a th:href="@{'/quiz/doc/'+${quizTodayList.doc_name}}" th:target="_blank">[[${quizTodayList.quiz_cnt}]]</a></th>
+            <td><a th:href="@{'/doc/'+${quizTodayList.doc_name}}" th:target="_blank">[[${quizTodayList.doc_name}]]</a></td>
+            <td style="text-align:center">[[${today}]]</td>
+        </tr>
+        </tbody>
+    </table>
+    <input type="hidden" id="month_val" th:value="${month_val}" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script
+        src="https://releases.jquery.com/git/ui/jquery-ui-git.js"></script>
+<!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+    <script>
+
+        let doc_chk = function (plm) {
+            let doc_month = document.getElementById("month_val").value;
+            let date3 = new Date(doc_month.substr(0,4)+'-'+doc_month.substr(4,2)+'-'+'01');
+            let oneMonthAgo = new Date(date3.setMonth(date3.getMonth()+plm));
+            oneMonthAgo = oneMonthAgo.toISOString().split('T')[0];
+            let str_oneMonthAgo = oneMonthAgo.replace(/\-/g,'').substr(0,6);
+            document.location.href="/doc/calendar/"+str_oneMonthAgo;
+        }
+
+
+    </script>
+
+</div>
+</body>
+
+</html>
