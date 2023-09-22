@@ -76,9 +76,26 @@
     <div class="doc_title">
         <h1><span th:utext="${docModel.doc_name}"></span></h1>
     </div>
+    <div class="col-sm-3 w-75">
+        <label class="visually-hidden" for="specificSizeInputGroupUsername">원본이미지</label>
+        <div class="input-group">
+            <div class="input-group-text">원본이미지</div>
+            <input type="text"  placeholder="구글드라이브 경로" class="form-control" id="img_url" name="img_url"
+            onclick="this.value='';document.getElementById('img_target').value=''"/>
+            <button class="btn btn-secondary me-md-2" type="button" id="img_copy" data-clipboard-target="#img_target"
+                    onclick="img_convert();">복사
+            </button>
+        </div>
+        <div class="input-group">
+            <div class="input-group-text">수정이미지</div>
+            <input type="text" class="form-control" id="img_target" name="img_target" />
+
+        </div>
+    </div>
     <form th:action="@{/doc/update}" th:object="${docModel}"
           id="updateForm" method="POST">
         <input type="hidden" name="doc_name" id="doc_name" th:value="${docModel.doc_name}"/>
+        <input type="hidden" name="img_hidden" id="img_hidden" />
         <textarea name="doc_content" id="doc_content"
                   th:text="${docModel.doc_content}" class="ck_editor_txt"></textarea>
         <br/>
@@ -95,6 +112,7 @@
         </div>
     </form>
     <script src="/js/ckeditor5-31/doc/ckeditor.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
     <script>
         $(window).on('load', function () {
             $('#loader').hide();
@@ -225,6 +243,49 @@
                 });
             }
 
+        }
+        let img_convert = function(){
+            let gdUrl = $("#img_url");
+            let result;
+            if (!isValidUrl(gdUrl.val())) {
+                alert("You have inputted invalid path.");
+                gdUrl.val("");
+                return;
+            }
+            const url = new URL(gdUrl.val());
+            let urlParam = url.searchParams;
+            let gdId = urlParam.get('id');
+            let prefix = "http://drive.google.com/uc?export=view&id=";
+            result = (prefix + gdId);
+            document.getElementById('img_target').value = result;
+
+              let clipboard = new Clipboard('.btn');
+
+            clipboard.on('success', function(e) {
+                console.info('Action:', e.action);
+                console.info('Text:', e.text);
+                console.info('Trigger:', e.trigger);
+
+                e.clearSelection();
+            });
+
+            clipboard.on('error', function(e) {
+                console.error('Action:', e.action);
+                console.error('Trigger:', e.trigger);
+            });
+
+        }
+
+        // validity check. ref: https://gist.github.com/jlong/2428561
+        function isValidUrl(url) {
+            // to be impl...
+            let parser = document.createElement('a');
+            parser.href = url;
+
+            if(url === '' || parser.hostname !== "drive.google.com")
+                return false;
+
+            return true;
         }
 
     </script>
