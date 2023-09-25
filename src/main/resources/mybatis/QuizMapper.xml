@@ -63,12 +63,16 @@
 
     <select id="selectQuizList" parameterType="int"
             resultType="QuizModel">
-        SELECT B.CATEGORY_NAME, A.DOC_CODE, A.QUIZ_NUMBER, A.QUIZ_ORG_NUMBER
+<![CDATA[
+SELECT B.CATEGORY_NAME, A.DOC_CODE, A.QUIZ_NUMBER, A.QUIZ_ORG_NUMBER,
+        (SELECT COUNT(*) FROM QUIZ_STAT C WHERE C.SUCCESS_YN ='Y' AND C.DOC_CODE=A.DOC_CODE AND C.QUIZ_NUMBER=A.QUIZ_NUMBER) AS SUCCESS_Y,
+        (SELECT COUNT(*) FROM QUIZ_STAT C WHERE C.SUCCESS_YN <> 'Y' AND C.DOC_CODE=A.DOC_CODE AND C.QUIZ_NUMBER=A.QUIZ_NUMBER) AS SUCCESS_N
         FROM QUIZ A,
              DOCUMENT_CATEGORY B
         WHERE QUIZ_SOURCE = #{quiz_source}
           AND A.DOC_CODE = B.DOC_CODE
         ORDER BY CAST(QUIZ_ORG_NUMBER AS INTEGER)
+        ]]>
     </select>
     <select id="selectQuizDayList" parameterType="String"
             resultType="QuizModel">

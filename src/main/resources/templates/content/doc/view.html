@@ -140,32 +140,15 @@
         <span th:utext="${docModel.doc_content}"></span>
     </div>
     <br/>
-    <div class="doc_title"><span
-            class="badge rounded-pill bg-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal" style="cursor:pointer" >유사명</span>
-        <th:block th:each="docKeywordModelList,index : ${docKeywordModelList}">
-            <span th:onclick="del_keyword([[${docKeywordModelList.keyword}]])"  th:text="${docKeywordModelList.keyword}"></span>&nbsp;&nbsp;
-        </th:block>
+    <div><span id="keyword_icon"
+               class="badge rounded-pill bg-secondary" style="cursor:pointer">키워드</span>
+        <span id="keyword_list"></span>
     </div>
     <br/>
-    <!-- 키워드 등록 모달 -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">키워드 추가</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <input type="text" class="form-control" id="keyword">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" id="btn_doc_add" class="btn btn-primary">저장</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                </div>
-            </div>
-        </div>
+    <div id="keyword_button" class="input-group mb-3 w-50 invisible">
+        <input type="text" id="document_keyword" class="form-control" placeholder="키워드명" aria-label="키워드명"
+               aria-describedby="button-addon2">
+        <button class="btn btn-outline-secondary" type="button" id="btn_doc_add">키워드 등록</button>
     </div>
     <!-- 토스트 메시지 -->
     <div class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 11">
@@ -188,32 +171,10 @@
             });
         });
 
-        let exampleModal = document.getElementById('exampleModal')
-        exampleModal.addEventListener('show.bs.modal', function (event) {
-            // Button that triggered the modal
-            let button = event.relatedTarget
-            let modalTitle = exampleModal.querySelector('.modal-title')
-            modalTitle.textContent = '유사문서명'
-        })
-        $('#btn_doc_add').click(function () {
-            $.ajax({
-                type: "POST",
-                url: "/docKeywordAdd",
-                beforeSend: function (jqXHR, settings) {
-                    let header = $("meta[name='_csrf_header']").attr("content");
-                    let token = $("meta[name='_csrf']").attr("content");
-                    jqXHR.setRequestHeader(header, token);
-                },
-                data: {
-                    "doc_name": '[[${docModel.doc_name}]]',
-                    "keyword": $('#keyword').val()
-                },
-                success: function () {
-                    document.location.reload();
-                }, error: function () {
-                    alert('실패');
-                }
-            });
+        $('#keyword_icon').click(function () {
+            $('#keyword_button').removeClass('invisible');
+            $('#keyword_button').addClass('visible');
+            return false;
         });
 
         let del_keyword = function (keyword_name) {
@@ -230,7 +191,7 @@
                     "keyword": keyword_name
                 },
                 success: function () {
-                    document.location.reload();
+                    keyword_list();
                 }, error: function () {
                     alert('키워드 삭제 실패');
                 }
@@ -274,6 +235,65 @@
             let options = 'top=10, left=10, width=500, height=600, status=no, menubar=no, toolbar=no, resizable=yes';
             window.open(urls, "memo", options);
         }
+
+        $('#btn_doc_add').click(function () {
+            $.ajax({
+                type: "POST",
+                url: "/docKeywordAdd",
+                beforeSend: function (jqXHR, settings) {
+                    let header = $("meta[name='_csrf_header']").attr("content");
+                    let token = $("meta[name='_csrf']").attr("content");
+                    jqXHR.setRequestHeader(header, token);
+                },
+                data: {
+                    "keyword": $('#document_keyword').val(),
+                    "doc_name": '[[${docModel.doc_name}]]'
+                },
+                success: function (data) {
+                    let str = '';
+                    let row_idx = 1;
+                    $(data).each(function () {
+                        str += this.keyword +'</span>&nbsp;&nbsp;';
+                        row_idx++;
+                    });
+                    $("#keyword_list").empty();
+                    $("#keyword_list").append(str);
+                    $('#document_keyword').val('');
+                    document.getElementById("document_keyword").focus();
+                }, error: function () {
+                    console.log('실패');
+                }
+            });
+        });
+        let keyword_list = function() {
+            $.ajax({
+                type: "POST",
+                url: "/docKeyword/list",
+                beforeSend: function (jqXHR, settings) {
+                    let header = $("meta[name='_csrf_header']").attr("content");
+                    let token = $("meta[name='_csrf']").attr("content");
+                    jqXHR.setRequestHeader(header, token);
+                },
+                data: {
+                    "doc_name": '[[${docModel.doc_name}]]'
+                },
+                success: function (data) {
+                    //document.location.reload();
+                    let str = '';
+                    let row_idx = 1;
+                    $(data).each(function () {
+                        str += '<a onclick=\"del_keyword(\''+this.keyword+'\')\">' +this.keyword +'</a>&nbsp;&nbsp;&nbsp;';
+                        row_idx++;
+                    });
+                    $("#keyword_list").empty();
+                    $("#keyword_list").append(str);
+                    //console.log(str);
+                }, error: function () {
+                    alert('실패');
+                }
+            });
+        }
+        keyword_list();
     </script>
 </div>
 </body>

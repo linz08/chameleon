@@ -36,6 +36,21 @@
         <input type="hidden" id="quiz_code" name="quiz_code" value="2"><!-- 문항방식 -->
         <input type="hidden" id="pattern_code" name="pattern_code" value="6"><!-- 문제패턴 -->
         <input type="hidden" id="quiz_level" name="quiz_level" value="10"><!-- 난이도 -->
+        <div>
+            <div class="col-sm-3  w-100">
+                <label class="visually-hidden" for="specificSizeInputGroupUsername">원본이미지</label>
+                <div class="input-group">
+                    <div class="input-group-text">원본이미지</div>
+                    <input type="text" placeholder="구글드라이브 경로" class="form-control" id="img_url" name="img_url"
+                           onclick="this.value='';document.getElementById('img_target').value=''"/>
+                    <button class="btn btn-secondary me-md-2" type="button" id="img_copy" data-clipboard-target="#img_target"
+                            onclick="img_convert();">복사
+                    </button>
+                    <div class="input-group-text">수정이미지</div>
+                    <input type="text" class="form-control" id="img_target" name="img_target" />
+                </div>
+            </div>
+        </div>
         <div class="col-sm-3">
             <label class="visually-hidden" for="specificSizeInputGroupUsername">문제정답</label>
             <div class="input-group">
@@ -139,6 +154,7 @@
             integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
             crossorigin="anonymous"></script>
     <script src="/js/ckeditor5-31/quiz/ckeditor.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
     <script>
         $(window).on('load', function () {
             $('#loader').hide();
@@ -173,6 +189,49 @@
         }
         function google_img(){
             window.open("/google.html", "_blank", "menubar=no, toolbar=no");
+        }
+        let img_convert = function(){
+            let gdUrl = $("#img_url");
+            let result;
+            if (!isValidUrl(gdUrl.val())) {
+                alert("You have inputted invalid path.");
+                gdUrl.val("");
+                return;
+            }
+            const url = new URL(gdUrl.val());
+            let urlParam = url.searchParams;
+            let gdId = urlParam.get('id');
+            let prefix = "http://drive.google.com/uc?export=view&id=";
+            result = (prefix + gdId);
+            document.getElementById('img_target').value = result;
+
+            let clipboard = new Clipboard('.btn');
+
+            clipboard.on('success', function(e) {
+                console.info('Action:', e.action);
+                console.info('Text:', e.text);
+                console.info('Trigger:', e.trigger);
+
+                e.clearSelection();
+            });
+
+            clipboard.on('error', function(e) {
+                console.error('Action:', e.action);
+                console.error('Trigger:', e.trigger);
+            });
+
+        }
+
+        // validity check. ref: https://gist.github.com/jlong/2428561
+        function isValidUrl(url) {
+            // to be impl...
+            let parser = document.createElement('a');
+            parser.href = url;
+
+            if(url === '' || parser.hostname !== "drive.google.com")
+                return false;
+
+            return true;
         }
     </script>
 </div>

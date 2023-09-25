@@ -26,6 +26,15 @@
             <th scope="row" th:text="${index.index}">1</th>
             <td th:text="${quizList.quiz_source_name}">출처</td>
             <td><a class="link-light" target="_blank"
+                   th:if="${quizList.success_y <= quizList.success_n} and ${quizList.success_n} > 0" style="color:red"
+                   th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
+                   th:text="'[' + ${quizList.doc_code_name} +'] '+${quizList.quiz_org_number}"/>
+                <a class="link-light" target="_blank"
+                   th:if="${quizList.success_y > quizList.success_n}"  style="color:blue"
+                   th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
+                   th:text="'[' + ${quizList.doc_code_name} +'] '+${quizList.quiz_org_number}"/>
+                <a class="link-light" target="_blank"
+                   th:if="${quizList.success_y}==0 and ${quizList.success_n}==0 " style="color:green"
                    th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                    th:text="'[' + ${quizList.doc_code_name} +'] '+${quizList.quiz_org_number}"/>
             </td>

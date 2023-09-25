@@ -239,8 +239,13 @@ public class DocController {
 
     @RequestMapping(value = {"/docKeywordAdd"}, method = {RequestMethod.POST})
     public @ResponseBody
-    void docKeywordAdd(@ModelAttribute("docKeywordModel") DocKeywordModel docKeywordModel) {
+    List<DocKeywordModel> docKeywordAdd(@ModelAttribute("docKeywordModel") DocKeywordModel docKeywordModel) {
         ss.insert("net.javaguitar.mapper.DocKeywordMapper.insertDocKeyword", docKeywordModel);
+        //유사 문서명
+         List<DocKeywordModel> docKeywordModelList;
+        docKeywordModelList = ss
+                .selectList("net.javaguitar.mapper.DocKeywordMapper.selectDocKeyword", docKeywordModel);
+        return docKeywordModelList;
     }
 
     @RequestMapping(value = {"/docDel"}, method = {RequestMethod.POST})
@@ -255,6 +260,17 @@ public class DocController {
         ss.delete("net.javaguitar.mapper.DocKeywordMapper.deleteDocKeyword", docKeywordModel);
     }
 
+    /* 키워드 목록 */
+    @RequestMapping(value = {"/docKeyword/list"}, method = RequestMethod.POST)
+    public @ResponseBody
+    List<DocKeywordModel> docKeywordList(@ModelAttribute("docKeywordModel") DocKeywordModel docKeywordModel) {
+        List<DocKeywordModel> docKeywordModelList;
+        docKeywordModelList = ss
+                .selectList("net.javaguitar.mapper.DocKeywordMapper.selectDocKeyword", docKeywordModel);
+
+        return docKeywordModelList;
+
+    }
     @RequestMapping(value = {"/quiz/doc/list"}, method = RequestMethod.POST)
     public @ResponseBody
     List<QuizDocumentModel> quizDocument(@ModelAttribute("quizDocumentModel") QuizDocumentModel quizDocumentModel) {
