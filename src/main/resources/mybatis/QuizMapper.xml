@@ -82,6 +82,7 @@ SELECT B.CATEGORY_NAME, A.DOC_CODE, A.QUIZ_NUMBER, A.QUIZ_ORG_NUMBER,
         WHERE A.DOC_CODE = B.DOC_CODE
           AND A.QUIZ_NUMBER = B.QUIZ_NUMBER
           AND A.QUIZ_DATE = #{quiz_date}
+        ORDER BY A.CREATE_DATE DESC
     </select>
     <select id="selectQuizSearch" parameterType="String" resultType="QuizModel">
         SELECT DISTINCT A.QUIZ_TITLE, A.DOC_CODE, A.QUIZ_NUMBER

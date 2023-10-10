@@ -46,10 +46,18 @@ public class QuizStatController {
 
         quizStatModel.setQuiz_seq(quizSeq);
         quizStatCnt = ss.selectOne("net.javaguitar.mapper.QuizStatMapper.selectQuizStatCnt", quizStatModel);
-        if (quizStatCnt == 0) {
-            ss.insert("net.javaguitar.mapper.QuizStatMapper.insertQuizStat", quizStatModel);
-        } else {
-            ss.update("net.javaguitar.mapper.QuizStatMapper.updateQuizStat", quizStatModel);
+        if(quizStatModel.getSuccess_yn().equals("X")) { // X인 경우만 Update 처리
+            if (quizStatCnt == 0) {
+                ss.insert("net.javaguitar.mapper.QuizStatMapper.insertQuizStat", quizStatModel);
+            }
+            else {
+                ss.update("net.javaguitar.mapper.QuizStatMapper.updateQuizStat", quizStatModel);
+            }
+        }
+        else {
+            if (quizStatCnt == 0) {
+                ss.insert("net.javaguitar.mapper.QuizStatMapper.insertQuizStat", quizStatModel);
+            }
         }
     }
 }

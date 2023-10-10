@@ -36,21 +36,23 @@
                               QUIZ_SEQ,
                               QUIZ_NUM,
                               SUCCESS_YN,
-                              QUIZ_TIME)
+                              QUIZ_TIME,
+                              CREATE_DATE)
         VALUES ( date_format(NOW(), '%Y%m%d')
                , #{doc_code}
                , #{quiz_number}
                , #{quiz_seq}
                , 1
                , #{success_yn}
-               , #{quiz_time})
+               , #{quiz_time}
+               , now())
         ]]>
 	</insert>
     <update id="updateQuizStat" parameterType="QuizStatModel">
 	<![CDATA[
         UPDATE
             QUIZ_STAT
-        SET QUIZ_NUM= QUIZ_NUM + 1
+        SET SUCCESS_YN= #{success_yn}
         WHERE QUIZ_DATE = #{quiz_date}
           AND DOC_CODE = #{doc_code}
 		      AND QUIZ_NUMBER = #{quiz_number}

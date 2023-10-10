@@ -195,6 +195,7 @@ public class DocController {
         String strRepCon = strDoc_content;
         int doc_str_idx = 0;
         int doc_end_idx = 0;
+        //System.out.println("strDoc_content="+strDoc_content);
         while (phase_idx != -1) {
             sub_content = strDoc_content.substring(start_idx, strDoc_content.length());
             //System.out.println("sub_content=" + sub_content);
@@ -206,6 +207,7 @@ public class DocController {
                 doc_str_idx = strUrl.indexOf("\">");
                 doc_end_idx = strUrl.indexOf("</a>");
                 strDocName = (strUrl.substring(doc_str_idx + 2, doc_end_idx));
+                //System.out.println("strDocName="+strDocName);
                 strReplaceUrl = "<a href=\"/doc/" + strDocName + "\" name=\"" + strDocName + "\">" + strDocName + "</a>";
 
                 strRepCon = strRepCon.replaceAll(strUrl, strReplaceUrl);

@@ -5,6 +5,28 @@
       layout:decorate="~{layout/default_layout}" lang="ko">
 <head>
     <title>문제목록</title>
+<style>
+    a:link {
+        color: black;
+        text-decoration: none;
+    }
+
+    a:visited {
+        color: black;
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: black;
+        text-decoration: underline;
+    }
+
+    a:active {
+        color: black;
+        text-decoration: none;
+    }
+</style>
+</head>
 <body>
 <div layout:fragment="content" class="content">
     <div class="input-group mb-3">
@@ -41,7 +63,7 @@
             <tbody>
             <tr th:each="quizList : ${quizList}">
                 <td><span th:text="${quizList.quiz_number}"></span></td>
-                <td><a class="link-light" th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}" th:text="${quizList.quiz_title}"/>
+                <td><a class="link-light" th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}" th:utext="${quizList.quiz_title}"/>
                 </td>
             </tr>
             </tbody>

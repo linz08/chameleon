@@ -122,7 +122,16 @@
         ClassicEditor.create((allEditors),
         {
             link: {
-            addTargetToExternalLinks: true
+                decorators: {
+                    openInNewTab: {
+                        mode: 'manual',
+                        label: 'Open in a new tab',
+                        attributes: {
+                            target: '_blank',
+                            rel: 'noopener noreferrer'
+                        }
+                    }
+                }
             },
             codeBlock: {
                 languages: [
