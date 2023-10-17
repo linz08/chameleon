@@ -23,4 +23,5 @@ public class DocModel {
 	private String memo; //암기법
 	private String manager; //담당자
 	private String modify_date; //수정일
+	private int rankings; // 토픽 순위
 }

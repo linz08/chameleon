@@ -76,24 +76,23 @@
     <div class="doc_title">
         <h1><span th:utext="${docModel.doc_name}"></span></h1>
     </div>
-    <div class="col-sm-3 w-75">
-        <label class="visually-hidden" for="specificSizeInputGroupUsername">원본이미지</label>
-        <div class="input-group">
-            <div class="input-group-text">원본이미지</div>
-            <input type="text"  placeholder="구글드라이브 경로" class="form-control" id="img_url" name="img_url"
-            onclick="this.value='';document.getElementById('img_target').value=''"/>
-            <button class="btn btn-secondary me-md-2" type="button" id="img_copy" data-clipboard-target="#img_target"
-                    onclick="img_convert();">복사
-            </button>
-        </div>
-        <div class="input-group">
-            <div class="input-group-text">수정이미지</div>
-            <input type="text" class="form-control" id="img_target" name="img_target" />
-
-        </div>
-    </div>
     <form th:action="@{/doc/update}" th:object="${docModel}"
           id="updateForm" method="POST">
+    <div class="col-sm-3 w-100">
+        <label class="visually-hidden" for="specificSizeInputGroupUsername">원본이미지</label>
+        <div class="input-group">
+            <div class="input-group-text" style="background-color: #0a53be">순위</div>
+            <input type="text" class="form-control" id="rankings" name="rankings" th:value="${docModel.rankings}" />
+            <div class="input-group-text">원본이미지</div>
+            <input type="text" placeholder="구글드라이브 경로" class="form-control" id="img_url" name="img_url"
+                   onclick="this.value='';document.getElementById('img_target').value=''"/>
+            <button class="btn btn-success me-md-2" type="button" id="img_copy" data-clipboard-target="#img_target"
+                    onclick="img_convert();">복사
+            </button>
+            <div class="input-group-text">수정이미지</div>
+            <input type="text" class="form-control w-25" id="img_target" name="img_target"/>
+        </div>
+    </div>
         <input type="hidden" name="doc_name" id="doc_name" th:value="${docModel.doc_name}"/>
         <input type="hidden" name="img_hidden" id="img_hidden" />
         <textarea name="doc_content" id="doc_content"

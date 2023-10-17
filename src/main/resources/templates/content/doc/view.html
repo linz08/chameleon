@@ -142,8 +142,9 @@
     <div id="sub_left_center" class="nav-scroller"><a class="doc_name" th:href="@{/doc/edit/{id}(id=${docModel.doc_name})}"><span class="badge badge-light">E</span></a></div>
     <br/><br/><br/>
     <div class="doc_title">
-        <h1><a class="doc_name" th:href="@{/doc/edit/{id}(id=${docModel.doc_name})}"><span th:utext="':: '+${docModel.doc_name}"></span></a>
-            <a class="doc_name" th:href="@{/quiz/doc/{id}(id=${docModel.doc_name})}" target="_blank"><span th:utext="'('+${quizCnt}+')'"></span></a></h1>
+        <h1><a class="doc_name" th:href="@{/doc/edit/{id}(id=${docModel.doc_name})}"><span th:utext="'('+${docModel.rankings}+') '+${docModel.doc_name}"></span></a>
+            <a class="doc_name" th:href="@{/quiz/doc/{id}(id=${docModel.doc_name})}" target="_blank"><span th:utext="'['+${quizCnt}+']'"></span></a></h1>
+
     </div>
     <div class="doc_content">
         <span th:utext="${docModel.doc_content}"></span>

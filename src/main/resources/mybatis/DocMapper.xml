@@ -32,6 +32,7 @@
                 UPDATE
                     DOCUMENT
                 SET DOC_CONTENT = #{doc_content},
+                    RANKINGS = #{rankings},
                     MODIFY_DATE = now()
                 WHERE DOC_NAME = #{doc_name}
 

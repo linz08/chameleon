@@ -168,5 +168,13 @@ SELECT B.CATEGORY_NAME, A.DOC_CODE, A.QUIZ_NUMBER, A.QUIZ_ORG_NUMBER,
             IFNULL(MAX(QUIZ_NUMBER) + 1, 1)
         FROM QUIZ
     </select>
-
+    <select id="selectPreAnswer" resultType="java.lang.String">
+        SELECT /*
+		QuizMapper.selectPreAnswer */
+            QUIZ_ANSWER
+        FROM QUIZ_PRE_ANSWER WHERE
+                DOC_CODE = #{doc_code}
+            AND QUIZ_SOURCE = #{quiz_source}
+            AND QUIZ_ORG_NUMBER = #{quiz_org_number}
+    </select>
 </mapper>

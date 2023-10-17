@@ -66,8 +66,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel">문제해설</h4>
-                    <button type="button" class="btn-close" data-dismiss="modal">
-                    </button>
+                    <button class="btn-close" data-dismiss="modal"></button>
                 </div>
                 <div class="modal-body" th:utext="${quizModel.quiz_desc}">...</div>
                 <div class="modal-footer">
@@ -79,7 +78,9 @@
         </div>
     </div>
     <div>
-        <span class="badge rounded-pill bg-primary" style="cursor:pointer" onclick="openWindowPop()">문제해설</span><!--<span
+        <span  th:if="${quizModel.quiz_desc != null && quizModel.quiz_desc !=''}" type="button" class="badge rounded-pill bg-primary" style="cursor:pointer" onclick="openWindowPop()">문제해설</span>
+        <span  th:if="${quizModel.quiz_desc == null || quizModel.quiz_desc ==''}" type="button" class="badge rounded-pill bg-secondary" style="cursor:pointer" onclick="openWindowPop()">문제해설</span>
+        <!--<span
             class="badge rounded-pill bg-secondary">문제통계</span>--> <span
             class="badge rounded-pill bg-success" style="cursor:pointer" onclick="quiz_boorkmark()">북마크</span> <span
             class="badge rounded-pill bg-warning"

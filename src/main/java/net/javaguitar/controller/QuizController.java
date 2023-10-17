@@ -212,6 +212,18 @@ public class QuizController {
         return mav;
     }
 
+    @RequestMapping(value = {"/quiz/all_list"}, method = RequestMethod.GET)
+    public ModelAndView quizAllList() {
+        ModelAndView mav = new ModelAndView();
+
+        // 출처
+        List<CodeModel> srcCodeList = ss.selectList("net.javaguitar.mapper.CodeMapper.selectCode", 13);
+        mav.addObject("srcCodeList", srcCodeList);
+
+        mav.setViewName("content/quiz/all_list");
+        return mav;
+    }
+
     @RequestMapping(value = {"/quiz/write"}, method = RequestMethod.GET)
     public ModelAndView quizWrite(@ModelAttribute("quizModel") QuizModel quizModel, ModelMap mode) throws Exception {
         ModelAndView mav = new ModelAndView();
@@ -239,6 +251,14 @@ public class QuizController {
 
     }
 
+    /* 정답 미리 가져오기 */
+    @RequestMapping(value = {"/pre_answer"}, method = RequestMethod.POST)
+    public @ResponseBody
+    String pre_answer(@ModelAttribute("quizModel") QuizModel quizModel) {
+
+        return ss.selectOne("net.javaguitar.mapper.QuizMapper.selectPreAnswer",quizModel);
+
+    }
 
     @RequestMapping(value = {"/quiz/edit/{doc_code}/{quiz_number}"}, method = RequestMethod.GET)
     public ModelAndView quizEdit(@PathVariable int doc_code, @PathVariable int quiz_number,

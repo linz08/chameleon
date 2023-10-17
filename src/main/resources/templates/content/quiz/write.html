@@ -3,8 +3,8 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/default_layout}" lang="ko">
+<title>문제등록</title>
 <head>
-    <title>문제등록</title>
 </head>
 <body>
 <div layout:fragment="content" class="content">
@@ -23,10 +23,10 @@
                 return false;
             }
             let doc_code = document.getElementById("doc_code");
-            if(doc_code.options[doc_code.selectedIndex].value=== '1'){
+            if (doc_code.options[doc_code.selectedIndex].value === '1') {
                 alert("문서분류를 선택해 주세요");
                 return false;
-        }
+            }
 
             document.getElementById("insertForm").submit();
         }
@@ -48,7 +48,7 @@
             <div class="input-group">
                 <div class="input-group-text">출처</div>
                 <select
-                        class="form-select" aria-label="출처" th:name="quiz_source">
+                        class="form-select" aria-label="출처" th:name="quiz_source" th:id="quiz_source">
                     <option th:each="srcs:${srcCodeList}"
                             th:value="${srcs.code_id}" th:utext="${srcs.code_name}"
                             th:selected="${srcs.code_id}==${session.quiz_source}"></option>
@@ -82,43 +82,49 @@
 				<textarea name="quiz_subtitle" id="quiz_subtitle"
                           class="ck_editor_txt" placeholder="문제 설명을 적으세요."></textarea>
         </div>
-            <div class="col-sm-3 w-100">
-                <label class="visually-hidden" for="specificSizeInputGroupUsername">원본이미지</label>
-                <div class="input-group">
-                    <div class="input-group-text">원본이미지</div>
-                    <input type="text" placeholder="구글드라이브 경로" class="form-control" id="img_url" name="img_url"
-                           onclick="this.value='';document.getElementById('img_target').value=''"/>
-                    <button class="btn btn-success me-md-2" type="button" id="img_copy" data-clipboard-target="#img_target"
-                            onclick="img_convert();">복사
-                    </button>
-                    <div class="input-group-text">수정이미지</div>
-                    <input type="text" class="form-control" id="img_target" name="img_target" />
-                </div>
+        <div class="col-sm-3 w-100">
+            <label class="visually-hidden" for="specificSizeInputGroupUsername">원본이미지</label>
+            <div class="input-group">
+                <div class="input-group-text">원본이미지</div>
+                <input type="text" placeholder="구글드라이브 경로" class="form-control" id="img_url" name="img_url"
+                       onclick="this.value='';document.getElementById('img_target').value=''"/>
+                <button class="btn btn-success me-md-2" type="button" id="img_copy" data-clipboard-target="#img_target"
+                        onclick="img_convert();">복사
+                </button>
+                <div class="input-group-text">수정이미지</div>
+                <input type="text" class="form-control w-25" id="img_target" name="img_target"/>
             </div>
+        </div>
         <div class="row">
             <div class="col">
-                <span class="input-group-text" id="basic-addon6">1)번</span>
-                <textarea name="quiz_object_name" id="quiz_object_name"
+                <textarea name="quiz_object_name" id="quiz_object_name" placeholder="1번 문항"
                           class="ck_editor_txt"></textarea>
             </div>
             <div class="col">
-                <span class="input-group-text" id="basic-addon7">2)번</span>
-                <textarea name="quiz_object_name" id="quiz_object_name"
+                <textarea name="quiz_object_name" id="quiz_object_name" placeholder="2번 문항"
                           class="ck_editor_txt"></textarea>
             </div>
         </div>
         <div class="row">
             <div class="col">
-                <span class="input-group-text" id="basic-addon8">3)번</span>
-                <textarea name="quiz_object_name" id="quiz_object_name"
+                <textarea name="quiz_object_name" id="quiz_object_name" placeholder="3번 문항"
                           class="ck_editor_txt"></textarea>
             </div>
             <div class="col">
-                <span class="input-group-text" id="basic-addon9">4)번</span>
-                <textarea name="quiz_object_name" id="quiz_object_name"
+                <textarea name="quiz_object_name" id="quiz_object_name" placeholder="4번 문항"
                           class="ck_editor_txt"></textarea>
             </div>
         </div>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+            <button class="btn btn-primary me-md-2" type="button"
+                    onclick="insert();">등록하기
+            </button>
+            <!--<a class="btn btn-primary" href="/index" role="button">취소하기</a>
+            <button class="btn btn-secondary me-md-2" type="button"
+                    onclick="google_img();">구글이미지
+            </button>-->
+        </div>
+        <!--
         <div class="row">
             <div class="col">
                 <span class="input-group-text" id="basic-addon8">5)번</span>
@@ -131,17 +137,7 @@
             <textarea name="quiz_desc" id="quiz_desc"
                       class="ck_editor_txt" placeholder="문제 해설을 적으세요."></textarea>
         </div>
-        <br/>
-        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-            <button class="btn btn-primary me-md-2" type="button"
-                    onclick="insert();">등록하기
-            </button>
-            <a class="btn btn-primary" href="/index" role="button">취소하기</a>
-            <button class="btn btn-secondary me-md-2" type="button"
-                    onclick="google_img();">구글이미지
-            </button>
-        </div>
-
+        -->
     </form>
     <!-- jQuery (부트스트랩의 자바스크립트 플러그인을 위해 필요합니다) -->
     <script
@@ -160,25 +156,27 @@
         let allEditors = document.querySelectorAll('.ck_editor_txt');
         for (let i = 0; i < allEditors.length; ++i) {
             ClassicEditor.create((allEditors[i]),
-                {link: {
+                {
+                    link: {
                         addTargetToExternalLinks: true
                     },
                     codeBlock: {
                         languages: [
 
-                            { language: 'sql', label: 'SQL' },
-                            { language: 'c', label: 'C' },
-                            { language: 'java', label: 'Java' },
-                            { language: 'plaintext', label: 'Plain text' },
-                            { language: 'cpp', label: 'C++' },
-                            { language: 'javascript', label: 'JavaScript' },
-                            { language: 'xml', label: 'XML' },
-                            { language: 'html', label: 'HTML' },
-                            { language: 'css', label: 'CSS' },
-                            { language: 'python', label: 'Python' }
+                            {language: 'sql', label: 'SQL'},
+                            {language: 'c', label: 'C'},
+                            {language: 'java', label: 'Java'},
+                            {language: 'plaintext', label: 'Plain text'},
+                            {language: 'cpp', label: 'C++'},
+                            {language: 'javascript', label: 'JavaScript'},
+                            {language: 'xml', label: 'XML'},
+                            {language: 'html', label: 'HTML'},
+                            {language: 'css', label: 'CSS'},
+                            {language: 'python', label: 'Python'}
 
                         ]
-                    }})
+                    }
+                })
                 .then(newEditor => {
                     editr = newEditor;
                 })
@@ -186,10 +184,12 @@
                     console.log(error);
                 });
         }
-        function google_img(){
+
+        function google_img() {
             window.open("/google.html", "_blank", "menubar=no, toolbar=no");
         }
-        let img_convert = function(){
+
+        let img_convert = function () {
             let gdUrl = $("#img_url");
             let result;
             if (!isValidUrl(gdUrl.val())) {
@@ -206,7 +206,7 @@
 
             let clipboard = new Clipboard('.btn');
 
-            clipboard.on('success', function(e) {
+            clipboard.on('success', function (e) {
                 console.info('Action:', e.action);
                 console.info('Text:', e.text);
                 console.info('Trigger:', e.trigger);
@@ -214,7 +214,7 @@
                 e.clearSelection();
             });
 
-            clipboard.on('error', function(e) {
+            clipboard.on('error', function (e) {
                 console.error('Action:', e.action);
                 console.error('Trigger:', e.trigger);
             });
@@ -227,11 +227,50 @@
             let parser = document.createElement('a');
             parser.href = url;
 
-            if(url === '' || parser.hostname !== "drive.google.com")
+            if (url === '' || parser.hostname !== "drive.google.com")
                 return false;
 
             return true;
         }
+
+        // 정답 미리 가져오기
+        function pre_answer() {
+            let doc_code = $("#doc_code option:selected").val();
+            let quiz_org_number = $('#quiz_org_number').val();
+            let quiz_source = $("#quiz_source option:selected").val();
+
+            console.log('퀴즈소스=' + quiz_source);
+
+            $.ajax({
+                type: "POST",
+                url: "/pre_answer",
+                beforeSend: function (jqXHR, settings) {
+                    let header = $("meta[name='_csrf_header']").attr("content");
+                    let token = $("meta[name='_csrf']").attr("content");
+                    jqXHR.setRequestHeader(header, token);
+                },
+                data: {
+                    "doc_code": doc_code,
+                    "quiz_org_number": quiz_org_number,
+                    "quiz_source": quiz_source
+                },
+                success: function (data) {
+                    console.log('ok =' + data);
+                    document.getElementById("quiz_answer").value = data;
+                }, error: function (request, status, error) {
+                    console.log("code:" + request.status + "\n");
+                    console.log("message:" + request.responseText + "\n");
+                    console.log("error:" + error);
+                }
+            });
+        }
+
+        //if($("#doc_code option:selected").val() != '' && $('#quiz_org_number').val() != '' && $("#quiz_source option:selected").val() !='') {
+        pre_answer();
+        //}
+        //else {
+
+        //}
     </script>
 </div>
 </body>
