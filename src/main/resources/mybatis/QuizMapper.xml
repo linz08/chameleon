@@ -61,16 +61,20 @@
               #{quiz_number}
     </select>
 
-    <select id="selectQuizList" parameterType="int"
-            resultType="QuizModel">
+    <select id="selectQuizList" parameterType="int" resultType="QuizModel">
 <![CDATA[
-SELECT B.CATEGORY_NAME, A.DOC_CODE, A.QUIZ_NUMBER, A.QUIZ_ORG_NUMBER,
-        (SELECT COUNT(*) FROM QUIZ_STAT C WHERE C.SUCCESS_YN ='Y' AND C.DOC_CODE=A.DOC_CODE AND C.QUIZ_NUMBER=A.QUIZ_NUMBER) AS SUCCESS_Y,
-        (SELECT COUNT(*) FROM QUIZ_STAT C WHERE C.SUCCESS_YN <> 'Y' AND C.DOC_CODE=A.DOC_CODE AND C.QUIZ_NUMBER=A.QUIZ_NUMBER) AS SUCCESS_N
-        FROM QUIZ A,
-             DOCUMENT_CATEGORY B
-        WHERE QUIZ_SOURCE = #{quiz_source}
-          AND A.DOC_CODE = B.DOC_CODE
+        SELECT /* QuizMapper.selectQuizList */
+            COALESCE(B.DOC_NAME,'N/A') AS CATEGORY_NAME,A.DOC_CODE, A.QUIZ_NUMBER, A.QUIZ_ORG_NUMBER,
+            (SELECT COUNT(*) FROM QUIZ_STAT C WHERE C.SUCCESS_YN ='Y' AND C.DOC_CODE=A.DOC_CODE AND C.QUIZ_NUMBER=A.QUIZ_NUMBER) AS SUCCESS_Y,
+            (SELECT COUNT(*) FROM QUIZ_STAT C WHERE C.SUCCESS_YN <> 'Y' AND C.DOC_CODE=A.DOC_CODE AND C.QUIZ_NUMBER=A.QUIZ_NUMBER) AS SUCCESS_N
+        FROM QUIZ A LEFT OUTER JOIN ( SELECT MAX(DOC_NAME) AS DOC_NAME,DOC_CODE,QUIZ_NUMBER FROM
+            (
+                SELECT X.DOC_NAME,X.DOC_CODE,X.QUIZ_NUMBER  FROM QUIZ_DOCUMENT X
+            )  Y
+                                      GROUP BY Y.DOC_CODE,Y.QUIZ_NUMBER) B
+                                    ON A.DOC_CODE  = B.DOC_CODE
+                                        AND A.QUIZ_NUMBER  = B.QUIZ_NUMBER
+        WHERE A.QUIZ_SOURCE = #{quiz_source}
         ORDER BY CAST(QUIZ_ORG_NUMBER AS INTEGER)
         ]]>
     </select>

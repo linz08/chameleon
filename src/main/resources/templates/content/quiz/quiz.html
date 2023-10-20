@@ -166,9 +166,12 @@
              aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" th:text="${quizStatModel.success_rate}">25%</div>
     </div>
     <ul class="list-group">
-        <li class="list-group-item list-group-item-success" th:text="'성공 : '+${quizStatModel.success_cnt}"></li>
+        <li class="list-group-item list-group-item-success" onclick="answer_visuable()" th:text="'성공 : '+${quizStatModel.success_cnt}"></li>
         <li class="list-group-item list-group-item-danger" th:text="'실패 : '+${quizStatModel.fail_cnt}"></li>
     </ul>
+    <div id="quiz_answer" class="input-group mb-3 invisible">
+        <span id="answer" th:text="${quizModel.quiz_answer}"></span>
+    </div>
     <script>
         $(document).ready(function() {
             $('code.hljs').each(function(i, block) {
@@ -345,6 +348,10 @@
             let urls = "/quiz/desc/[[${quizModel.doc_code}]]/[[${quizModel.quiz_number}]]";
             let options = 'top=10, left=10, width=500, height=600, status=no, menubar=no, toolbar=no, resizable=yes';
             window.open(urls, "description", options);
+        }
+        let answer_visuable = function() {
+            $('#quiz_answer').removeClass('invisible');
+            $('#quiz_answer').addClass('visible');
         }
         keyword_list();
     </script>

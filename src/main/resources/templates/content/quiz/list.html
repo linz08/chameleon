@@ -5,6 +5,9 @@
       layout:decorate="~{layout/default_layout}" lang="ko">
 <head>
     <title>문제목록</title>
+<style>
+    a:link { text-decoration: none; }
+</style></head>
 <body>
 <div layout:fragment="content" class="content">
     <div class="input-group mb-3">
@@ -38,8 +41,10 @@
             onclick="date_move(1)">&gt;</a>
         <span
                 class="badge rounded-pill bg-success" style="cursor:pointer" onclick="quiz_boorkmark()">안푼목록</span>
+        <br/><br/>
     </div>
     <div style="width:20%;float:left;">
+        <span class="d-block p-2 bg-primary text-white">감사</span>
         <table class="table table-dark">
             <tbody>
             <tr th:each="quizList : ${quizList}" th:if="${quizList.doc_code}==2 or ${quizList.doc_code}==3">
@@ -47,114 +52,113 @@
                     <a class="link-light"
                        th:if="${quizList.success_y <= quizList.success_n} and ${quizList.success_n} > 0" style="color:red"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
-                       th:text="'[' + ${quizList.category_name} +'] '+${quizList.quiz_org_number}"></a>
+                       th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
                     <a class="link-light"
                        th:if="${quizList.success_y > quizList.success_n}"  style="color:blue"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
-                       th:text="'[' + ${quizList.category_name} +'] '+${quizList.quiz_org_number}"></a>
+                       th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
                     <a class="link-light"
                        th:if="${quizList.success_y}==0 and ${quizList.success_n}==0 " style="color:green"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
-                       th:text="'[' + ${quizList.category_name} +'] '+${quizList.quiz_org_number}"></a>
+                       th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
                     &nbsp;&nbsp;<a class="link-light"
-                                   th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}">[편]</a>
-                    <span th:text="'['+ ${quizList.success_y}+' : '+${quizList.success_n}+']'"></span>
+                                   th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}"><span th:text="'['+ ${quizList.success_y}+' : '+${quizList.success_n}+']'"></span></a>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
     <div style="width:20%;float:left;">
+        <span class="d-block p-2 bg-secondary text-white">소공</span>
         <table class="table table-dark">
             <tbody>
             <tr th:each="quizList : ${quizList}" th:if="${quizList.doc_code}==4">
                 <td><a class="link-light"
                        th:if="${quizList.success_y <= quizList.success_n} and ${quizList.success_n} > 0" style="color:red"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
-                       th:text="'[' + ${quizList.category_name} +'] '+${quizList.quiz_org_number}"></a>
+                       th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
                     <a class="link-light"
                        th:if="${quizList.success_y > quizList.success_n}"  style="color:blue"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
-                       th:text="'[' + ${quizList.category_name} +'] '+${quizList.quiz_org_number}"></a>
+                       th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
                     <a class="link-light"
                        th:if="${quizList.success_y}==0 and ${quizList.success_n}==0 " style="color:green"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
-                       th:text="'[' + ${quizList.category_name} +'] '+${quizList.quiz_org_number}"></a>
+                       th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
                     &nbsp;&nbsp;<a class="link-light"
-                                   th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}">[편]</a>
-                    <span th:text="'['+ ${quizList.success_y}+' : '+${quizList.success_n}+']'"></span>
+                                   th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}"><span th:text="'['+ ${quizList.success_y}+' : '+${quizList.success_n}+']'"></span></a>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
     <div style="width:20%;float:left;">
+        <span class="d-block p-2 bg-success text-white">DB</span>
         <table class="table table-dark">
             <tbody>
             <tr th:each="quizList : ${quizList}" th:if="${quizList.doc_code}==5">
                 <td><a class="link-light"
                        th:if="${quizList.success_y <= quizList.success_n} and ${quizList.success_n} > 0" style="color:red"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
-                       th:text="'[' + ${quizList.category_name} +'] '+${quizList.quiz_org_number}"></a>
+                       th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
                     <a class="link-light"
                        th:if="${quizList.success_y > quizList.success_n}"  style="color:blue"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
-                       th:text="'[' + ${quizList.category_name} +'] '+${quizList.quiz_org_number}"></a>
+                       th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
                     <a class="link-light"
                        th:if="${quizList.success_y}==0 and ${quizList.success_n}==0 " style="color:green"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
-                       th:text="'[' + ${quizList.category_name} +'] '+${quizList.quiz_org_number}"></a>
+                       th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
                     &nbsp;&nbsp;<a class="link-light"
-                                   th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}">[편]</a>
-                    <span th:text="'['+ ${quizList.success_y}+' : '+${quizList.success_n}+']'"></span>
+                                   th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}"><span th:text="'['+ ${quizList.success_y}+' : '+${quizList.success_n}+']'"></span></a>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
     <div style="width:20%;float:left;">
+        <span class="d-block p-2 bg-danger text-white">시구</span>
         <table class="table table-dark">
             <tbody>
             <tr th:each="quizList : ${quizList}" th:if="${quizList.doc_code}==6">
                 <td><a class="link-light"
                        th:if="${quizList.success_y <= quizList.success_n} and ${quizList.success_n} > 0" style="color:red"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
-                       th:text="'[' + ${quizList.category_name} +'] '+${quizList.quiz_org_number}"></a>
+                       th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
                     <a class="link-light"
                        th:if="${quizList.success_y > quizList.success_n}"  style="color:blue"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
-                       th:text="'[' + ${quizList.category_name} +'] '+${quizList.quiz_org_number}"></a>
+                       th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
                     <a class="link-light"
                        th:if="${quizList.success_y}==0 and ${quizList.success_n}==0 " style="color:green"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
-                       th:text="'[' + ${quizList.category_name} +'] '+${quizList.quiz_org_number}"></a>
+                       th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
                     &nbsp;&nbsp;<a class="link-light"
-                                   th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}">[편]</a>
-                    <span th:text="'['+ ${quizList.success_y}+' : '+${quizList.success_n}+']'"></span>
+                                   th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}"><span th:text="'['+ ${quizList.success_y}+' : '+${quizList.success_n}+']'"></span></a>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
     <div style="width:20%;float:left;">
+        <span class="d-block p-2 bg-warning text-white">보안</span>
         <table class="table table-dark">
             <tbody>
             <tr th:each="quizList : ${quizList}" th:if="${quizList.doc_code}==7">
                 <td><a class="link-light"
                        th:if="${quizList.success_y <= quizList.success_n} and ${quizList.success_n} > 0" style="color:red"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
-                       th:text="'[' + ${quizList.category_name} +'] '+${quizList.quiz_org_number}"></a>
+                       th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
                     <a class="link-light"
                        th:if="${quizList.success_y > quizList.success_n}"  style="color:blue"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
-                       th:text="'[' + ${quizList.category_name} +'] '+${quizList.quiz_org_number}"></a>
+                       th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
                     <a class="link-light"
                        th:if="${quizList.success_y}==0 and ${quizList.success_n}==0 " style="color:green"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
-                       th:text="'[' + ${quizList.category_name} +'] '+${quizList.quiz_org_number}"></a>
+                       th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
                     &nbsp;&nbsp;<a class="link-light"
-                                   th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}">[편]</a>
-                    <span th:text="'['+ ${quizList.success_y}+' : '+${quizList.success_n}+']'"></span>
+                                   th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}"><span th:text="'['+ ${quizList.success_y}+' : '+${quizList.success_n}+']'"></span></a>
                 </td>
             </tr>
             </tbody>
