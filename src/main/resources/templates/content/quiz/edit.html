@@ -27,21 +27,6 @@
                id="pattern_code" name="pattern_code"/>
         <input type="hidden" th:value="${quizModel.quiz_code}"
                id="quiz_code" name="quiz_code"/>
-        <div>
-            <div class="col-sm-3  w-100">
-                <label class="visually-hidden" for="specificSizeInputGroupUsername">원본이미지</label>
-                <div class="input-group">
-                    <div class="input-group-text">원본이미지</div>
-                    <input type="text" placeholder="구글드라이브 경로" class="form-control" id="img_url" name="img_url"
-                           onclick="this.value='';document.getElementById('img_target').value=''"/>
-                    <button class="btn btn-secondary me-md-2" type="button" id="img_copy" data-clipboard-target="#img_target"
-                            onclick="img_convert();">복사
-                    </button>
-                    <div class="input-group-text">수정이미지</div>
-                    <input type="text" class="form-control" id="img_target" name="img_target" />
-                </div>
-            </div>
-        </div>
         <div class="col-sm-3">
             <label class="visually-hidden" for="specificSizeInputGroupUsername">문제정답</label>
             <div class="input-group">
@@ -85,20 +70,17 @@
             </div>
         </div>
         <br/>
-        <div class="col-sm-3">
-            <label class="visually-hidden" for="specificSizeInputGroupUsername">이미지URL</label>
+        <div class="col-sm-3 w-100">
+            <label class="visually-hidden" for="specificSizeInputGroupUsername">원본이미지</label>
             <div class="input-group">
-                <div class="input-group-text">이미지URL</div>
-                <input type="text" name="gd-url" id="gd-url" class="form-control" onfocus="this.value='';document.getElementById('result').value='';">
-                <input id="btn-convert" class="btn btn-primary" type="button" value="변환">
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <label class="visually-hidden" for="specificSizeInputGroupUsername">이미지URL</label>
-            <div class="input-group">
-                <div class="input-group-text">이미지소스</div>
-                <input type="text" id="result" name="result" readonly class="form-control">
-                <input class="btn btn-primary" type="button" value="Copy"  data-clipboard-target="#result">
+                <div class="input-group-text">원본이미지</div>
+                <input type="text" placeholder="구글드라이브 경로" class="form-control" id="img_url" name="img_url"
+                       onclick="this.value='';document.getElementById('img_target').value=''"/>
+                <button class="btn btn-success me-md-2" type="button" id="img_copy" data-clipboard-target="#img_target"
+                        onclick="img_convert();">복사
+                </button>
+                <div class="input-group-text">수정이미지</div>
+                <input type="text" class="form-control w-25" id="img_target" name="img_target"/>
             </div>
         </div>
         <div class="col-sm-3">
@@ -320,110 +302,8 @@
                 }
             });
         }
-
-        // 이미지 경로 추출
-        let gdUrl = $("#gd-url");
-        $("#btn-convert").on("click", function(event) {
-
-            if (!isValidUrl(gdUrl.val())) {
-                alert("You have inputted invalid path.");
-                gdUrl.val("");
-                return;
-            }
-
-            let gdId = extractFileId(gdUrl.val());
-            let prefix = "http://drive.google.com/uc?export=view&id=";
-            $("#result").val(prefix + gdId);
-            $("#result-img-tag").val(
-                "<img src='" +
-                prefix + gdId +
-                "' /><br>");
-            $("#preview").attr("src", prefix + gdId);
-        });
-
-        let clipboard = new Clipboard('.btn');
-
-        clipboard.on('success', function(e) {
-            /*console.info('Action:', e.action);
-            console.info('Text:', e.text);
-            console.info('Trigger:', e.trigger);
-            */
-            e.clearSelection();
-        });
-
-        clipboard.on('error', function(e) {
-        /*console.error('Action:', e.action);
-        console.error('Trigger:', e.trigger);*/
-    });
-
-    // validity check. ref: https://gist.github.com/jlong/2428561
-    function isValidUrl(url) {
-        // to be impl...
-        let parser = document.createElement('a');
-        parser.href = url;
-
-        if(url === '' || parser.hostname !== "drive.google.com" || !parser.pathname.includes("/file/d/"))
-            return false;
-
-        return true;
-    }
-
-    function extractFileId(url) {
-        if (!url)
-            url = window.location.href;
-
-        let strip = url.replace(/https:\/\/drive.google.com\/file\/d\//gi, "")
-            .replace(/\/view\?[a-zA-Z=\/]+/gi, "");
-
-        return strip;
-    }
-        function google_img(){
-            window.open("/google.html", "_blank", "width=500, height=550, menubar=no, toolbar=no");
-        }
-        let img_convert = function(){
-            let gdUrl = $("#img_url");
-            let result;
-            if (!isValidUrl(gdUrl.val())) {
-                alert("You have inputted invalid path.");
-                gdUrl.val("");
-                return;
-            }
-            const url = new URL(gdUrl.val());
-            let urlParam = url.searchParams;
-            let gdId = urlParam.get('id');
-            let prefix = "http://drive.google.com/uc?export=view&id=";
-            result = (prefix + gdId);
-            document.getElementById('img_target').value = result;
-
-            let clipboard = new Clipboard('.btn');
-
-            clipboard.on('success', function(e) {
-                console.info('Action:', e.action);
-                console.info('Text:', e.text);
-                console.info('Trigger:', e.trigger);
-
-                e.clearSelection();
-            });
-
-            clipboard.on('error', function(e) {
-                console.error('Action:', e.action);
-                console.error('Trigger:', e.trigger);
-            });
-
-        }
-
-        // validity check. ref: https://gist.github.com/jlong/2428561
-        function isValidUrl(url) {
-            // to be impl...
-            let parser = document.createElement('a');
-            parser.href = url;
-
-            if(url === '' || parser.hostname !== "drive.google.com")
-                return false;
-
-            return true;
-        }
 </script>
+    <script src="/js/google_image.js"></script>
 </div>
 </body>
 </html>
