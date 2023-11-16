@@ -43,8 +43,7 @@
             <span class="visually-hidden">Loading...</span>
         </div>
     </div>
-    <div id="sub_left_center" class="nav-scroller"><span class="badge badge-light" onclick="doc_update();">S</span></div>
-    <div class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 11">
+     <div class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 11">
         <div id="liveToast" class="toast hide align-items-center text-white bg-primary border-0" role="alert"
              aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
@@ -95,18 +94,18 @@
     </div>
         <input type="hidden" name="doc_name" id="doc_name" th:value="${docModel.doc_name}"/>
         <input type="hidden" name="img_hidden" id="img_hidden" />
+        <div class="input-group mb-3" >
+		<span class="input-group-text" id="basic-addon6" onclick="doc_update()">완료</span>
         <textarea name="doc_content" id="doc_content"
                   th:text="${docModel.doc_content}" class="ck_editor_txt"></textarea>
-        <br/>
+        </div>
+            <br/>
         <div class="d-grid gap-2 d-md-flex justify-content-md-center">
             <button class="btn btn-primary me-md-2" type="button"
                     onclick="doc_update();">완료
             </button>
             <button class="btn btn-secondary me-md-2" type="button"
                     onclick="doc_delete();">삭제
-            </button>
-            <button class="btn btn-secondary me-md-2" type="button"
-                    onclick="google_img();">이미지
             </button>
         </div>
     </form>
@@ -159,11 +158,6 @@
                 document.location.href = "/doc/delete/[[${docModel.doc_name}]]";
             }
         }
-
-        function google_img(){
-            window.open("/google.html", "_blank", "width=500, height=550, menubar=no, toolbar=no");
-        }
-
         // 상위문서명 바뀌기
         $('#upper_doc_name').autocomplete({
             source: function (request, response) { //source: 입력시 보일 목록

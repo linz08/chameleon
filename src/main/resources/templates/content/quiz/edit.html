@@ -83,25 +83,25 @@
                 <input type="text" class="form-control w-25" id="img_target" name="img_target"/>
             </div>
         </div>
-        <div class="col-sm-3">
-        <button class="btn btn-primary me-md-2" type="button"
-                onclick="update();">수정완료
-        </button></div>
-        <div class="mb-3">
-				<textarea name="quiz_title" id="quiz_title"
+        <div class="input-group mb-3">
+			<span th:text="완료"
+                  class="input-group-text" id="basic-addon6" th:onclick="update()"></span>
+            <textarea name="quiz_title" id="quiz_title"
                           th:text="${quizModel.quiz_title}" class="ck_editor_txt"></textarea>
         </div>
-        <div class="mb-3">
-				<textarea name="quiz_subtitle" id="quiz_subtitle"
+        <div class="input-group mb-3">
+			<span th:text="완료"
+                  class="input-group-text" id="basic-addon6" th:onclick="update()"></span>
+            <textarea name="quiz_subtitle" id="quiz_subtitle"
                           th:value="${quizModel.quiz_subtitle}"
                           th:text="${quizModel.quiz_subtitle}" class="ck_editor_txt"></textarea>
         </div>
         <div class="textgroup">
 
             <th:block th:each="quizObjective:${quizObjectiveList}">
-                <div class="input-group mb-3">
+                <div class="input-group mb-3" >
 						<span th:text="${quizObjective.quiz_object_num}"
-                              class="input-group-text" id="basic-addon6"></span>
+                              class="input-group-text" id="basic-addon6" th:onclick="update()"></span>
                     <textarea name="quiz_object_name" id="quiz_object_name"
                               class="ck_editor_txt"
                               th:value="${quizObjective.quiz_object_name}"
@@ -153,10 +153,6 @@
         <div class="d-grid gap-2 d-md-flex justify-content-md-center">
             <button class="btn btn-primary me-md-2" type="button"
                     onclick="update();">수정완료
-            </button>
-            <a class="btn btn-primary" href="/index" role="button">취소하기</a>
-            <button class="btn btn-secondary me-md-2" type="button"
-                    onclick="google_img();">이미지
             </button>
         </div>
 

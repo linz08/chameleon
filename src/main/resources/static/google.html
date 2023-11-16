@@ -50,22 +50,15 @@
 <body>
   <div id="converter">
     <label>구글 드라이브 경로</label>
-    <textarea id="gd-url" placeholder="Input Google Drive Url"></textarea>
-    <button id="btn-convert" class="btn btn-primary">이미지 경로 변경</button>
+    <textarea id="img_url" name="img_url" onkeyup="autoResize(this)" onkeydown="autoResize(this)" style="overflow:hidden;"
+              onclick="this.value='';document.getElementById('img_target').value=''"></textarea>
+    <button class="btn btn-primary" onclick="img_convert();" id="img_copy" data-clipboard-target="#img_target">이미지 복사</button>
     <div id="convert-result">
-      <label for="result">링크 이미지 경로</label>
-      <textarea id="result" name="result" readonly></textarea>
-      <button id="btn-save-result-cb" class="btn btn-success pull-right" data-clipboard-target="#result">
-        <span class="glyphicon glyphicon-copy" aria-hidden="true"></span>
-        클립보드 복사
-      </button>
+      <label for="img_target">링크 이미지 경로</label>
+      <textarea id="img_target" name="img_target" readonly onkeyup="autoResize(this)" onkeydown="autoResize(this)" style="overflow:hidden;"></textarea>
     </div>
-    <br><br><br>
-      <p align="center">
-      <b>Preview image</b>
-      </p>
     <p align="center">
-      <img id="preview" alt="image preview" src='https://www.google.com/drive/static/images/drive/logo-drive.png' class="img-thumbnail" style="max-width: 200px"/><br>
+      <img id="preview" alt="image preview" src='https://www.google.com/drive/static/images/drive/logo-drive.png' class="img-thumbnail"/><br>
     </p>
 
   </div>
@@ -73,35 +66,44 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
   <script>
-    let gdUrl = $("#gd-url");
-    $("#btn-convert").on("click", function(event) {
+    function autoResize(textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = textarea.scrollHeight + 'px';
+    }
 
+    // 구글 이미지 등록
+    let img_convert = function () {
+      let gdUrl = $("#img_url");
+      let result;
       if (!isValidUrl(gdUrl.val())) {
         alert("You have inputted invalid path.");
         gdUrl.val("");
         return;
       }
-
-      let gdId = extractFileId(gdUrl.val());
+      const url = new URL(gdUrl.val());
+      let urlParam = url.searchParams;
+      let gdId = urlParam.get('id');
       let prefix = "http://drive.google.com/uc?export=view&id=";
-      $("#result").val(prefix + gdId);
+      result = (prefix + gdId);
+      document.getElementById('img_target').value = result;
       $("#preview").attr("src", prefix + gdId);
-    });
 
-    let clipboard = new Clipboard('.btn');
+      let clipboard = new Clipboard('.btn');
 
-    clipboard.on('success', function(e) {
-      console.info('Action:', e.action);
-      console.info('Text:', e.text);
-      console.info('Trigger:', e.trigger);
+      clipboard.on('success', function (e) {
+        console.info('Action:', e.action);
+        console.info('Text:', e.text);
+        console.info('Trigger:', e.trigger);
 
-      e.clearSelection();
-    });
+        e.clearSelection();
+      });
 
-    clipboard.on('error', function(e) {
-      console.error('Action:', e.action);
-      console.error('Trigger:', e.trigger);
-    });
+      clipboard.on('error', function (e) {
+        console.error('Action:', e.action);
+        console.error('Trigger:', e.trigger);
+      });
+
+    }
 
     // validity check. ref: https://gist.github.com/jlong/2428561
     function isValidUrl(url) {
@@ -109,22 +111,12 @@
       let parser = document.createElement('a');
       parser.href = url;
 
-      if(url === '' || parser.hostname !== "drive.google.com" || !parser.pathname.includes("/file/d/"))
+      if (url === '' || parser.hostname !== "drive.google.com")
         return false;
 
       return true;
     }
-
-    function extractFileId(url) {
-      if (!url) 
-        url = window.location.href;
-
-      let strip = url.replace(/https:\/\/drive.google.com\/file\/d\//gi, "")
-      .replace(/\/view\?[a-zA-Z=\/]+/gi, "");
-      
-      return strip;
-    }
-  </script>
+</script>
 </body>
 
 </html>

@@ -91,7 +91,7 @@
                 th:onclick="'location.href=\'/quiz/list/'+@{${quizModel.quiz_source}}+'\''"
                 th:utext="''+${quizModel.quiz_source_name}+ ': ['+${quizModel.category_name}+'] '+${quizModel.quiz_org_number}+'번'"></span>
         <span class="badge rounded-pill bg-info" style="cursor:pointer" onclick="openNext()">N</span>
-        <!--<select
+        <select
                 aria-label="문제패턴" id="pattern_code" th:name="pattern_code">
             <option th:each="val:${ptnCodeList}"
                     th:value="${val.code_id}"
@@ -105,7 +105,7 @@
                 th:utext="${val.code_name}"></option>
     </select>&nbsp;&nbsp;<span
             class="badge rounded-pill bg-secondary" style="cursor:pointer" onclick="quiz_etc()">적용</span>
-            -->
+
     </div>
     <hr/>
     <table class="table">
