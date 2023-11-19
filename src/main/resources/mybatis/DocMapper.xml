@@ -101,7 +101,7 @@
         ]]>
 	</update>
     <select id="selectDocCheck" resultType="java.lang.Integer">
-        SELECT COUNT(*)
+        SELECT /* DocMapper.selectDocCheck  */ COUNT(*)
         FROM DOCUMENT
         WHERE DOC_NAME = #{doc_name}
     </select>

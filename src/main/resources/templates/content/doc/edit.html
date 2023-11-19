@@ -64,7 +64,16 @@
                         상위문서 :&nbsp;<span th:text="${docModel.upper_doc_name}"></span>
                     </ul>
                     <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" id="upper_doc_name" placeholder="상위문서명" aria-label="Search">
+                        <select class="form-select" aria-label="상위문서명" id="upper_doc_name" name="upper_doc_name">
+                            <option th:selected="${docModel.upper_doc_name}=='감리'" value="감리">감리</option>
+                            <option th:selected="${docModel.upper_doc_name}=='사업관리'" value="사업관리">사업관리</option>
+                            <option th:selected="${docModel.upper_doc_name}=='소프트웨어공학'" value="소프트웨어공학">소프트웨어공학</option>
+                            <option th:selected="${docModel.upper_doc_name}=='데이터베이스'" value="데이터베이스">데이터베이스</option>
+                            <option th:selected="${docModel.upper_doc_name}=='시스템구조'" value="시스템구조">시스템구조</option>
+                            <option th:selected="${docModel.upper_doc_name}=='보안'" value="보안">보안</option>
+                            <option th:selected="${docModel.upper_doc_name}=='기타'" value="기타">기타</option>
+                        </select>
+
                         <input class="form-control me-2" type="text" id="new_doc_name" placeholder="문서명" aria-label="Search">
                         <button class="btn btn-outline-success" type="button" onclick="doc_rename()">rename</button>
                     </form>
@@ -158,46 +167,6 @@
                 document.location.href = "/doc/delete/[[${docModel.doc_name}]]";
             }
         }
-        // 상위문서명 바뀌기
-        $('#upper_doc_name').autocomplete({
-            source: function (request, response) { //source: 입력시 보일 목록
-                $.ajax({
-                    url: "/docSearch"
-                    , type: "POST"
-                    , dataType: "JSON"
-                    , data: {doc_name: $("#upper_doc_name").val()}	// 검색 키워드
-                    , beforeSend: function (jqXHR, settings) {
-                        let header = $("meta[name='_csrf_header']").attr("content");
-                        let token = $("meta[name='_csrf']").attr("content");
-                        jqXHR.setRequestHeader(header, token);
-                    }
-                }).done(function (rData, textStatus, jqXHR) {
-                    response(
-                        $.map(rData.resultList, function (item) {
-                            return {
-                                label: item.doc_name    	// 목록에 표시되는 값
-                                , value: item.doc_name 		// 선택 시 input창에 표시되는 값
-                                //, idx : item.SEQ // index
-                            };
-                        })
-                    );
-                }).fail(function (rData, textStatus, errorThrown) {
-                    alert("오류가 발생했습니다.");
-                }).always(function (rData, textStatus, jqXHR) {
-                });
-            }
-            , focus: function (evt, ui) { // 방향키로 자동완성단어 선택 가능하게 만들어줌
-                return false;
-            },
-            minLength: 1,// 최소 글자수
-            delay: 100	//autocomplete 딜레이 시간(ms),
-            , select: function (evt, ui) {
-                // 아이템 선택시 실행 ui.item 이 선택된 항목을 나타내는 객체, lavel/value/idx를 가짐
-                console.log(ui.item.label);
-                //console.log(ui.item.idx);
-            }
-        });
-
         let doc_rename = function(){
             if($('#upper_doc_name').val() !==""){  //상위문서 등록
                 let upper_doc_name = $("#upper_doc_name").val();

@@ -96,10 +96,10 @@ public class DocController {
         int docCheck = ss.selectOne("net.javaguitar.mapper.DocMapper.selectDocCheck", doc_name);
         DocModel docModel = new DocModel();
         if (docCheck == 0) {
-            String referer = request.getHeader("Referer");
-            String upper_doc_name = referer.substring(referer.lastIndexOf("/") + 1);
-            upper_doc_name = URLDecoder.decode(upper_doc_name, java.nio.charset.StandardCharsets.UTF_8.toString());
-            docModel.setUpper_doc_name(upper_doc_name);
+            //String referer = request.getHeader("Referer");
+            //String upper_doc_name = referer.substring(referer.lastIndexOf("/") + 1);
+            //upper_doc_name = URLDecoder.decode(upper_doc_name, java.nio.charset.StandardCharsets.UTF_8.toString());
+            docModel.setUpper_doc_name("index");
             docModel.setDoc_name(doc_name);
             ss.insert("net.javaguitar.mapper.DocMapper.insertDoc", docModel);
 
