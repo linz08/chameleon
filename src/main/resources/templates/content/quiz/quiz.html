@@ -65,7 +65,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">문제해설</h4>
+                    <h4 class="modal-title" id="myModalLabel">해설</h4>
                     <button class="btn-close" data-dismiss="modal"></button>
                 </div>
                 <div class="modal-body" th:utext="${quizModel.quiz_desc}">...</div>
@@ -78,18 +78,13 @@
         </div>
     </div>
     <div>
-        <span  th:if="${quizModel.quiz_desc != null && quizModel.quiz_desc !=''}" type="button" class="badge rounded-pill bg-primary" style="cursor:pointer" onclick="openWindowPop()">문제해설</span>
-        <span  th:if="${quizModel.quiz_desc == null || quizModel.quiz_desc ==''}" type="button" class="badge rounded-pill bg-secondary" style="cursor:pointer" onclick="openWindowPop()">문제해설</span>
+        <span  th:if="${quizModel.quiz_desc != null && quizModel.quiz_desc !=''}" type="button" class="badge rounded-pill bg-primary" style="cursor:pointer" onclick="openWindowPop()">해설</span>
+        <span  th:if="${quizModel.quiz_desc == null || quizModel.quiz_desc ==''}" type="button" class="badge rounded-pill bg-secondary" style="cursor:pointer" onclick="openWindowPop()">해설</span>
         <!--<span
             class="badge rounded-pill bg-secondary">문제통계</span>--> <span
-            class="badge rounded-pill bg-success" style="cursor:pointer" onclick="quiz_boorkmark()">북마크</span> <span
             class="badge rounded-pill bg-warning"
-            style="cursor:pointer" onclick="quiz_stat('X');">skip</span>
+            style="cursor:pointer" onclick="quiz_stat('X');">틀림</span>
         <span class="badge rounded-pill bg-success"><a href="/index">Shot</a></span>
-        <span
-                class="badge rounded-pill bg-danger" style="cursor:pointer"
-                th:onclick="'location.href=\'/quiz/list/'+@{${quizModel.quiz_source}}+'\''"
-                th:utext="''+${quizModel.quiz_source_name}+ ': ['+${quizModel.category_name}+'] '+${quizModel.quiz_org_number}+'번'"></span>
         <span class="badge rounded-pill bg-info" style="cursor:pointer" onclick="openNext()">N</span>
         <select
                 aria-label="문제패턴" id="pattern_code" th:name="pattern_code">
@@ -105,7 +100,12 @@
                 th:utext="${val.code_name}"></option>
     </select>&nbsp;&nbsp;<span
             class="badge rounded-pill bg-secondary" style="cursor:pointer" onclick="quiz_etc()">적용</span>
-
+        <span
+                class="badge rounded-pill bg-success" style="cursor:pointer" onclick="quiz_boorkmark()">마크</span>
+        <span
+                class="badge rounded-pill bg-danger" style="cursor:pointer"
+                th:onclick="'location.href=\'/quiz/list/'+@{${quizModel.quiz_source}}+'\''"
+                th:utext="''+${quizModel.quiz_source_name}+ ': ['+${quizModel.category_name}+'] '+${quizModel.quiz_org_number}+'번'"></span>
     </div>
     <hr/>
     <table class="table">
@@ -146,7 +146,9 @@
             <div class="toast-body"></div>
         </div>
     </div>
-    <div><span id="keyword_icon"
+    <div>
+        <span class="badge rounded-pill bg-secondary" style="cursor:pointer" onclick="openNext()">N</span>
+        <span id="keyword_icon"
                class="badge rounded-pill bg-secondary" style="cursor:pointer">키워드</span>
         <span id="keyword_list"></span>
         <!--
@@ -160,6 +162,7 @@
         <input type="text" id="doc_search" class="form-control" placeholder="키워드명" aria-label="키워드명"
                aria-describedby="button-addon2">
         <button class="btn btn-outline-secondary" type="button" id="btn_doc_add">키워드 등록</button>
+        <button class="btn btn-outline-info" type="button" id="btn_next"  onclick="openNext()">Next</button>
     </div>
     <div class="progress">
         <div class="progress-bar" role="progressbar" th:style="'width:'+${quizStatModel.success_rate}+'%'"
