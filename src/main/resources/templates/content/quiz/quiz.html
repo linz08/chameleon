@@ -20,7 +20,7 @@
             text-decoration: none !important;
             color: black;
         }
-
+/*
         a:link {
             color: black;
             text-decoration: none;
@@ -39,7 +39,7 @@
         a:active {
             color: black;
             text-decoration: none;
-        }
+        }*/
         /* for block of code */
         .hljs-ln td {
             padding-right: 10px;
@@ -85,6 +85,7 @@
             class="badge rounded-pill bg-warning"
             style="cursor:pointer" onclick="quiz_stat('X');">틀림</span>
         <span class="badge rounded-pill bg-success"><a href="/index">Shot</a></span>
+        <span class="badge rounded-pill bg-warning" style="cursor:pointer" onclick="openPost()">E</span>
         <span class="badge rounded-pill bg-info" style="cursor:pointer" onclick="openNext()">N</span>
         <select
                 aria-label="문제패턴" id="pattern_code" th:name="pattern_code">
@@ -344,6 +345,11 @@
         }
         let openNext = function () {
             let nextNumber = [[${quizModel.quiz_number}]] + 1;
+            let nextUrls = "/index/[[${quizModel.doc_code}]]/" + nextNumber;
+            document.location.href = nextUrls;
+        }
+        let openPost = function () {
+            let nextNumber = [[${quizModel.quiz_number}]] - 1;
             let nextUrls = "/index/[[${quizModel.doc_code}]]/" + nextNumber;
             document.location.href = nextUrls;
         }

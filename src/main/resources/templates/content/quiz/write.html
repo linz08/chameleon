@@ -36,6 +36,7 @@
         <input type="hidden" id="quiz_code" name="quiz_code" value="2"><!-- 문항방식 -->
         <input type="hidden" id="pattern_code" name="pattern_code" value="6"><!-- 문제패턴 -->
         <input type="hidden" id="quiz_level" name="quiz_level" value="10"><!-- 난이도 -->
+        <input type="hidden" id="quiz_number" name="quiz_number" th:value="${quizNumber}">
         <div class="col-sm-3">
             <label class="visually-hidden" for="specificSizeInputGroupUsername">문제정답</label>
             <div class="input-group">
@@ -115,6 +116,40 @@
                           class="ck_editor_txt"></textarea>
             </div>
         </div>
+        <div class="row">
+            <div class="col">
+                <span class="input-group-text" id="basic-addon9">관련문서</span>
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <th scope="row">&nbsp;</th>
+                        <td><input type="text" id="doc_search" class="form-control"></td>
+                        <td>
+                            <button type="button" class="btn btn-primary btn-sm" id="btn_doc_add">추가</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table class="table" id="doc_table">
+                    <tbody>
+                    <th:block th:each="quizDocumentModelList,index : ${quizDocumentModelList}">
+                        <tr>
+                            <th th:text="${index.index+1}" scope="row">번호</th>
+                            <td th:text="${quizDocumentModelList.doc_name}">문서명
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-secondary btn-sm" id="btn_doc_del"
+                                        th:myName="${quizDocumentModelList.doc_name}"
+                                        th:onclick="doc_del(this.getAttribute('myName'))">삭제
+                                </button>
+                            </td>
+                        </tr>
+                    </th:block>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <div class="d-grid gap-2 d-md-flex justify-content-md-center">
             <button class="btn btn-primary me-md-2" type="button"
                     onclick="insert();">등록하기
@@ -190,8 +225,6 @@
             let quiz_org_number = $('#quiz_org_number').val();
             let quiz_source = $("#quiz_source option:selected").val();
 
-            console.log('퀴즈소스=' + quiz_source);
-
             $.ajax({
                 type: "POST",
                 url: "/pre_answer",
@@ -218,6 +251,89 @@
         //다량 등록 시, 미리 저장한 정답을 가져오는 것
         pre_answer();
 
+
+        function doc_del(doc_name) {
+            $.ajax({
+                type: "POST",
+                url: "/docDel",
+                beforeSend: function (jqXHR, settings) {
+                    let header = $("meta[name='_csrf_header']").attr("content");
+                    let token = $("meta[name='_csrf']").attr("content");
+                    jqXHR.setRequestHeader(header, token);
+                },
+                data: {
+                    "doc_name": doc_name,
+                    "doc_code": $('#doc_code').val(),
+                    "quiz_number": $('#quiz_number').val()
+                },
+                success: function () {
+                    doc_reload();
+                }, error: function () {
+                    alert('실패');
+                }
+            });
+        }
+
+        $('#btn_doc_add').click(function () {
+            $.ajax({
+                type: "POST",
+                url: "/docAdd",
+                beforeSend: function (jqXHR, settings) {
+                    let header = $("meta[name='_csrf_header']").attr("content");
+                    let token = $("meta[name='_csrf']").attr("content");
+                    jqXHR.setRequestHeader(header, token);
+                },
+                data: {
+                    "doc_name": $('#doc_search').val(),
+                    "doc_code": $('#doc_code').val(),
+                    "quiz_number": $('#quiz_number').val()
+                },
+                success: function () {
+                    doc_reload();
+                }, error: function () {
+                    alert('실패');
+                }
+            });
+        });
+
+        function doc_reload() {
+            let doc_code = $('#doc_code').val();
+            let quiz_number = $('#quiz_number').val();
+
+            $.ajax({
+                type: "POST",
+                url: "/quiz/doc/list",
+                beforeSend: function (jqXHR, settings) {
+                    let header = $("meta[name='_csrf_header']").attr("content");
+                    let token = $("meta[name='_csrf']").attr("content");
+                    jqXHR.setRequestHeader(header, token);
+                },
+                data: {
+                    "doc_name": $('#doc_name').val(),
+                    "doc_code": $('#doc_code').val(),
+                    "quiz_number": $('#quiz_number').val()
+                },
+                success: function (data) {
+
+                    let str = '<tr>';
+                    let row_idx = 1;
+                    $(data).each(function () {
+                        str += '<th scope="row">' + row_idx + '</th>';
+                        str += '<td>' + this.doc_name + '</td>';
+                        str += '<td><button type="button" class="btn btn-secondary btn-sm" onclick=doc_del("' + this.doc_name + '")>삭제</button>';
+                        str += '</td></tr>';
+                        row_idx++;
+                    });
+
+                    $("#doc_table").empty();
+                    $("#doc_table").append(str);
+                }, error: function (request, status, error) {
+                    console.log("code:" + request.status + "\n");
+                    console.log("message:" + request.responseText + "\n");
+                    console.log("error:" + error);
+                }
+            });
+        }
     </script>
     <script src="/js/google_image.js"></script>
 </div>

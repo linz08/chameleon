@@ -227,7 +227,7 @@ public class QuizController {
     @RequestMapping(value = {"/quiz/write"}, method = RequestMethod.GET)
     public ModelAndView quizWrite(@ModelAttribute("quizModel") QuizModel quizModel, ModelMap mode) throws Exception {
         ModelAndView mav = new ModelAndView();
-
+        int quizNumber;
         // 문서분류
         List<DocCategoryModel> docCatehogryList = ss
                 .selectList("net.javaguitar.mapper.DocCategoryMapper.selectDocCategoryList");
@@ -240,11 +240,14 @@ public class QuizController {
         // 난이도
         List<CodeModel> lvlCodeList = ss.selectList("net.javaguitar.mapper.CodeMapper.selectCode", 9);
 
+        quizNumber = ss.selectOne("net.javaguitar.mapper.QuizMapper.selectMaxQuizNumber");
+
         mav.addObject("srcCodeList", srcCodeList);
         mav.addObject("docCatehogryList", docCatehogryList);
         mav.addObject("quizCodeList", quizCodeList);
         mav.addObject("ptnCodeList", ptnCodeList);
         mav.addObject("", lvlCodeList);
+        mav.addObject("quizNumber", quizNumber);
 
         mav.setViewName("content/quiz/write");
         return mav;
