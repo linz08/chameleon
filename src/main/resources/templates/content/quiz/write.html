@@ -5,6 +5,7 @@
       layout:decorate="~{layout/default_layout}" lang="ko">
 <title>문제등록</title>
 <head>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
 </head>
 <body>
 <div layout:fragment="content" class="content">
@@ -179,6 +180,8 @@
             src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
     <script
+            src="https://releases.jquery.com/git/ui/jquery-ui-git.js"></script>
+    <script
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
             crossorigin="anonymous"></script>
@@ -239,7 +242,6 @@
                     "quiz_source": quiz_source
                 },
                 success: function (data) {
-                    console.log('ok =' + data);
                     document.getElementById("quiz_answer").value = data;
                 }, error: function (request, status, error) {
                     console.log("code:" + request.status + "\n");
@@ -328,9 +330,9 @@
                     $("#doc_table").empty();
                     $("#doc_table").append(str);
                 }, error: function (request, status, error) {
-                    console.log("code:" + request.status + "\n");
-                    console.log("message:" + request.responseText + "\n");
-                    console.log("error:" + error);
+                   // console.log("code:" + request.status + "\n");
+                   // console.log("message:" + request.responseText + "\n");
+                   // console.log("error:" + error);
                 }
             });
         }

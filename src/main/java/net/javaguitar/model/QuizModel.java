@@ -32,4 +32,5 @@ public class QuizModel {
 	private String quiz_desc; //퀴즈 정답 설명
 	private int success_y;  // 성공퀴즈 수
 	private int success_n; // 실패퀴즈 수
+	private int today_yn; // 오늘 푼 문제
 }

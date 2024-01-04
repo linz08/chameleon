@@ -16,7 +16,7 @@
         <tr>
             <th scope="col">No</th>
             <th scope="col">출처</th>
-            <th scope="col">번호</th>
+            <th scope="col">(성공:실패) 번호</th>
             <th scope="col">레벨</th>
             <th scope="col">문제패턴</th>
         </tr>
@@ -25,7 +25,9 @@
         <tr th:each="quizList,index : ${quizList}">
             <th scope="row" th:text="${index.index}">1</th>
             <td th:text="${quizList.quiz_source_name}">출처</td>
-            <td><a class="link-light" target="_blank"
+            <td>
+                <span th:text="'['+${quizList.success_y} + ':' + ${quizList.success_n}+']'"></span>
+                <a class="link-light" target="_blank"
                    th:if="${quizList.success_y <= quizList.success_n} and ${quizList.success_n} > 0" style="color:red"
                    th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                    th:text="'[' + ${quizList.doc_code_name} +'] '+${quizList.quiz_org_number}"/>
@@ -37,6 +39,7 @@
                    th:if="${quizList.success_y}==0 and ${quizList.success_n}==0 " style="color:green"
                    th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                    th:text="'[' + ${quizList.doc_code_name} +'] '+${quizList.quiz_org_number}"/>
+                <span th:if="${quizList.today_yn > 0}">*</span>
             </td>
             <td th:text="${quizList.quiz_level_name}">레벨</td>
             <td th:text="${quizList.pattern_code_name}">문제패턴</td>
