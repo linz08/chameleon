@@ -22,7 +22,7 @@
         WHERE A.DOC_NAME = #{doc_name}
           AND A.DOC_CODE = B.DOC_CODE
           AND A.QUIZ_NUMBER = B.QUIZ_NUMBER
-        ORDER BY FNC_COMMON_CODE(B.QUIZ_SOURCE) DESC
+        ORDER BY CAST(B.QUIZ_NUMBER AS INTEGER) DESC
         ]]>
     </select>
     <select id="selectQuizDocumentCount" resultType="java.lang.Integer">

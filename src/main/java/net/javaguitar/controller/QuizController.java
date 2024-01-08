@@ -316,6 +316,7 @@ public class QuizController {
         String[] quiz_object_name = null;
         quizNumber = ss.selectOne("net.javaguitar.mapper.QuizMapper.selectMaxQuizNumber");
         quizModel.setQuiz_number(quizNumber);
+        quizModel.setQuiz_subtitle(quizModel.getQuiz_subtitle().replaceAll("<table", "<table class='table_subtitle'"));
         //quizModel.setQuiz_title(quizModel.getQuiz_title().replaceAll("<table>", "<table style='width:100%';>"));
         //quizModel.setQuiz_title(quizModel.getQuiz_title().replaceAll("<td>", "<td style='border:1px solid hsl(0, 0%, 0%);text-align:center;'>"));
         //quizModel.setQuiz_subtitle(quizModel.getQuiz_subtitle().replaceAll("<table>", "<table style='width:100%';>"));
@@ -329,7 +330,7 @@ public class QuizController {
             for (int i = 0; i < quiz_object_name.length; i++) {
                 if (!quiz_object_name[i].equals("")) {
                     //quizModel.setQuiz_object_name(quiz_object_name[i].replaceAll("<table>", "<table style='width:100%';>"));
-                    quizModel.setQuiz_object_name(quiz_object_name[i].replaceAll("<td>", "<td style='border:1px solid hsl(0, 0%, 0%);text-align:center;'>"));
+                    quizModel.setQuiz_object_name(quiz_object_name[i].replaceAll("<table", "<table class='table_subtitle'"));
                     quizModel.setQuiz_object_num(i + 1);
                     ss.insert("net.javaguitar.mapper.QuizObjectiveMapper.insertQuizObjective", quizModel);
                 }
@@ -350,7 +351,7 @@ public class QuizController {
                              HttpServletRequest request, RedirectAttributes redirectAttributes) throws Exception {
         String[] quiz_object_name = null;
         //quizModel.setQuiz_title(quizModel.getQuiz_title().replaceAll("<table>", "<table style='width:100%';>"));
-        //quizModel.setQuiz_subtitle(quizModel.getQuiz_subtitle().replaceAll("<table>", "<table style='width:100%';>"));
+        quizModel.setQuiz_subtitle(quizModel.getQuiz_subtitle().replaceAll("<table", "<table class='table_subtitle'"));
         ss.update("net.javaguitar.mapper.QuizMapper.updateQuiz", quizModel);
 
         if (quizModel.getQuiz_code() == 2) { // 객관식인 경우
@@ -361,6 +362,7 @@ public class QuizController {
                 //quizModel.setQuiz_object_name(quiz_object_name[i].replaceAll("<table>", "<table style='width:100%';>"));
                 quizModel.setQuiz_object_num(i + 1);
                 quizModel.setQuiz_object_name(quiz_object_name[i]);
+                quizModel.setQuiz_object_name(quiz_object_name[i].replaceAll("<table", "<table class='table_subtitle'"));
                 ss.update("net.javaguitar.mapper.QuizObjectiveMapper.updateQuizObjective", quizModel);
             }
 
