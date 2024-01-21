@@ -167,6 +167,24 @@
           AND QUIZ_NUMBER = #{quiz_number}
         ]]>
 	</update>
+    <update id="updateQuizTitle" parameterType="QuizModel">
+	<![CDATA[
+        UPDATE
+            QUIZ
+        SET QUIZ_TITLE = REPLACE(REPLACE(#{quiz_title}, '<p>', ''), '</p>', '')
+        WHERE DOC_CODE = #{doc_code}
+          AND QUIZ_NUMBER = #{quiz_number}
+        ]]>
+	</update>
+    <update id="updateQuizSubTitle" parameterType="QuizModel">
+	<![CDATA[
+        UPDATE
+            QUIZ
+        SET QUIZ_SUBTITLE = REPLACE(REPLACE(#{quiz_subtitle}, '<p>', ''), '</p>', '')
+        WHERE DOC_CODE = #{doc_code}
+          AND QUIZ_NUMBER = #{quiz_number}
+        ]]>
+	</update>
     <update id="updateQuizDesc" parameterType="QuizModel">
 	<![CDATA[
         UPDATE

@@ -112,9 +112,14 @@ public class QuizController {
         quizModel.setQuiz_number(quiz_number);
         quizModel = ss.selectOne("net.javaguitar.mapper.QuizMapper.selectQuizEdit", quizModel);
 
-        mav.addObject("quizModel", quizModel);
-
-        mav.setViewName("content/quiz/descript");
+        if(quizModel.getQuiz_desc() == null || quizModel.getQuiz_desc().isEmpty()) {
+            mav.addObject("quizModel", quizModel);
+            mav.setViewName("content/quiz/descript_edit");
+        }
+        else {
+            mav.addObject("quizModel", quizModel);
+            mav.setViewName("content/quiz/descript");
+        }
         return mav;
     }
 
@@ -137,6 +142,7 @@ public class QuizController {
     public String quizDescUpdate(@ModelAttribute("quizModel") QuizModel quizModel
     ) throws Exception {
         String[] quiz_object_name = null;
+        quizModel.setQuiz_desc(quizModel.getQuiz_desc().replaceAll("<table", "<table class='table_subtitle'"));
         ss.update("net.javaguitar.mapper.QuizMapper.updateQuizDesc", quizModel);
 
         return "redirect:/quiz/desc/" + quizModel.getDoc_code() + "/" + quizModel.getQuiz_number();
@@ -391,5 +397,26 @@ public class QuizController {
     public @ResponseBody
     void quizEtcUpdate(HttpServletRequest request, @ModelAttribute("quizModel") QuizModel quizModel) throws Exception {
         ss.update("net.javaguitar.mapper.QuizMapper.updateQuizEtc", quizModel);
+    }
+
+    @RequestMapping(value = {"/quiz_objective_update"}, method = {RequestMethod.POST})
+    public @ResponseBody
+    void quizObjectiveUpdate(HttpServletRequest request, @ModelAttribute("quizModel") QuizModel quizModel) throws Exception {
+
+        quizModel.setQuiz_object_name(quizModel.getQuiz_object_name().replaceAll("<table", "<table class='table_subtitle'"));
+        ss.update("net.javaguitar.mapper.QuizObjectiveMapper.updateQuizObjective", quizModel);
+    }
+
+    @RequestMapping(value = {"/quiz_title_update"}, method = {RequestMethod.POST})
+    public @ResponseBody
+    void quizTitleUpdate(HttpServletRequest request, @ModelAttribute("quizModel") QuizModel quizModel) throws Exception {
+        ss.update("net.javaguitar.mapper.QuizMapper.updateQuizTitle", quizModel);
+    }
+
+    @RequestMapping(value = {"/quiz_subtitle_update"}, method = {RequestMethod.POST})
+    public @ResponseBody
+    void quizSubtitleUpdate(HttpServletRequest request, @ModelAttribute("quizModel") QuizModel quizModel) throws Exception {
+        quizModel.setQuiz_subtitle(quizModel.getQuiz_subtitle().replaceAll("<table", "<table class='table_subtitle'"));
+        ss.update("net.javaguitar.mapper.QuizMapper.updateQuizSubTitle", quizModel);
     }
 }

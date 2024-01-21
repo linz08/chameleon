@@ -92,9 +92,10 @@
         <span  th:if="${quizModel.quiz_desc == null || quizModel.quiz_desc ==''}" type="button" class="badge rounded-pill bg-secondary" style="cursor:pointer" onclick="openWindowPop()">해설</span>
         <!--<span
             class="badge rounded-pill bg-secondary">문제통계</span>--> <span
-            class="badge rounded-pill bg-warning"
-            style="cursor:pointer" onclick="quiz_stat('X');">틀림</span>
-        <span class="badge rounded-pill bg-success"><a href="/index">Shot</a></span>
+            class="badge rounded-pill bg-danger"
+            style="cursor:pointer" onclick="quiz_stat('X');">X</span>
+        <a href="/index"><span class="badge rounded-pill bg-success">S</span></a>
+        <a th:href="'/index/'+${quizModel.doc_code}+'/'+${quizModel.quiz_number}"><span class="badge rounded-pill bg-secondary" style="cursor:pointer">R</span></a>
         <span class="badge rounded-pill bg-warning" style="cursor:pointer" onclick="openPost()">E</span>
         <span class="badge rounded-pill bg-info" style="cursor:pointer" onclick="openNext()">N</span>
         <select
@@ -121,27 +122,61 @@
     <hr/>
     <table class="table">
         <tr>
-            <td><a class="nounderline"
+            <td colspan="2"><a class="nounderline"
                    th:href="'/quiz/edit/'+${quizModel.doc_code}+'/'+${quizModel.quiz_number}"
-                   th:utext="${quizModel.quiz_org_number}+'. '"></a><a class="nounderline"
-                                                                       th:href="'/index/'+${quizModel.doc_code}+'/'+${quizModel.quiz_number}"><span
+                   th:utext="${quizModel.quiz_org_number}+'. '"></a><a onclick="display_title(1)"><span id="span_title"
                     th:utext="${quizModel.quiz_title}"></span></a>
             </td>
         </tr>
-        <tr th:if="${quizModel.quiz_subtitle != null and quizModel.quiz_subtitle != '' } ">
-            <td th:utext="${quizModel.quiz_subtitle}"></td>
+        <tr id="tr_title" style="display:none">
+            <td colspan="2">
+                <div class="input-group">
+                    <button type="button" class="btn btn-secondary btn-sm" id="btn_title" onclick="title_change()">수정</button>
+                    <textarea name="textarea_title" id="textarea_title"
+                              th:text="${quizModel.quiz_title}" class="ck_editor_title"></textarea>
+                </div>
+            </td>
+        </tr>
+        <tr th:if="${quizModel.quiz_subtitle != null and quizModel.quiz_subtitle != '' } " >
+            <td onclick="display_title(2)" width="1%"></td>
+            <td>
+                <div class="input-group">
+                    <span id="span_subtitle"
+                          th:utext="${quizModel.quiz_subtitle}"></span>
+                </div>
+            </td>
+        </tr>
+        <tr id="tr_subtitle"  th:if="${quizModel.quiz_subtitle != null and quizModel.quiz_subtitle != '' } " style="display:none">
+            <td colspan="2">
+                <div class="input-group">
+                    <button type="button" class="btn btn-secondary btn-sm" id="btn_subtitle" onclick="subtitle_change()">수정</button>
+                    <textarea name="quiz_subtitle" id="quiz_subtitle"
+                              th:text="${quizModel.quiz_subtitle}" class="ck_editor_subtitle"></textarea>
+                </div>
+            </td>
         </tr>
     </table>
     <br>
     <table class="table table-striped">
-        <th:block th:each="objectList:${objectList}">
+        <th:block th:each="objectList,index :${objectList}">
             <tr>
                 <td class="table-active" th:onclick="quiz_answer([[${objectList.quiz_object_num}]]);"
                     th:text="${objectList.quiz_object_num}+ ') '"
                     style="width: 2%; text-align: center; cursor: pointer;">번호
                 </td>
-                <td th:utext="${objectList.quiz_object_name}"
-                    style="width: 98%;">문항
+                <td th:utext="${objectList.quiz_object_name}" th:id="'td'+${index.index+1}"
+                    style="width: 98%;" th:onclick="display_tr([[${index.index+1}]]);">
+                </td>
+            </tr>
+            <tr th:id="'tr'+${index.index+1}" style="display:none">
+                <td>
+                </td>
+                <td class="col-sm-1">
+                    <div class="input-group">
+                    <button type="button" class="btn btn-secondary btn-sm" id="btn_obj" th:onclick="objective_change([[${objectList.quiz_object_num}]]);">수정</button>
+                    <input type="text" class="form-control" th:id="'quiz_object_name'+${index.index+1}"
+                           th:value="${objectList.quiz_object_name}">
+                    </div>
                 </td>
             </tr>
         </th:block>
@@ -186,12 +221,94 @@
     <div id="quiz_answer" class="input-group mb-3 invisible">
         <span id="answer" th:text="${quizModel.quiz_answer}"></span>
     </div>
+    <script src="/js/ckeditor5-31/quiz/ckeditor.js"></script>
     <script>
         $(document).ready(function() {
             $('code.hljs').each(function(i, block) {
                 hljs.lineNumbersBlock(block);
             });
         });
+        let myTitleEditor = "";
+        let mySubTitleEditor = "";
+        let titleEditor = document.querySelector('.ck_editor_title');
+
+            ClassicEditor.create(titleEditor,
+                {
+                    link: {
+                        decorators: {
+                            openInNewTab: {
+                                mode: 'manual',
+                                label: 'Open in a new tab',
+                                attributes: {
+                                    target: '_blank',
+                                    rel: 'noopener noreferrer'
+                                }
+                            }
+                        }
+                    },
+                    codeBlock: {
+                        languages: [
+                            { language: 'plaintext', label: 'Plain text' }, // The default language.
+                            { language: 'java', label: 'Java' },
+                            { language: 'sql', label: 'SQL' },
+                            { language: 'c', label: 'C' },
+                            { language: 'cpp', label: 'C++' },
+                            { language: 'javascript', label: 'JavaScript' },
+                            { language: 'xml', label: 'XML' },
+                            { language: 'html', label: 'HTML' },
+                            { language: 'css', label: 'CSS' },
+                            { language: 'python', label: 'Python' }
+
+                        ]
+                    }
+                })
+                .then(newEditor => {
+                    myTitleEditor = newEditor;
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+
+        if("[[${quizModel.quiz_subtitle}]]" != "") {
+
+                let subtitleEditor = document.querySelector('.ck_editor_subtitle');
+                    ClassicEditor.create(subtitleEditor,
+                    {
+                        link: {
+                            decorators: {
+                                openInNewTab: {
+                                    mode: 'manual',
+                                    label: 'Open in a new tab',
+                                    attributes: {
+                                        target: '_blank',
+                                        rel: 'noopener noreferrer'
+                                    }
+                                }
+                            }
+                        },
+                        codeBlock: {
+                            languages: [
+                                { language: 'plaintext', label: 'Plain text' }, // The default language.
+                                { language: 'java', label: 'Java' },
+                                { language: 'sql', label: 'SQL' },
+                                { language: 'c', label: 'C' },
+                                { language: 'cpp', label: 'C++' },
+                                { language: 'javascript', label: 'JavaScript' },
+                                { language: 'xml', label: 'XML' },
+                                { language: 'html', label: 'HTML' },
+                                { language: 'css', label: 'CSS' },
+                                { language: 'python', label: 'Python' }
+
+                            ]
+                        }
+                    })
+                    .then(newEditor => {
+                        mySubTitleEditor = newEditor;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+        }
         $('#keyword_icon').click(function () {
             $('#keyword_button').removeClass('invisible');
             $('#keyword_button').addClass('visible');
@@ -365,12 +482,117 @@
         }
         let openWindowPop = function () {
             let urls = "/quiz/desc/[[${quizModel.doc_code}]]/[[${quizModel.quiz_number}]]";
-            let options = 'top=10, left=10, width=500, height=600, status=no, menubar=no, toolbar=no, resizable=yes';
+            let options = 'width=800, height=800, status=no, menubar=no, toolbar=no, resizable=yes';
             window.open(urls, "description", options);
         }
         let answer_visuable = function() {
             $('#quiz_answer').removeClass('invisible');
             $('#quiz_answer').addClass('visible');
+        }
+        let display_tr = function(tr_idx) {
+            let tr_id = "#tr"+tr_idx;
+            let status = $(tr_id).css("display");
+            if(status == "none"){
+                $(tr_id).css("display","");
+            }
+            else {
+                $(tr_id).css("display","none");
+            }
+        }
+        let display_title = function(tit_idx) {
+            let tr_title = "";
+            if (tit_idx == 1) {
+               tr_title = "#tr_title";
+            }
+            else {
+                tr_title = "#tr_subtitle";
+            }
+            let status = $(tr_title).css("display");
+            if(status == "none"){
+                $(tr_title).css("display","");
+            }
+            else {
+                $(tr_title).css("display","none");
+            }
+        }
+        let objective_change = function(obj_idx) {
+            let quiz_object_name = "#quiz_object_name"+obj_idx;
+            let uiz_object_td = "#td"+obj_idx;
+            $.ajax({
+                type: "POST",
+                url: "/quiz_objective_update",
+                beforeSend: function (jqXHR, settings) {
+                    let header = $("meta[name='_csrf_header']").attr("content");
+                    let token = $("meta[name='_csrf']").attr("content");
+                    jqXHR.setRequestHeader(header, token);
+                },
+                data: {
+                    "doc_code": '[[${quizModel.doc_code}]]',
+                    "quiz_object_name": $(quiz_object_name).val(),
+                    "quiz_object_num": obj_idx,
+                    "quiz_number": '[[${quizModel.quiz_number}]]'
+                },
+                success: function (data) {
+                    $(uiz_object_td).empty();
+                    $(uiz_object_td).append($(quiz_object_name).val());
+                    display_tr(obj_idx);
+                    console.log("성공");
+                }, error: function () {
+                    alert('실패');
+                }
+            });
+        }
+            let title_change = function() {
+            let editorData = myTitleEditor.getData();
+            $.ajax({
+                type: "POST",
+                url: "/quiz_title_update",
+                beforeSend: function (jqXHR, settings) {
+                    let header = $("meta[name='_csrf_header']").attr("content");
+                    let token = $("meta[name='_csrf']").attr("content");
+                    jqXHR.setRequestHeader(header, token);
+                },
+                data: {
+                    "doc_code": '[[${quizModel.doc_code}]]',
+                    "quiz_title": editorData, //$('#textarea_title').val(),
+                    "quiz_number": '[[${quizModel.quiz_number}]]'
+                },
+                success: function (data) {
+                    $('#span_title').empty();
+                    editorData = editorData.replace(/<p>/g, '').replace(/<\/p>/g,'');
+                    $('#span_title').append(editorData);
+                    display_title(1);
+
+                }, error: function () {
+                    alert('실패');
+                }
+            });
+        }
+        let subtitle_change = function() {
+            let editorData = mySubTitleEditor.getData();
+            $.ajax({
+                type: "POST",
+                url: "/quiz_subtitle_update",
+                beforeSend: function (jqXHR, settings) {
+                    let header = $("meta[name='_csrf_header']").attr("content");
+                    let token = $("meta[name='_csrf']").attr("content");
+                    jqXHR.setRequestHeader(header, token);
+                },
+                data: {
+                    "doc_code": '[[${quizModel.doc_code}]]',
+                    "quiz_subtitle": editorData, //$('#textarea_title').val(),
+                    "quiz_number": '[[${quizModel.quiz_number}]]'
+                },
+                success: function (data) {
+                    $('#span_subtitle').empty();
+                    editorData = editorData.replace(/<p>/g, '').replace(/<\/p>/g,'');
+                    $('#span_subtitle').append(editorData);
+                    display_title(2);
+
+                }, error: function () {
+                    alert('실패');
+                }
+            });
         }
         keyword_list();
     </script>

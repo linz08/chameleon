@@ -3,14 +3,14 @@ let img_convert = function () {
 	let gdUrl = $("#img_url");
 	let result;
 	if (!isValidUrl(gdUrl.val())) {
-		alert("You have inputted invalid path.");
+		alert("잘못된 경로입니다.");
 		gdUrl.val("");
 		return;
 	}
 	const url = new URL(gdUrl.val());
 	let urlParam = url.searchParams;
 	let gdId = urlParam.get('id');
-	let prefix = "http://drive.google.com/uc?export=view&id=";
+	let prefix = "https://lh3.google.com/u/0/d/";
 	result = (prefix + gdId);
 	document.getElementById('img_target').value = result;
 

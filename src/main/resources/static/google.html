@@ -83,7 +83,7 @@
       const url = new URL(gdUrl.val());
       let urlParam = url.searchParams;
       let gdId = urlParam.get('id');
-      let prefix = "http://drive.google.com/uc?export=view&id=";
+      let prefix = "https://lh3.google.com/u/0/d/";
       result = (prefix + gdId);
       document.getElementById('img_target').value = result;
       $("#preview").attr("src", prefix + gdId);
