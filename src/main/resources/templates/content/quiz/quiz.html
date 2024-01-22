@@ -122,10 +122,11 @@
     <hr/>
     <table class="table">
         <tr>
-            <td colspan="2"><a class="nounderline"
+            <td width="1%"><a class="nounderline"
                    th:href="'/quiz/edit/'+${quizModel.doc_code}+'/'+${quizModel.quiz_number}"
-                   th:utext="${quizModel.quiz_org_number}+'. '"></a><a onclick="display_title(1)"><span id="span_title"
-                    th:utext="${quizModel.quiz_title}"></span></a>
+                   th:utext="${quizModel.quiz_org_number}+'. '"></a></td>
+            <td><a class="nounderline" th:href="'/index/'+${quizModel.doc_code}+'/'+${quizModel.quiz_number}"><span id="span_title"
+                 th:utext="${quizModel.quiz_title}"></span></a><a onclick="display_title(1)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
             </td>
         </tr>
         <tr id="tr_title" style="display:none">

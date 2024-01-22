@@ -43,39 +43,27 @@
             <input class="form-control me-2" type="search" id="doc_search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success" type="button" onclick="doc_move()">Search</button>
         </form>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">:: 오늘 퀴즈 (전체 / 맞힘 / 틀림)</h5>
+                <p class="card-text"><h1><span th:text="${statModel_answer.total_count}"></span> / <span style="color:blue" th:text="${statModel_answer.current_count}"></span> / <span style="color:red" th:text="${statModel_answer.fault_count}"></span></h1></p>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">:: 전체 퀴즈 (성공율)</h5>
+                <p class="card-text"><h1><span th:text="${statModel_ratio.current_count}"></span> / <span th:text="${statModel_ratio.total_count}"></span> (<span class="answer_ratio" th:text="${statModel_ratio.fault_count}"></span> %)</h1></p>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">:: 등록된 퀴즈 (안푼것 / 오늘 / 미문서 / 전체)</h5>
+                <p class="card-text"><h1><span th:text="${statModel.no_answer_count}"></span> / <span th:text="${statModel.current_count}"></span> / <span th:text="${statModel.doc_count}"></span> / <span th:text="${statModel.total_count}"></span>개</h1></p>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">:: <a href="/doc/calendar" target="_blank">등록된 문서</a> (오늘 / 전체)</h5>
+                <p class="card-text"><h1><span th:text="${statModel_doc.current_count}"></span> / <span th:text="${statModel_doc.total_count}"></span>개</h1></p>
+            </div>
+
+        </div>
     </div>
-        <div class="col-sm-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">:: 등록된 퀴즈 (안푼것 / 오늘 / 미문서 / 전체)</h5>
-                    <p class="card-text"><h1><span th:text="${statModel.no_answer_count}"></span> / <span th:text="${statModel.current_count}"></span> / <span th:text="${statModel.doc_count}"></span> / <span th:text="${statModel.total_count}"></span>개</h1></p>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">:: <a href="/doc/calendar" target="_blank">등록된 문서</a> (오늘 / 전체)</h5>
-                    <p class="card-text"><h1><span th:text="${statModel_doc.current_count}"></span> / <span th:text="${statModel_doc.total_count}"></span>개</h1></p>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">:: 오늘 퀴즈 (전체 / 맞힘 / 틀림)</h5>
-                    <p class="card-text"><h1><span th:text="${statModel_answer.total_count}"></span> / <span th:text="${statModel_answer.current_count}"></span> / <span th:text="${statModel_answer.fault_count}"></span>개</h1></p>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">:: 전체 퀴즈 (성공율)</h5>
-                    <p class="card-text"><h1><span th:text="${statModel_ratio.current_count}"></span> / <span th:text="${statModel_ratio.total_count}"></span> (<span class="answer_ratio" th:text="${statModel_ratio.fault_count}"></span> %)</h1></p>
-                </div>
-            </div>
-        </div>
+        <!--
         <div class="col-sm-6">
             <div class="card">
                 <div class="card-body">
@@ -84,15 +72,12 @@
             </div>
             <div class="container">
                 <div class="row row-cols-auto">
-                    <!--<div th:each="todayList : ${docTodayList}" class="col">
-                        <a th:text="${todayList.doc_name}" th:href="@{'/doc/'+${todayList.doc_name}}" th:target="_blank"></a>
-                    </div>
-                    -->
+
                     <div class="col"><span id="month_doc"></span></div>
                     <input type="hidden" id="month_val" th:value="${month_val}" />
                 </div>
             </div>
-        </div>
+        </div>-->
 
     </div>
     <script
@@ -111,6 +96,7 @@
             location.href="/doc/"+($("#doc_search").val());
         }
 
+        /* 이달의 문서
         let doc_chk = function (plm) {
             let doc_month = document.getElementById("month_val").value;
             let date3 = new Date(doc_month.substr(0,4)+'-'+doc_month.substr(4,2)+'-'+'01');
@@ -120,6 +106,7 @@
             month_doc(str_oneMonthAgo);
             document.getElementById("month_val").value = str_oneMonthAgo;
         }
+
 
         function month_doc(doc_month) {
             $.ajax({
@@ -152,8 +139,9 @@
             });
         }
 
-
         month_doc(document.getElementById("month_val").value);
+        */
+
     </script>
 
 </div>
