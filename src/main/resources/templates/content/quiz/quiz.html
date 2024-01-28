@@ -95,9 +95,7 @@
             class="badge rounded-pill bg-danger"
             style="cursor:pointer" onclick="quiz_stat('X');">X</span>
         <a href="/index"><span class="badge rounded-pill bg-success">S</span></a>
-        <a th:href="'/index/'+${quizModel.doc_code}+'/'+${quizModel.quiz_number}"><span class="badge rounded-pill bg-secondary" style="cursor:pointer">R</span></a>
-        <span class="badge rounded-pill bg-warning" style="cursor:pointer" onclick="openPost()">E</span>
-        <span class="badge rounded-pill bg-info" style="cursor:pointer" onclick="openNext()">N</span>
+        <!--<a th:href="'/index/'+${quizModel.doc_code}+'/'+${quizModel.quiz_number}"><span class="badge rounded-pill bg-secondary" style="cursor:pointer">R</span></a>-->
         <select
                 aria-label="문제패턴" id="pattern_code" th:name="pattern_code">
             <option th:each="val:${ptnCodeList}"
@@ -112,8 +110,10 @@
                 th:utext="${val.code_name}"></option>
     </select>&nbsp;&nbsp;<span
             class="badge rounded-pill bg-secondary" style="cursor:pointer" onclick="quiz_etc()">적용</span>
-        <span
-                class="badge rounded-pill bg-success" style="cursor:pointer" onclick="quiz_boorkmark()">마크</span>
+        <span class="badge rounded-pill bg-warning" style="cursor:pointer" onclick="openPost()">E</span>
+        <span class="badge rounded-pill bg-info" style="cursor:pointer" onclick="openNext()">N</span>
+        <!--<span
+                class="badge rounded-pill bg-success" style="cursor:pointer" onclick="quiz_boorkmark()">마크</span>-->
         <span
                 class="badge rounded-pill bg-danger" style="cursor:pointer"
                 th:onclick="'location.href=\'/quiz/list/'+@{${quizModel.quiz_source}}+'\''"
@@ -270,7 +270,7 @@
                     console.log(error);
                 });
 
-        if("[[${quizModel.quiz_subtitle}]]" != "") {
+        if(document.getElementById("quiz_subtitle")) {
 
                 let subtitleEditor = document.querySelector('.ck_editor_subtitle');
                     ClassicEditor.create(subtitleEditor,
@@ -334,7 +334,12 @@
                     let str = '';
                     let row_idx = 1;
                     $(data).each(function () {
-                        str += '<a href="/doc/'+this.doc_name+'" target="_blank">'+ this.doc_name +'</a>&nbsp;&nbsp;&nbsp;';
+                        if(data.length != row_idx) {
+                            str += '<a class="nounderline" href="/doc/'+this.doc_name+'" target="_blank">'+ this.doc_name +'</a><a class="nounderline" href="#" onclick="keyword_del(\''+this.doc_name+'\')">,</a>&nbsp;&nbsp;&nbsp;';
+                        }
+                        else {
+                            str += '<a class="nounderline" href="/doc/'+this.doc_name+'" target="_blank">'+ this.doc_name +'</a>&nbsp;&nbsp;&nbsp;';
+                        }
                         row_idx++;
                     });
                     $("#keyword_list").empty();
@@ -346,6 +351,28 @@
                 }
             });
         });
+
+        let keyword_del = function(doc_name) {
+            $.ajax({
+                type: "POST",
+                url: "/docDel",
+                beforeSend: function (jqXHR, settings) {
+                    let header = $("meta[name='_csrf_header']").attr("content");
+                    let token = $("meta[name='_csrf']").attr("content");
+                    jqXHR.setRequestHeader(header, token);
+                },
+                data: {
+                    "doc_name": doc_name,
+                    "doc_code": '[[${quizModel.doc_code}]]',
+                    "quiz_number": '[[${quizModel.quiz_number}]]'
+                },
+                success: function () {
+                    keyword_list();
+                }, error: function () {
+                    alert('실패');
+                }
+            });
+        }
         let keyword_list = function() {
             $.ajax({
                 type: "POST",
@@ -363,9 +390,15 @@
                     //document.location.reload();
                     let str = '';
                     let row_idx = 1;
+
                     $(data).each(function () {
-                        str += '<a href="/doc/'+this.doc_name+'" target="_blank">'+ this.doc_name +'</a>&nbsp;&nbsp;&nbsp;';
-                        row_idx++;
+                        if(data.length != row_idx) {
+                            str += '<a class="nounderline" href="/doc/'+this.doc_name+'" target="_blank">'+ this.doc_name +'</a><a class="nounderline" href="#" onclick="keyword_del(\''+this.doc_name+'\')">,</a>&nbsp;&nbsp;&nbsp;';
+                        }
+                        else {
+                            str += '<a class="nounderline" href="/doc/'+this.doc_name+'" target="_blank">'+ this.doc_name +'</a>&nbsp;&nbsp;&nbsp;';
+                        }
+                            row_idx++;
                     });
                     $("#keyword_list").empty();
                     $("#keyword_list").append(str);
@@ -586,7 +619,6 @@
                 },
                 success: function (data) {
                     $('#span_subtitle').empty();
-                    editorData = editorData.replace(/<p>/g, '').replace(/<\/p>/g,'');
                     $('#span_subtitle').append(editorData);
                     display_title(2);
 

@@ -6,6 +6,7 @@
         FROM QUIZ_DOCUMENT A
         WHERE A.DOC_CODE = #{doc_code}
           AND A.QUIZ_NUMBER = #{quiz_number}
+        ORDER BY CREATE_DATE
     </select>
     <select id="selectQuizDocumentListByDoc" parameterType="QuizDocumentModel" resultType="QuizModel">
         <![CDATA[SELECT A.DOC_CODE,A.QUIZ_NUMBER,FNC_COMMON_CODE(B.QUIZ_SOURCE) AS QUIZ_SOURCE_NAME, B.QUIZ_ORG_NUMBER,

@@ -85,7 +85,7 @@
                                     ON A.DOC_CODE  = B.DOC_CODE
                                         AND A.QUIZ_NUMBER  = B.QUIZ_NUMBER
         WHERE A.QUIZ_SOURCE = #{quiz_source}
-        ORDER BY CAST(QUIZ_ORG_NUMBER AS INTEGER)
+        ORDER BY CAST(A.DOC_CODE AS INTEGER), CAST(QUIZ_ORG_NUMBER AS INTEGER)
         ]]>
     </select>
     <select id="selectQuizDayList" parameterType="String"
@@ -180,7 +180,7 @@
 	<![CDATA[
         UPDATE
             QUIZ
-        SET QUIZ_SUBTITLE = REPLACE(REPLACE(#{quiz_subtitle}, '<p>', ''), '</p>', '')
+        SET QUIZ_SUBTITLE = #{quiz_subtitle}
         WHERE DOC_CODE = #{doc_code}
           AND QUIZ_NUMBER = #{quiz_number}
         ]]>
