@@ -177,7 +177,7 @@ public class DocController {
             //System.out.println(strDoc_content);
             docModel.setDoc_content(strDoc_content);
         }
-
+        docModel.setDoc_content(docModel.getDoc_content().replaceAll("http://javaguitar.net:8080",""));
         ss.update("net.javaguitar.mapper.DocMapper.updateDoc", docModel);
         String docName = URLEncoder.encode(docModel.getDoc_name(), java.nio.charset.StandardCharsets.UTF_8.toString());
         docName = docName.replaceAll("\\+", "%20");
