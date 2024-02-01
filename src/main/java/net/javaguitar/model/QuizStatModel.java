@@ -15,7 +15,7 @@ public class QuizStatModel {
     private int quiz_seq;
     private int quiz_num;
     private String success_yn;
-    private int quiz_time;
+    private float quiz_times;
     private int success_cnt;
     private int success_rate;
     private int fail_cnt;

@@ -124,9 +124,9 @@
         <tr>
             <td width="1%"><a class="nounderline"
                    th:href="'/quiz/edit/'+${quizModel.doc_code}+'/'+${quizModel.quiz_number}"
-                   th:utext="${quizModel.quiz_org_number}+'. '"></a></td>
-            <td><a class="nounderline" th:href="'/index/'+${quizModel.doc_code}+'/'+${quizModel.quiz_number}"><span id="span_title"
-                 th:utext="${quizModel.quiz_title}"></span></a><a onclick="display_title(1)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                   th:utext="${quizModel.quiz_org_number}"></a><a class="nounderline" th:href="'/index/'+${quizModel.doc_code}+'/'+${quizModel.quiz_number}">. </a></td>
+            <td><span id="span_title"
+                 th:utext="${quizModel.quiz_title}"></span><a onclick="display_title(1)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
             </td>
         </tr>
         <tr id="tr_title" style="display:none">
@@ -218,6 +218,8 @@
     <ul class="list-group">
         <li class="list-group-item list-group-item-success" onclick="answer_visuable()" th:text="'성공 : '+${quizStatModel.success_cnt}"></li>
         <li class="list-group-item list-group-item-danger" th:text="'실패 : '+${quizStatModel.fail_cnt}"></li>
+        <li class="list-group-item list-group-item-secondary">
+            <span id="quiz_times">시간 : </span></li>
     </ul>
     <div id="quiz_answer" class="input-group mb-3 invisible">
         <span id="answer" th:text="${quizModel.quiz_answer}"></span>
@@ -433,6 +435,7 @@
                 toastAlert(retV, 0);
             }
             quiz_stat(success_yn);
+            stop_timer();
         }
 
         let quiz_stat = function (success_yn) {
@@ -447,7 +450,8 @@
                 data: {
                     "success_yn": success_yn,
                     "doc_code": '[[${quizModel.doc_code}]]',
-                    "quiz_number": '[[${quizModel.quiz_number}]]'
+                    "quiz_number": '[[${quizModel.quiz_number}]]',
+                    "quiz_times": int_quiz_times
                 },
                 success: function () {
                     if (success_yn === 'X') {
@@ -522,6 +526,7 @@
         let answer_visuable = function() {
             $('#quiz_answer').removeClass('invisible');
             $('#quiz_answer').addClass('visible');
+            stop_timer();
         }
         let display_tr = function(tr_idx) {
             let tr_id = "#tr"+tr_idx;
@@ -552,6 +557,7 @@
         let objective_change = function(obj_idx) {
             let quiz_object_name = "#quiz_object_name"+obj_idx;
             let uiz_object_td = "#td"+obj_idx;
+
             $.ajax({
                 type: "POST",
                 url: "/quiz_objective_update",
@@ -628,6 +634,22 @@
             });
         }
         keyword_list();
+
+        //타이머
+        let int_quiz_times = 1;
+        let timer;
+        timer = setInterval(()=>{
+            int_quiz_times++;
+        },1000);
+
+        let stop_timer = function() {
+            if(int_quiz_times > 0) {
+                $('#quiz_times').text('시간 : '+int_quiz_times+' (평균 : [[${quizStatModel.quiz_times}]])');
+
+                clearInterval(timer);
+                int_quiz_times = 0;
+            }
+        }
     </script>
 </div>
 </body>

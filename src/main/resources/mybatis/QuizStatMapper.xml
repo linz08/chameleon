@@ -19,12 +19,18 @@
     <select id="selectQuizSuccessRate" parameterType="QuizStatModel"
             resultType="QuizStatModel">
         <![CDATA[
-        SELECT SUCCESS.CNT AS SUCCESS_CNT,FAIL.CNT AS FAIL_CNT,
+        SELECT SUCCESS.CNT AS SUCCESS_CNT,FAIL.CNT AS FAIL_CNT,TIMES.QUIZ_TIMES,
         ROUND(SUCCESS.CNT/(SUCCESS.CNT+FAIL.CNT)*100,2) AS SUCCESS_RATE FROM
         (SELECT COUNT(*) AS CNT FROM QUIZ_STAT  WHERE DOC_CODE=#{doc_code} AND QUIZ_NUMBER = #{quiz_number}
         AND SUCCESS_YN <> 'Y')  FAIL,
         (SELECT COUNT(*) AS CNT FROM QUIZ_STAT  WHERE DOC_CODE=#{doc_code} AND QUIZ_NUMBER = #{quiz_number}
-        AND SUCCESS_YN = 'Y') SUCCESS
+        AND SUCCESS_YN = 'Y') SUCCESS,
+        (SELECT /* QuizStatMapper.selectAvgQuizTimes */
+            ROUND(AVG(QUIZ_TIMES),2) AS QUIZ_TIMES
+        FROM QUIZ_STAT A
+        WHERE DOC_CODE = #{doc_code}
+          AND QUIZ_NUMBER = #{quiz_number}
+          AND QUIZ_TIMES  <> 0) TIMES
         ]]>
     </select>
 
@@ -36,7 +42,7 @@
                               QUIZ_SEQ,
                               QUIZ_NUM,
                               SUCCESS_YN,
-                              QUIZ_TIME,
+                              QUIZ_TIMES,
                               CREATE_DATE)
         VALUES ( date_format(NOW(), '%Y%m%d')
                , #{doc_code}
@@ -44,7 +50,7 @@
                , #{quiz_seq}
                , 1
                , #{success_yn}
-               , #{quiz_time}
+               , #{quiz_times}
                , now())
         ]]>
 	</insert>

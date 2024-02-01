@@ -40,7 +40,6 @@ public class QuizStatController {
         String formatedNow = now.format(formatter);
 
         quizStatModel.setQuiz_date(formatedNow);
-        quizStatModel.setQuiz_time(0);
 
         quizSeq = ss.selectOne("net.javaguitar.mapper.QuizStatMapper.selectMaxQuizStatSeq", quizStatModel);
 
