@@ -216,10 +216,10 @@
              aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" th:text="${quizStatModel.success_rate}">25%</div>
     </div>
     <ul class="list-group">
-        <li class="list-group-item list-group-item-success" onclick="answer_visuable()" th:text="'성공 : '+${quizStatModel.success_cnt}"></li>
-        <li class="list-group-item list-group-item-danger" th:text="'실패 : '+${quizStatModel.fail_cnt}"></li>
+        <li class="list-group-item list-group-item-success" onclick="answer_visuable()"> 성공 : <span id="span_success" th:text="${quizStatModel.success_cnt}"></span></li>
+        <li class="list-group-item list-group-item-danger"> 실패 : <span id="span_fail" th:text="${quizStatModel.fail_cnt}"></span></li>
         <li class="list-group-item list-group-item-secondary">
-            <span id="quiz_times">시간 : </span></li>
+            <span id="quiz_times" th:utext="'시간 : 0 (평균 : '+${quizStatModel.quiz_times}+')'"></span></li>
     </ul>
     <div id="quiz_answer" class="input-group mb-3 invisible">
         <span id="answer" th:text="${quizModel.quiz_answer}"></span>
@@ -430,12 +430,19 @@
                 }
             }
             if (retV === "오답") {
+                let int_fail = $('#span_fail').text();
+                int_fail = Number(int_fail) + 1;
+                $('#span_fail').text(int_fail);
                 toastAlert(retV, 1);
             } else {
+                let int_success = $('#span_success').text();
+                int_success = Number(int_success) + 1;
+                $('#span_success').text(int_success);
+
                 toastAlert(retV, 0);
             }
             quiz_stat(success_yn);
-            stop_timer();
+
         }
 
         let quiz_stat = function (success_yn) {
@@ -456,11 +463,15 @@
                 success: function () {
                     if (success_yn === 'X') {
                         toastAlert("skip 저장", 0);
+                        let int_fail = $('#span_fail').text();
+                        int_fail = Number(int_fail) + 1;
+                        $('#span_fail').text(int_fail);
                     }
                 }, error: function () {
                     toastAlert('저장 실패', 1);
                 }
             });
+            stop_timer();
         }
 
         let quiz_boorkmark = function () {

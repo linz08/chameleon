@@ -33,8 +33,14 @@
             integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
             crossorigin="anonymous">
     <link th:href="@{/css/layout/default_layout.css}" rel="stylesheet" />
+    <link th:href="@{/css/content/ckeditor5.css}" rel="stylesheet" />
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <th:block layout:fragment="header" th:include="@{/fragments/header}"></th:block>
+<style>
+    .ck-editor {
+        width: 100% !important;
+    }
+</style>
 </head>
 <body>
     <script
