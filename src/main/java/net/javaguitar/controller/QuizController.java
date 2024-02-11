@@ -230,6 +230,18 @@ public class QuizController {
         return mav;
     }
 
+    @RequestMapping(value = {"/quiz/keyword_list"}, method = RequestMethod.GET)
+    public ModelAndView keywordAllList() {
+        ModelAndView mav = new ModelAndView();
+
+        // 출처
+        List<QuizStatModel> keywordList = ss.selectList("net.javaguitar.mapper.QuizStatMapper.selectKeywordList");
+        mav.addObject("keywordList", keywordList);
+
+        mav.setViewName("content/quiz/keyword_list");
+        return mav;
+    }
+
     @RequestMapping(value = {"/quiz/write"}, method = RequestMethod.GET)
     public ModelAndView quizWrite(@ModelAttribute("quizModel") QuizModel quizModel, ModelMap mode) throws Exception {
         ModelAndView mav = new ModelAndView();

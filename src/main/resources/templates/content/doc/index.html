@@ -93,7 +93,24 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
     <script>
         let doc_move = function () {
-            location.href="/doc/"+($("#doc_search").val());
+            let keyword = ($("#doc_search").val());
+            $.ajax({
+                type: "POST",
+                url: "/doc_keyword/search_keyword",
+                beforeSend: function (jqXHR, settings) {
+                    let header = $("meta[name='_csrf_header']").attr("content");
+                    let token = $("meta[name='_csrf']").attr("content");
+                    jqXHR.setRequestHeader(header, token);
+                },
+                data: {
+                    "keyword": keyword
+                },
+                success: function (doc_name) {
+                    window.open("/doc/"+doc_name);
+                }, error: function () {
+                    alert("error : "+ error);
+                }
+            });
         }
 
         /* 이달의 문서

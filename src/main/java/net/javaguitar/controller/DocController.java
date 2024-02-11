@@ -348,4 +348,10 @@ public class DocController {
         ss.update("net.javaguitar.mapper.DocMapper.updateDocLevel", docModel);
     }
 
+    @RequestMapping(value = {"/doc_keyword/search_keyword"}, method = RequestMethod.POST)
+    public @ResponseBody String getDoc_name(String keyword) {
+
+        return ss.selectOne("net.javaguitar.mapper.DocKeywordMapper.selectDocName", keyword);
+    }
+
 }

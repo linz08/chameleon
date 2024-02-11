@@ -34,7 +34,7 @@ if(document.getElementById('doc_search')) {
 					$.map(rData.resultList, function (item) {
 						return {
 							label: item.keyword,    	// 목록에 표시되는 값
-							value: item.doc_name 		// 선택 시 input창에 표시되는 값
+							value: item.keyword 		// 선택 시 input창에 표시되는 값
 							//, idx : item.SEQ // index
 						};
 					})

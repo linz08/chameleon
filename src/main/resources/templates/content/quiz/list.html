@@ -29,6 +29,7 @@
         </button> &nbsp;
         <button type="button" class="btn btn-outline-danger" onclick="location.href='/quiz/all_list'">전체목록</button>
         <button type="button" class="btn btn-outline-dark" onclick="location.href='/sys/index'">코드관리</button>
+        <button type="button" class="btn btn-outline-secondary" onclick="location.href='/quiz/keyword_list'">키워드</button>
         <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
             <input type="search" class="form-control form-control-dark" id="quiz_title" placeholder="Search..."
                    aria-label="Search">
@@ -64,8 +65,8 @@
                        th:if="${quizList.success_y}==0 and ${quizList.success_n}==0 " style="color:green"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                        th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
-                    &nbsp;&nbsp;<a class="link-light"
-                                   th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}"><span th:text="'['+ ${quizList.success_y}+' : '+${quizList.success_n}+']'"></span></a>
+                    <a class="link-light"
+                                   th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}"><span th:text="'['+ ${quizList.success_y}+':'+${quizList.success_n}+'] (' +${quizList.quiz_level}+')'"></span></a>
                 </td>
             </tr>
             </tbody>
@@ -90,7 +91,7 @@
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                        th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
                     &nbsp;&nbsp;<a class="link-light"
-                                   th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}"><span th:text="'['+ ${quizList.success_y}+' : '+${quizList.success_n}+']'"></span></a>
+                                   th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}"><span th:text="'['+ ${quizList.success_y}+':'+${quizList.success_n}+'] (' +${quizList.quiz_level}+')'"></span></a>
                 </td>
             </tr>
             </tbody>
@@ -113,8 +114,8 @@
                        th:if="${quizList.success_y}==0 and ${quizList.success_n}==0 " style="color:green"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                        th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
-                    &nbsp;&nbsp;<a class="link-light"
-                                   th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}"><span th:text="'['+ ${quizList.success_y}+' : '+${quizList.success_n}+']'"></span></a>
+                    &nbsp;<a class="link-light"
+                             th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}"><span th:text="'['+ ${quizList.success_y}+':'+${quizList.success_n}+'] (' +${quizList.quiz_level}+')'"></span></a>
                 </td>
             </tr>
             </tbody>
@@ -137,8 +138,8 @@
                        th:if="${quizList.success_y}==0 and ${quizList.success_n}==0 " style="color:green"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                        th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
-                    &nbsp;&nbsp;<a class="link-light"
-                                   th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}"><span th:text="'['+ ${quizList.success_y}+' : '+${quizList.success_n}+']'"></span></a>
+                    <a class="link-light"
+                       th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}"><span th:text="'['+ ${quizList.success_y}+':'+${quizList.success_n}+'] (' +${quizList.quiz_level}+')'"></span></a>
                 </td>
             </tr>
             </tbody>
@@ -161,8 +162,8 @@
                        th:if="${quizList.success_y}==0 and ${quizList.success_n}==0 " style="color:green"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                        th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
-                    &nbsp;&nbsp;<a class="link-light"
-                                   th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}"><span th:text="'['+ ${quizList.success_y}+' : '+${quizList.success_n}+']'"></span></a>
+                    <a class="link-light"
+                       th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}"><span th:text="'['+ ${quizList.success_y}+':'+${quizList.success_n}+'] (' +${quizList.quiz_level}+')'"></span></a>
                 </td>
             </tr>
             </tbody>
@@ -185,8 +186,8 @@
                        th:if="${quizList.success_y}==0 and ${quizList.success_n}==0 " style="color:green"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                        th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
-                    &nbsp;&nbsp;<a class="link-light"
-                                   th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}"><span th:text="'['+ ${quizList.success_y}+' : '+${quizList.success_n}+']'"></span></a>
+                    &nbsp;<a class="link-light"
+                             th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}"><span th:text="'['+ ${quizList.success_y}+':'+${quizList.success_n}+'] (' +${quizList.quiz_level}+')'"></span></a>
                 </td>
             </tr>
             </tbody>

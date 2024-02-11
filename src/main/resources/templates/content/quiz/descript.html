@@ -44,12 +44,17 @@
 <body>
 <div>
     <button type="button" class="btn btn-outline-secondary" th:onclick="'location.href=\'/quiz/desc/edit/'+@{${quizModel.doc_code}}+'/'+@{${quizModel.quiz_number}}+'\''">편집</button> &nbsp;
-    <button type="button" class="btn btn-outline-success" onclick="window.close()">닫기</button>
+    <button type="button" class="btn btn-outline-success" onclick="desc_clse()">닫기</button>
 </div>
 <br/>
 <div class="doc_content">
     <span th:utext="${quizModel.quiz_desc}"></span>
 </div>
-
+<script>
+    let desc_clse = function () {
+        opener.parent.location.reload();
+        window.close();
+    }
+</script>
 </body>
 </html>

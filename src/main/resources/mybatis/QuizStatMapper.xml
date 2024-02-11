@@ -70,5 +70,24 @@
             IFNULL(MAX(QUIZ_SEQ), 0)+1 FROM
                    QUIZ_STAT WHERE QUIZ_DATE = #{quiz_date}
     </select>
-
+    <select id="selectKeywordList" resultType="QuizStatModel">
+    <![CDATA[
+        SELECT /* QuizStatMapper.selectKeywordList */
+            A.DOC_NAME,COUNT(*) AS TOTAL_CNT,
+            B.SUCCESS_CNT AS SUCCESS_CNT,C.FAIL_CNT AS FAIL_CNT,
+            COALESCE(ROUND(SUCCESS_CNT/(SUCCESS_CNT+FAIL_CNT)*100,2),0) AS SUCCESS_RATE
+        FROM QUIZ_DOCUMENT A LEFT OUTER JOIN
+             (SELECT A.DOC_NAME,COUNT(*) AS SUCCESS_CNT FROM QUIZ_DOCUMENT A, QUIZ_STAT B
+              WHERE B.DOC_CODE = A.DOC_CODE AND B.QUIZ_NUMBER = A.QUIZ_NUMBER AND B.SUCCESS_YN='Y'
+              GROUP BY A.DOC_NAME) B
+             ON A.DOC_NAME = B.DOC_NAME
+                             LEFT OUTER JOIN
+             (SELECT A.DOC_NAME,COUNT(*) AS FAIL_CNT FROM QUIZ_DOCUMENT A, QUIZ_STAT B
+              WHERE B.DOC_CODE = A.DOC_CODE AND B.QUIZ_NUMBER = A.QUIZ_NUMBER AND B.SUCCESS_YN!='Y'
+              GROUP BY A.DOC_NAME) C
+             ON A.DOC_NAME = C.DOC_NAME
+        GROUP BY A.DOC_NAME
+        ORDER BY COUNT(*) DESC
+        ]]>
+    </select>
 </mapper>

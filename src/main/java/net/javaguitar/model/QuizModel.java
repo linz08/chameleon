@@ -18,7 +18,7 @@ public class QuizModel {
 	private String quiz_subtitle;
 	private int pattern_code;
 	private String pattern_code_name;
-	private int quiz_level;
+	private String quiz_level;
 	private String quiz_level_name;
 	private int quiz_source;
 	private String quiz_source_name;

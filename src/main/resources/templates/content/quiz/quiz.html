@@ -107,7 +107,7 @@
         <option th:each="val:${lvlCodeList}"
                 th:value="${val.code_id}"
                 th:selected="${val.code_id}==${quizModel.quiz_level}"
-                th:utext="${val.code_name}"></option>
+                th:utext="${val.code_name}+'레벨'"></option>
     </select>&nbsp;&nbsp;<span
             class="badge rounded-pill bg-secondary" style="cursor:pointer" onclick="quiz_etc()">적용</span>
         <span class="badge rounded-pill bg-warning" style="cursor:pointer" onclick="openPost()">E</span>
@@ -337,10 +337,10 @@
                     let row_idx = 1;
                     $(data).each(function () {
                         if(data.length != row_idx) {
-                            str += '<a class="nounderline" href="/doc/'+this.doc_name+'" target="_blank">'+ this.doc_name +'</a><a class="nounderline" href="#" onclick="keyword_del(\''+this.doc_name+'\')">,</a>&nbsp;&nbsp;&nbsp;';
+                            str += '<a class="nounderline" style="cursor:pointer" onclick="doc_name_move(\''+this.doc_name+'\')">'+ this.doc_name +'</a><a class="nounderline" href="#" onclick="keyword_del(\''+this.doc_name+'\')">,</a>&nbsp;&nbsp;&nbsp;';
                         }
                         else {
-                            str += '<a class="nounderline" href="/doc/'+this.doc_name+'" target="_blank">'+ this.doc_name +'</a>&nbsp;&nbsp;&nbsp;';
+                            str += '<a class="nounderline" style="cursor:pointer" onclick="doc_name_move(\''+this.doc_name+'\')">'+ this.doc_name +'</a>&nbsp;&nbsp;&nbsp;';
                         }
                         row_idx++;
                     });
@@ -353,7 +353,26 @@
                 }
             });
         });
-
+        //keyword 열기
+        let doc_name_move = function(keyword){
+            $.ajax({
+                type: "POST",
+                url: "/doc_keyword/search_keyword",
+                beforeSend: function (jqXHR, settings) {
+                    let header = $("meta[name='_csrf_header']").attr("content");
+                    let token = $("meta[name='_csrf']").attr("content");
+                    jqXHR.setRequestHeader(header, token);
+                },
+                data: {
+                    "keyword": keyword
+                },
+                success: function (doc_name) {
+                    window.open("/doc/"+doc_name);
+                }, error: function () {
+                    alert("error : "+ error);
+                }
+            });
+        }
         let keyword_del = function(doc_name) {
             $.ajax({
                 type: "POST",
@@ -395,10 +414,10 @@
 
                     $(data).each(function () {
                         if(data.length != row_idx) {
-                            str += '<a class="nounderline" href="/doc/'+this.doc_name+'" target="_blank">'+ this.doc_name +'</a><a class="nounderline" href="#" onclick="keyword_del(\''+this.doc_name+'\')">,</a>&nbsp;&nbsp;&nbsp;';
+                            str += '<a class="nounderline" style="cursor:pointer" onclick="doc_name_move(\''+this.doc_name+'\')">'+ this.doc_name +'</a><a class="nounderline" href="#" onclick="keyword_del(\''+this.doc_name+'\')">,</a>&nbsp;&nbsp;&nbsp;';
                         }
                         else {
-                            str += '<a class="nounderline" href="/doc/'+this.doc_name+'" target="_blank">'+ this.doc_name +'</a>&nbsp;&nbsp;&nbsp;';
+                            str += '<a class="nounderline" style="cursor:pointer" onclick="doc_name_move(\''+this.doc_name+'\')">'+ this.doc_name +'</a>&nbsp;&nbsp;&nbsp;';
                         }
                             row_idx++;
                     });

@@ -20,6 +20,11 @@
                  GROUP BY A.DOC_NAME
              ) A ORDER BY A.CNT DESC,A.DOC_NAME ASC
     </select>
+    <select id="selectDocName" parameterType="String"
+            resultType="java.lang.String">
+        SELECT A.DOC_NAME
+        FROM DOCUMENT_KEYWORD A WHERE KEYWORD = #{keyword}
+    </select>
     <insert id="insertDocKeyword" parameterType="DocKeywordModel">
 		<![CDATA[
         INSERT INTO DOCUMENT_KEYWORD (DOC_NAME,
