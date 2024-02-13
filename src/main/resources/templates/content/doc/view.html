@@ -11,6 +11,10 @@
             margin-top: 10px;
             margin-left: 30px;
         }
+        .doc_keyword {
+
+            margin-left: 30px;
+        }
 
         .doc_content {
             margin-top: 30px;
@@ -191,15 +195,12 @@
                     th:utext="'['+${quizCnt}+']'"></span></a></h1>
 
     </div>
+    <div class="doc_keyword"><span id="keyword_icon" style="cursor:pointer">키워드 : </span>
+        <span id="keyword_list"></span>
+    </div>
     <div class="doc_content ck-content">
         <span th:utext="${docModel.doc_content}"></span>
     </div>
-    <br/>
-    <div><span id="keyword_icon"
-               class="badge rounded-pill bg-secondary" style="cursor:pointer">키워드</span>
-        <span id="keyword_list"></span>
-    </div>
-    <br/>
     <div id="keyword_button" class="input-group mb-3 w-50 invisible">
         <input type="text" id="document_keyword" class="form-control" placeholder="키워드명" aria-label="키워드명"
                aria-describedby="button-addon2">
@@ -322,16 +323,7 @@
                     "doc_name": '[[${docModel.doc_name}]]'
                 },
                 success: function (data) {
-                    let str = '';
-                    let row_idx = 1;
-                    $(data).each(function () {
-                        str += this.keyword + '</span>&nbsp;&nbsp;';
-                        row_idx++;
-                    });
-                    $("#keyword_list").empty();
-                    $("#keyword_list").append(str);
-                    $('#document_keyword').val('');
-                    document.getElementById("document_keyword").focus();
+                    keyword_list();
                 }, error: function () {
                     console.log('실패');
                 }
@@ -354,7 +346,12 @@
                     let str = '';
                     let row_idx = 1;
                     $(data).each(function () {
-                        str += '<a onclick=\"del_keyword(\'' + this.keyword + '\')\">' + this.keyword + '</a>&nbsp;&nbsp;&nbsp;';
+                        if(this.quiz_cnt == "0"){
+                            str += '<a style=\"cursor:pointer\" onclick=\"del_keyword(\'' + this.keyword + '\')\">'+ this.keyword +'</a>&nbsp;&nbsp;&nbsp;';
+                        }
+                        else {
+                        str += '<a style=\"cursor:pointer\" onclick=\"del_keyword(\'' + this.keyword + '\')\">' + this.keyword + '</a>(<a class=\"doc_name\" target="\_blank\" href=\"/quiz/doc/'+this.keyword+'\">'+this.quiz_cnt+'</a>)&nbsp;&nbsp;&nbsp;';
+                        }
                         row_idx++;
                     });
                     $("#keyword_list").empty();

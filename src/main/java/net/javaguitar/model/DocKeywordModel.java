@@ -11,4 +11,5 @@ public class DocKeywordModel {
 
 	private String doc_name;
 	private String keyword;
+	private String quiz_cnt;
 }

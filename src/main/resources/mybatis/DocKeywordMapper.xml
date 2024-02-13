@@ -3,14 +3,21 @@
 <mapper namespace="net.javaguitar.mapper.DocKeywordMapper">
     <select id="selectDocKeyword" parameterType="DocKeywordModel"
             resultType="DocKeywordModel">
-        SELECT A.*
+        SELECT /* DocKeywordMapper.selectDocKeyword */ A.*,
+           (SELECT COUNT(*) FROM QUIZ_DOCUMENT B WHERE A.KEYWORD = B.DOC_NAME) AS QUIZ_CNT
         FROM DOCUMENT_KEYWORD A
         WHERE DOC_NAME = #{doc_name}
         ORDER BY KEYWORD
     </select>
+    <select id="selectDocKeywordCheck" resultType="java.lang.Integer">
+        SELECT /* DocKeywordMapper.selectDocKeywordCheck  */ COUNT(*)
+        FROM DOCUMENT_KEYWORD
+        WHERE KEYWORD = #{keyword}
+    </select>
     <select id="selectDocSearch" parameterType="String"
             resultType="DocKeywordModel">
-        SELECT A.DOC_NAME,A.KEYWORD
+        SELECT /* DocKeywordMapper.selectDocSearch */
+               A.DOC_NAME,A.KEYWORD
         FROM (
                  SELECT A.DOC_NAME,A.KEYWORD,COUNT(*) AS CNT
                  FROM (SELECT * FROM DOCUMENT_KEYWORD
@@ -22,7 +29,8 @@
     </select>
     <select id="selectDocName" parameterType="String"
             resultType="java.lang.String">
-        SELECT A.DOC_NAME
+        SELECT /* DocKeywordMapper.selectDocName */
+            A.DOC_NAME
         FROM DOCUMENT_KEYWORD A WHERE KEYWORD = #{keyword}
     </select>
     <insert id="insertDocKeyword" parameterType="DocKeywordModel">

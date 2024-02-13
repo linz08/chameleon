@@ -53,21 +53,21 @@
             <tbody>
             <tr th:each="quizList : ${quizList}" th:if="${quizList.doc_code}==2">
                 <td>
-                    <a class="link-light"
+                    <a class="link-light" target="_blank"
                        th:if="${quizList.success_y <= quizList.success_n} and ${quizList.success_n} > 0" style="color:red"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                        th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
-                    <a class="link-light"
+                    <a class="link-light" target="_blank"
                        th:if="${quizList.success_y > quizList.success_n}"  style="color:blue"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                        th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
-                    <a class="link-light"
+                    <a class="link-light" target="_blank"
                        th:if="${quizList.success_y}==0 and ${quizList.success_n}==0 " style="color:green"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                        th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
-                    <a class="link-light"
+                    <a class="link-light" target="_blank"
                                    th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}"><span th:text="'['+ ${quizList.success_y}+':'+${quizList.success_n}+'] (' +${quizList.quiz_level}+')'"></span></a>
-                </td>
+                    <span th:if="${quizList.today_yn > 0}">*</span></td>
             </tr>
             </tbody>
         </table>
@@ -78,21 +78,21 @@
             <tbody>
             <tr th:each="quizList : ${quizList}" th:if="${quizList.doc_code}==3">
                 <td>
-                    <a class="link-light"
+                    <a class="link-light" target="_blank"
                        th:if="${quizList.success_y <= quizList.success_n} and ${quizList.success_n} > 0" style="color:red"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                        th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
-                    <a class="link-light"
+                    <a class="link-light" target="_blank"
                        th:if="${quizList.success_y > quizList.success_n}"  style="color:blue"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                        th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
-                    <a class="link-light"
+                    <a class="link-light" target="_blank"
                        th:if="${quizList.success_y}==0 and ${quizList.success_n}==0 " style="color:green"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                        th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
-                    &nbsp;&nbsp;<a class="link-light"
+                    &nbsp;&nbsp;<a class="link-light" target="_blank"
                                    th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}"><span th:text="'['+ ${quizList.success_y}+':'+${quizList.success_n}+'] (' +${quizList.quiz_level}+')'"></span></a>
-                </td>
+                    <span th:if="${quizList.today_yn > 0}">*</span></td>
             </tr>
             </tbody>
         </table>
@@ -102,21 +102,21 @@
         <table class="table table-dark">
             <tbody>
             <tr th:each="quizList : ${quizList}" th:if="${quizList.doc_code}==4">
-                <td><a class="link-light"
+                <td><a class="link-light" target="_blank"
                        th:if="${quizList.success_y <= quizList.success_n} and ${quizList.success_n} > 0" style="color:red"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                        th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
-                    <a class="link-light"
+                    <a class="link-light" target="_blank"
                        th:if="${quizList.success_y > quizList.success_n}"  style="color:blue"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                        th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
-                    <a class="link-light"
+                    <a class="link-light" target="_blank"
                        th:if="${quizList.success_y}==0 and ${quizList.success_n}==0 " style="color:green"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                        th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
-                    &nbsp;<a class="link-light"
+                    &nbsp;<a class="link-light" target="_blank"
                              th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}"><span th:text="'['+ ${quizList.success_y}+':'+${quizList.success_n}+'] (' +${quizList.quiz_level}+')'"></span></a>
-                </td>
+                    <span th:if="${quizList.today_yn > 0}">*</span></td>
             </tr>
             </tbody>
         </table>
@@ -126,21 +126,21 @@
         <table class="table table-dark">
             <tbody>
             <tr th:each="quizList : ${quizList}" th:if="${quizList.doc_code}==5">
-                <td><a class="link-light"
+                <td><a class="link-light" target="_blank"
                        th:if="${quizList.success_y <= quizList.success_n} and ${quizList.success_n} > 0" style="color:red"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                        th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
-                    <a class="link-light"
+                    <a class="link-light" target="_blank"
                        th:if="${quizList.success_y > quizList.success_n}"  style="color:blue"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                        th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
-                    <a class="link-light"
+                    <a class="link-light" target="_blank"
                        th:if="${quizList.success_y}==0 and ${quizList.success_n}==0 " style="color:green"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                        th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
-                    <a class="link-light"
+                    <a class="link-light" target="_blank"
                        th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}"><span th:text="'['+ ${quizList.success_y}+':'+${quizList.success_n}+'] (' +${quizList.quiz_level}+')'"></span></a>
-                </td>
+                    <span th:if="${quizList.today_yn > 0}">*</span></td>
             </tr>
             </tbody>
         </table>
@@ -150,21 +150,21 @@
         <table class="table table-dark">
             <tbody>
             <tr th:each="quizList : ${quizList}" th:if="${quizList.doc_code}==6">
-                <td><a class="link-light"
+                <td><a class="link-light" target="_blank"
                        th:if="${quizList.success_y <= quizList.success_n} and ${quizList.success_n} > 0" style="color:red"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                        th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
-                    <a class="link-light"
+                    <a class="link-light" target="_blank"
                        th:if="${quizList.success_y > quizList.success_n}"  style="color:blue"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                        th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
-                    <a class="link-light"
+                    <a class="link-light" target="_blank"
                        th:if="${quizList.success_y}==0 and ${quizList.success_n}==0 " style="color:green"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                        th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
-                    <a class="link-light"
+                    <a class="link-light" target="_blank"
                        th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}"><span th:text="'['+ ${quizList.success_y}+':'+${quizList.success_n}+'] (' +${quizList.quiz_level}+')'"></span></a>
-                </td>
+                    <span th:if="${quizList.today_yn > 0}">*</span></td>
             </tr>
             </tbody>
         </table>
@@ -174,21 +174,21 @@
         <table class="table table-dark">
             <tbody>
             <tr th:each="quizList : ${quizList}" th:if="${quizList.doc_code}==7">
-                <td><a class="link-light"
+                <td><a class="link-light" target="_blank"
                        th:if="${quizList.success_y <= quizList.success_n} and ${quizList.success_n} > 0" style="color:red"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                        th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
-                    <a class="link-light"
+                    <a class="link-light" target="_blank"
                        th:if="${quizList.success_y > quizList.success_n}"  style="color:blue"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                        th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
-                    <a class="link-light"
+                    <a class="link-light" target="_blank"
                        th:if="${quizList.success_y}==0 and ${quizList.success_n}==0 " style="color:green"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                        th:text="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
-                    &nbsp;<a class="link-light"
+                    &nbsp;<a class="link-light" target="_blank"
                              th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}"><span th:text="'['+ ${quizList.success_y}+':'+${quizList.success_n}+'] (' +${quizList.quiz_level}+')'"></span></a>
-                </td>
+                    <span th:if="${quizList.today_yn > 0}">*</span></td>
             </tr>
             </tbody>
         </table>

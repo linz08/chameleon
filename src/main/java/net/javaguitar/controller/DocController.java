@@ -90,24 +90,31 @@ public class DocController {
 
     }
 
-    @RequestMapping(value = "/doc/{doc_name}", method = RequestMethod.GET)
-    public ModelAndView docName(@PathVariable String doc_name, HttpServletRequest request) throws Exception {
+    @RequestMapping(value = "/doc/{keyword}", method = RequestMethod.GET)
+    public ModelAndView docName(@PathVariable String keyword, HttpServletRequest request) throws Exception {
+        String doc_name;
         ModelAndView mav = new ModelAndView();
-        int docCheck = ss.selectOne("net.javaguitar.mapper.DocMapper.selectDocCheck", doc_name);
+        int docCheck = ss.selectOne("net.javaguitar.mapper.DocKeywordMapper.selectDocKeywordCheck", keyword);
         DocModel docModel = new DocModel();
+
+        //새로운 키워드가 없으면 생성
         if (docCheck == 0) {
             //String referer = request.getHeader("Referer");
             //String upper_doc_name = referer.substring(referer.lastIndexOf("/") + 1);
             //upper_doc_name = URLDecoder.decode(upper_doc_name, java.nio.charset.StandardCharsets.UTF_8.toString());
             docModel.setUpper_doc_name("index");
-            docModel.setDoc_name(doc_name);
+            docModel.setDoc_name(keyword);
             ss.insert("net.javaguitar.mapper.DocMapper.insertDoc", docModel);
-
+            doc_name = keyword;
 
             DocKeywordModel docKeywordModel = new DocKeywordModel();
             docKeywordModel.setKeyword(docModel.getDoc_name());
             docKeywordModel.setDoc_name(docModel.getDoc_name());
             ss.insert("net.javaguitar.mapper.DocKeywordMapper.insertDocKeyword", docKeywordModel);
+        }
+        else
+        {
+            doc_name = ss.selectOne("net.javaguitar.mapper.DocKeywordMapper.selectDocName", keyword);
         }
         // 문서레벨
         List<CodeModel> docLevelList = ss.selectList("net.javaguitar.mapper.CodeMapper.selectCode", 27);
