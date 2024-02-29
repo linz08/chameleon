@@ -38,31 +38,64 @@
         </nav>
     </div>
     <div class="row">
-    <div class="col-sm-6">
-        <form class="d-flex" role="search">
-            <input class="form-control me-2" type="search" id="doc_search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="button" onclick="doc_move()">Search</button>
-        </form>
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">:: 오늘 퀴즈 (전체 / 맞힘 / 틀림)</h5>
-                <p class="card-text"><h1><span th:text="${statModel_answer.total_count}"></span> / <span style="color:blue" th:text="${statModel_answer.current_count}"></span> / <span style="color:red" th:text="${statModel_answer.fault_count}"></span></h1></p>
-            </div>
-            <div class="card-body">
-                <h5 class="card-title">:: 전체 퀴즈 (성공율)</h5>
-                <p class="card-text"><h1><span th:text="${statModel_ratio.current_count}"></span> / <span th:text="${statModel_ratio.total_count}"></span> (<span class="answer_ratio" th:text="${statModel_ratio.fault_count}"></span> %)</h1></p>
-            </div>
-            <div class="card-body">
-                <h5 class="card-title">:: 등록된 퀴즈 (안푼것 / 오늘 / 미문서 / 전체)</h5>
-                <p class="card-text"><h1><span th:text="${statModel.no_answer_count}"></span> / <span th:text="${statModel.current_count}"></span> / <span th:text="${statModel.doc_count}"></span> / <span th:text="${statModel.total_count}"></span>개</h1></p>
-            </div>
-            <div class="card-body">
-                <h5 class="card-title">:: <a href="/doc/calendar" target="_blank">등록된 문서</a> (오늘 / 전체)</h5>
-                <p class="card-text"><h1><span th:text="${statModel_doc.current_count}"></span> / <span th:text="${statModel_doc.total_count}"></span>개</h1></p>
-            </div>
+        <div class="col-sm-6">
+            <form class="d-flex" role="search">
+                <input class="form-control me-2" type="search" id="doc_search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="button" onclick="doc_move()">Search</button>
+            </form>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">:: 오늘 퀴즈 (전체 / 맞힘 / 틀림)</h5>
+                    <p class="card-text">
+                    <h1><span th:text="${statModel_answer.total_count}"></span> / <span style="color:blue"
+                                                                                        th:text="${statModel_answer.current_count}"></span>
+                        / <span style="color:red" th:text="${statModel_answer.fault_count}"></span></h1></p>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">:: 전체 퀴즈 (성공율)</h5>
+                    <p class="card-text">
+                    <h1><span th:text="${statModel_ratio.current_count}"></span> / <span
+                            th:text="${statModel_ratio.total_count}"></span> (<span class="answer_ratio"
+                                                                                    th:text="${statModel_ratio.fault_count}"></span>
+                        %)</h1></p>
+                </div>
+                <div class="card-body">
+                    <table class="table table-dark" style="width: 450px">
+                        <thead>
+                        <tr>
+                            <th scope="col" style="background-color: #0a53be; text-align: center;">과목</th>
+                            <th scope="col" style="background-color: #0a53be; text-align: center;">성공</th>
+                            <th scope="col" style="background-color: #0a53be; text-align: center;">전체</th>
+                            <th scope="col" style="background-color: #0a53be; text-align: center;">성공율</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="statModel_ratioDetail,i : ${statModel_ratioDetail}">
+                            <td style="width:150px; text-align: center;" th:text="${statModel_ratioDetail.doc_name}"></td>
+                            <td style="width:100px; text-align: center;" th:text="${statModel_ratioDetail.current_count}"></td>
+                            <td style="width:100px; text-align: center;" th:text="${statModel_ratioDetail.total_count}"></td>
+                            <td style="width:100px; text-align: center;" th:text="${statModel_ratioDetail.fault_count}+' %'"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">:: 등록된 퀴즈 (안푼것 / 오늘 / 미문서 / 전체)</h5>
+                    <p class="card-text">
+                    <h1><span th:text="${statModel.no_answer_count}"></span> / <span
+                            th:text="${statModel.current_count}"></span> / <span
+                            th:text="${statModel.doc_count}"></span> / <span th:text="${statModel.total_count}"></span>개
+                    </h1></p>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">:: <a href="/doc/calendar" target="_blank">등록된 문서</a> (오늘 / 전체)</h5>
+                    <p class="card-text">
+                    <h1><span th:text="${statModel_doc.current_count}"></span> / <span
+                            th:text="${statModel_doc.total_count}"></span>개</h1></p>
+                </div>
 
+            </div>
         </div>
-    </div>
         <!--
         <div class="col-sm-6">
             <div class="card">
@@ -106,9 +139,9 @@
                     "keyword": keyword
                 },
                 success: function (doc_name) {
-                    window.open("/doc/"+doc_name);
+                    window.open("/doc/" + doc_name);
                 }, error: function () {
-                    alert("error : "+ error);
+                    alert("error : " + error);
                 }
             });
         }

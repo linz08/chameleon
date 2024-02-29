@@ -116,7 +116,7 @@
 
         code, kbd, pre, samp {
             font-family: "JetBrains Mono";
-            font-size: 0.8em;
+            font-size: 1.0em;
             direction: ltr;
             unicode-bidi: bidi-override;
         }
@@ -350,7 +350,7 @@
                             str += '<a style=\"cursor:pointer\" onclick=\"del_keyword(\'' + this.keyword + '\')\">'+ this.keyword +'</a>&nbsp;&nbsp;&nbsp;';
                         }
                         else {
-                        str += '<a style=\"cursor:pointer\" onclick=\"del_keyword(\'' + this.keyword + '\')\">' + this.keyword + '</a>(<a class=\"doc_name\" target="\_blank\" href=\"/quiz/doc/'+this.keyword+'\">'+this.quiz_cnt+'</a>)&nbsp;&nbsp;&nbsp;';
+                        str += '<a style=\"cursor:pointer\" onclick=\"del_keyword(\'' + this.keyword + '\')\">' + this.keyword + '</a>(<a class=\"doc_name\" target="\_blank\" href=\"/quiz/doc/'+this.keyword+'\"><span style="color:hsl(30,75%,60%);">'+this.quiz_cnt+'</span></a>)&nbsp;&nbsp;&nbsp;';
                         }
                         row_idx++;
                     });

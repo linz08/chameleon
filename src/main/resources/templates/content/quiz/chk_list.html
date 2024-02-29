@@ -70,7 +70,9 @@
                        th:utext="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
                     <a class="link-light" target="_blank"
                                    th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}"><span th:text="'['+ ${quizList.success_y}+':'+${quizList.success_n}+'] (' +${quizList.quiz_level}+')'"></span></a>
-                    <span th:if="${quizList.today_yn > 0}">*</span></td>
+                    <span th:if="${quizList.today_yn > 0}">*</span>
+                    &nbsp;<a href="#" th:onclick="quiz_tomorrow([[${quizList.doc_code}]],[[${quizList.quiz_number}]])"><span>x</span></a>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -197,6 +199,26 @@
         </table>
     </div>
     <script type="text/javaScript">
+        let quiz_tomorrow = function (doc_code,quiz_number) {
+            $.ajax({
+                type: "POST",
+                url: "/quiz_tomorrow_delete",
+                beforeSend: function (jqXHR, settings) {
+                    let header = $("meta[name='_csrf_header']").attr("content");
+                    let token = $("meta[name='_csrf']").attr("content");
+                    jqXHR.setRequestHeader(header, token);
+                },
+                data: {
+                    "doc_code": doc_code,
+                    "quiz_number": quiz_number
+                },
+                success: function () {
+                    document.location.reload();
+                }, error: function () {
+                    toastAlert('저장 실패', 1);
+                }
+            });
+        }
         let moveSource = function () {
             let quiz_source = $("#quiz_source option:selected").val();
             document.location.href = "/quiz/list/" + quiz_source;

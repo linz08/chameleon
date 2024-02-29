@@ -13,5 +13,6 @@ public class StatModel {
     private String total_count;
     private String fault_count;
     private String doc_count;
+    private String doc_name;
     private String no_answer_count; // 한번도 안 푼 문제
 }

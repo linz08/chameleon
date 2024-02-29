@@ -3,14 +3,16 @@
 <mapper namespace="net.javaguitar.mapper.QuizStatMapper">
     <select id="selectQuizStatList" parameterType="QuizStatModel"
             resultType="QuizStatModel">
-        SELECT *
+        SELECT /* QuizStatMapper.selectQuizStatList */
+               *
         FROM QUIZ_STAT A
         WHERE QUIZ_DATE = #{quiz_date}
         ORDER BY QUIZ_SEQ DESC
     </select>
     <select id="selectQuizStatCnt" parameterType="QuizStatModel"
             resultType="int">
-        SELECT COUNT(*)
+        SELECT /* QuizStatMapper.selectQuizStatCnt */
+               COUNT(*)
         FROM QUIZ_STAT A
         WHERE QUIZ_DATE = #{quiz_date}
           AND DOC_CODE = #{doc_code}
@@ -19,7 +21,8 @@
     <select id="selectQuizSuccessRate" parameterType="QuizStatModel"
             resultType="QuizStatModel">
         <![CDATA[
-        SELECT SUCCESS.CNT AS SUCCESS_CNT,FAIL.CNT AS FAIL_CNT,TIMES.QUIZ_TIMES,
+        SELECT /* QuizStatMapper.selectQuizSuccessRate */
+               SUCCESS.CNT AS SUCCESS_CNT,FAIL.CNT AS FAIL_CNT,TIMES.QUIZ_TIMES,
         ROUND(SUCCESS.CNT/(SUCCESS.CNT+FAIL.CNT)*100,2) AS SUCCESS_RATE FROM
         (SELECT COUNT(*) AS CNT FROM QUIZ_STAT  WHERE DOC_CODE=#{doc_code} AND QUIZ_NUMBER = #{quiz_number}
         AND SUCCESS_YN <> 'Y')  FAIL,
@@ -36,7 +39,8 @@
 
     <insert id="insertQuizStat" parameterType="QuizStatModel">
 		<![CDATA[
-        INSERT INTO QUIZ_STAT(QUIZ_DATE,
+        INSERT INTO /* QuizStatMapper.insertQuizStat */
+            QUIZ_STAT(QUIZ_DATE,
                               DOC_CODE,
                               QUIZ_NUMBER,
                               QUIZ_SEQ,
@@ -56,7 +60,7 @@
 	</insert>
     <update id="updateQuizStat" parameterType="QuizStatModel">
 	<![CDATA[
-        UPDATE
+        UPDATE /* QuizStatMapper.updateQuizStat */
             QUIZ_STAT
         SET SUCCESS_YN= #{success_yn}
         WHERE QUIZ_DATE = #{quiz_date}

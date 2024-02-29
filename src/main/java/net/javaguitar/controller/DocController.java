@@ -29,6 +29,7 @@ public class DocController {
         StatModel statModel_doc = ss.selectOne("net.javaguitar.mapper.StatMapper.selectDocCount");
         StatModel statModel_answer = ss.selectOne("net.javaguitar.mapper.StatMapper.selectQuizAnswerCount");
         StatModel statModel_ratio = ss.selectOne("net.javaguitar.mapper.StatMapper.selectQuizAnswerRatio");
+        List<StatModel> statModel_ratioDetail = ss.selectList("net.javaguitar.mapper.StatMapper.selectQuizAnswerRatioDetail");
 
         // List<DocModel> docTodayList = ss.selectList("net.javaguitar.mapper.DocMapper.selectDocToDay"); 밑으로
         LocalDate now = LocalDate.now();
@@ -41,6 +42,7 @@ public class DocController {
         mav.addObject("statModel_doc", statModel_doc);
         mav.addObject("statModel_answer", statModel_answer);
         mav.addObject("statModel_ratio", statModel_ratio);
+        mav.addObject("statModel_ratioDetail", statModel_ratioDetail);
         mav.addObject("month_val", month_val);
         //mav.addObject("docTodayList", docTodayList);
         mav.setViewName("content/doc/index");

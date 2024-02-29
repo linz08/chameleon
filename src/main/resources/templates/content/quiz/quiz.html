@@ -56,7 +56,7 @@
         }
         code, kbd, pre, samp {
             font-family: "JetBrains Mono";
-            font-size: 0.8em;
+            font-size: 1.0em;
             direction: ltr;
             unicode-bidi: bidi-override;
         }
@@ -94,6 +94,7 @@
             class="badge rounded-pill bg-secondary">문제통계</span>--> <span
             class="badge rounded-pill bg-danger"
             style="cursor:pointer" onclick="quiz_stat('X');">X</span>
+        <span style="cursor:pointer" onclick="quiz_tomorrow();" class="badge rounded-pill bg-warning">T</span>
         <a href="/index"><span class="badge rounded-pill bg-success">S</span></a>
         <!--<a th:href="'/index/'+${quizModel.doc_code}+'/'+${quizModel.quiz_number}"><span class="badge rounded-pill bg-secondary" style="cursor:pointer">R</span></a>-->
         <select
@@ -142,7 +143,7 @@
             <td onclick="display_title(2)" width="1%"></td>
             <td>
                 <div class="input-group">
-                    <span id="span_subtitle"
+                    <span id="span_subtitle" style="width:100%"
                           th:utext="${quizModel.quiz_subtitle}"></span>
                 </div>
             </td>
@@ -492,7 +493,26 @@
             });
             stop_timer();
         }
-
+        let quiz_tomorrow = function () {
+            $.ajax({
+                type: "POST",
+                url: "/quiz_tomorrow_insert",
+                beforeSend: function (jqXHR, settings) {
+                    let header = $("meta[name='_csrf_header']").attr("content");
+                    let token = $("meta[name='_csrf']").attr("content");
+                    jqXHR.setRequestHeader(header, token);
+                },
+                data: {
+                    "doc_code": '[[${quizModel.doc_code}]]',
+                    "quiz_number": '[[${quizModel.quiz_number}]]'
+                },
+                success: function () {
+                        toastAlert("퀴즈 예약", 0);
+                }, error: function () {
+                    toastAlert('저장 실패', 1);
+                }
+            });
+        }
         let quiz_boorkmark = function () {
             $.ajax({
                 type: "POST",
