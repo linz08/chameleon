@@ -93,9 +93,11 @@
         <!--<span
             class="badge rounded-pill bg-secondary">문제통계</span>--> <span
             class="badge rounded-pill bg-danger"
-            style="cursor:pointer" onclick="quiz_stat('X');">X</span>
-        <span style="cursor:pointer" onclick="quiz_tomorrow();" class="badge rounded-pill bg-warning">T</span>
-        <a href="/index"><span class="badge rounded-pill bg-success">S</span></a>
+            style="cursor:pointer" onclick="quiz_stat('X');">X</span><a href="/index"><span class="badge rounded-pill bg-success">S</span></a>
+        |
+        <span style="cursor:pointer" onclick="quiz_tomorrow('Y');" class="badge rounded-pill bg-warning">T</span>
+        <span style="cursor:pointer" onclick="quiz_tomorrow('Z');" class="badge rounded-pill bg-info">Z</span>
+
         <!--<a th:href="'/index/'+${quizModel.doc_code}+'/'+${quizModel.quiz_number}"><span class="badge rounded-pill bg-secondary" style="cursor:pointer">R</span></a>-->
         <select
                 aria-label="문제패턴" id="pattern_code" th:name="pattern_code">
@@ -493,7 +495,7 @@
             });
             stop_timer();
         }
-        let quiz_tomorrow = function () {
+        let quiz_tomorrow = function (chk_quiz) {
             $.ajax({
                 type: "POST",
                 url: "/quiz_tomorrow_insert",
@@ -504,10 +506,15 @@
                 },
                 data: {
                     "doc_code": '[[${quizModel.doc_code}]]',
-                    "quiz_number": '[[${quizModel.quiz_number}]]'
+                    "quiz_number": '[[${quizModel.quiz_number}]]',
+                    "chk_quiz": chk_quiz
                 },
                 success: function () {
-                        toastAlert("퀴즈 예약", 0);
+                   if(chk_quiz=='Y') {
+                       toastAlert("퀴즈 예약", 0);
+                   } else {
+                       toastAlert("알쏭 예약", 0);
+                   }
                 }, error: function () {
                     toastAlert('저장 실패', 1);
                 }

@@ -233,6 +233,21 @@ public class QuizController {
         return mav;
     }
 
+    @RequestMapping(value = {"/quiz/zzz_list"}, method = RequestMethod.GET)
+    public ModelAndView quizZzzList(HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView();
+        // 출처
+        List<CodeModel> srcCodeList = ss.selectList("net.javaguitar.mapper.CodeMapper.selectCode", 13);
+
+        List<QuizModel> quizList = ss.selectList("net.javaguitar.mapper.QuizMapper.selectZzzQuizList");
+
+        mav.addObject("srcCodeList", srcCodeList);
+        mav.addObject("quizList", quizList);
+
+        mav.setViewName("content/quiz/zzz_list");
+        return mav;
+    }
+
     @RequestMapping(value = {"/quiz/all_list"}, method = RequestMethod.GET)
     public ModelAndView quizAllList() {
         ModelAndView mav = new ModelAndView();
@@ -423,13 +438,11 @@ public class QuizController {
     @RequestMapping(value = {"/quiz_tomorrow_insert"}, method = {RequestMethod.POST})
     public @ResponseBody
     void quizTomorrowInsert(HttpServletRequest request, @ModelAttribute("quizModel") QuizModel quizModel) throws Exception {
-        quizModel.setChk_quiz("Y");
-        ss.update("net.javaguitar.mapper.QuizMapper.updateQuizChkQuiz", quizModel);
+         ss.update("net.javaguitar.mapper.QuizMapper.updateQuizChkQuiz", quizModel);
     }
     @RequestMapping(value = {"/quiz_tomorrow_delete"}, method = {RequestMethod.POST})
     public @ResponseBody
     void quizTomorrowDelete(HttpServletRequest request, @ModelAttribute("quizModel") QuizModel quizModel) throws Exception {
-        quizModel.setChk_quiz("Y");
         ss.update("net.javaguitar.mapper.QuizMapper.updateQuizChkQuizDel", quizModel);
     }
 

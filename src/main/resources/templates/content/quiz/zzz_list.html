@@ -99,8 +99,7 @@
                        th:utext="${quizList.quiz_org_number}+') '+${quizList.category_name}"></a>
                     &nbsp;&nbsp;<a class="link-light" target="_blank"
                                    th:href="'/quiz/edit/'+${quizList.doc_code}+'/'+${quizList.quiz_number}"><span th:text="'['+ ${quizList.success_y}+':'+${quizList.success_n}+'] (' +${quizList.quiz_level}+')'"></span></a>
-                    <span th:if="${quizList.today_yn > 0}">*</span>
-                    &nbsp;<a href="#" th:onclick="quiz_tomorrow([[${quizList.doc_code}]],[[${quizList.quiz_number}]])"><span>x</span></a></td>
+                    <span th:if="${quizList.today_yn > 0}">*</span>&nbsp;<a href="#" th:onclick="quiz_tomorrow([[${quizList.doc_code}]],[[${quizList.quiz_number}]])"><span>x</span></a></td>
             </tr>
             </tbody>
         </table>

@@ -28,8 +28,10 @@
                 id="srcRegister" onclick="moveRegister()">등록
         </button> &nbsp;
         <button class="btn btn-outline-info" type="button"
-                id="srcRegister" onclick="moveChkList()">예약
-        </button>&nbsp;
+                id="srcRegister" onclick="moveChkList()">T
+        </button>&nbsp;<button class="btn btn-outline-info" type="button"
+                               id="srcZzz" onclick="moveZzzList()">Z
+    </button>&nbsp;
         <button type="button" class="btn btn-outline-danger" onclick="location.href='/quiz/all_list'">전체</button>&nbsp;
         <button type="button" class="btn btn-outline-dark" onclick="location.href='/sys/index'">코드</button>&nbsp;
         <button type="button" class="btn btn-outline-secondary" onclick="location.href='/quiz/keyword_list'">키워드</button>
@@ -206,6 +208,9 @@
         }
         let moveChkList = function () {
             document.location.href = "/quiz/chk_list";
+        }
+        let moveZzzList = function () {
+            document.location.href = "/quiz/zzz_list";
         }
         let moveSearch = function () {
 

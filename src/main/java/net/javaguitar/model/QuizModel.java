@@ -33,5 +33,5 @@ public class QuizModel {
 	private int success_y;  // 성공퀴즈 수
 	private int success_n; // 실패퀴즈 수
 	private int today_yn; // 오늘 푼 문제
-	private String chk_quiz; // 다시풀 문제
+	private String chk_quiz; // 다시풀 문제(Y), 알쏭달송(Z)
 }
