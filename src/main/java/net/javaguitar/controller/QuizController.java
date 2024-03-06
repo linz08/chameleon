@@ -154,8 +154,38 @@ public class QuizController {
 
         // 출처
         List<CodeModel> srcCodeList = ss.selectList("net.javaguitar.mapper.CodeMapper.selectCode", 13);
+        QuizStatModel quizStatModel = new QuizStatModel();
+        quizStatModel.setSuccess_cnt("0");
+        quizStatModel.setFail_cnt("0");
+        quizStatModel.setTotal_cnt("0");
+        quizStatModel.setSuccess_rate("0");
 
         mav.addObject("srcCodeList", srcCodeList);
+        mav.addObject("quizStatModel", quizStatModel);
+        mav.setViewName("content/quiz/list");
+
+        return mav;
+    }
+
+    @RequestMapping(value = {"/quiz/list/{quiz_source}"}, method = RequestMethod.GET)
+    public ModelAndView quizListDetail(@PathVariable int quiz_source, HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView();
+
+        //세션 만들기
+        HttpSession session = request.getSession();
+        session.setAttribute("quiz_source", quiz_source);
+
+        // 출처
+        List<CodeModel> srcCodeList = ss.selectList("net.javaguitar.mapper.CodeMapper.selectCode", 13);
+
+        List<QuizModel> quizList = ss.selectList("net.javaguitar.mapper.QuizMapper.selectQuizList", quiz_source);
+
+        QuizStatModel quizStatModel = ss.selectOne("net.javaguitar.mapper.QuizStatMapper.selectQuizListCount",quiz_source);
+
+        mav.addObject("srcCodeList", srcCodeList);
+        mav.addObject("quizList", quizList);
+        mav.addObject("quizStatModel", quizStatModel);
+        mav.addObject("quiz_source", quiz_source);
 
         mav.setViewName("content/quiz/list");
         return mav;
@@ -194,27 +224,6 @@ public class QuizController {
         mav.addObject("doc_name", doc_name);
         mav.addObject("quizList", quizList);
         mav.setViewName("content/quiz/quizdoc_list");
-        return mav;
-    }
-
-    @RequestMapping(value = {"/quiz/list/{quiz_source}"}, method = RequestMethod.GET)
-    public ModelAndView quizListDetail(@PathVariable int quiz_source, HttpServletRequest request) {
-        ModelAndView mav = new ModelAndView();
-
-        //세션 만들기
-        HttpSession session = request.getSession();
-        session.setAttribute("quiz_source", quiz_source);
-
-        // 출처
-        List<CodeModel> srcCodeList = ss.selectList("net.javaguitar.mapper.CodeMapper.selectCode", 13);
-
-        List<QuizModel> quizList = ss.selectList("net.javaguitar.mapper.QuizMapper.selectQuizList", quiz_source);
-
-        mav.addObject("srcCodeList", srcCodeList);
-        mav.addObject("quizList", quizList);
-        mav.addObject("quiz_source", quiz_source);
-
-        mav.setViewName("content/quiz/list");
         return mav;
     }
 

@@ -10,6 +10,9 @@
     table {
         font-size: 14px;
     }
+    .answer_ratio {
+        color: red;
+    }
 </style></head>
 <body>
 <div layout:fragment="content" class="content">
@@ -43,6 +46,11 @@
             <button type="button" class="btn btn-outline-light me-2" onclick="moveSearch()">검색</button>
         </div>
     </div>
+    <div style="text-align: center"><h3><span th:text="${quizStatModel.total_cnt}"></span> / <span style="color:blue"
+                                                                        th:text="${quizStatModel.success_cnt}"></span>
+        / <span style="color:red" th:text="${quizStatModel.fail_cnt}"></span>  (<span class="answer_ratio"
+               th:text="${quizStatModel.success_rate}"></span>
+        %)</h3></div>
     <div>
         <span class="badge rounded-pill bg-primary" style="cursor:pointer" onclick="openWindowPop()">북마크목록</span> <a
             onclick="date_move(-1)">&lt;</a> <span

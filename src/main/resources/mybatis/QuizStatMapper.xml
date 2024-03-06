@@ -18,6 +18,31 @@
           AND DOC_CODE = #{doc_code}
 		      AND QUIZ_NUMBER = #{quiz_number}
     </select>
+    <select id="selectQuizListCount" resultType="QuizStatModel" parameterType="int">
+	  <![CDATA[
+        SELECT /* QuizStatMapper.selectQuizListCount */
+            FORMAT(SUCCESS_CNT, 0)                    AS SUCCESS_CNT,
+            FORMAT(FAIL_CNT, 0)                      AS FAIL_CNT,
+            FORMAT(TOTAL_CNT, 0)                      AS TOTAL_CNT,
+            ROUND(SUCCESS_CNT / TOTAL_CNT * 100, 2) AS SUCCESS_RATE
+        FROM (SELECT COUNT(*) AS SUCCESS_CNT
+              FROM QUIZ_STAT T,
+                   QUIZ A
+              WHERE T.DOC_CODE = A.DOC_CODE
+                AND T.QUIZ_NUMBER = A.QUIZ_NUMBER
+                AND A.QUIZ_SOURCE = #{quiz_source}
+                AND T.SUCCESS_YN = 'Y') A,
+             (SELECT COUNT(*) AS TOTAL_CNT
+              FROM QUIZ_STAT T,
+                   QUIZ A
+              WHERE T.DOC_CODE = A.DOC_CODE
+                AND T.QUIZ_NUMBER = A.QUIZ_NUMBER
+                AND A.QUIZ_SOURCE = #{quiz_source}) B,
+             (SELECT COUNT(*) AS FAIL_CNT FROM QUIZ_STAT T,QUIZ A
+              WHERE T.DOC_CODE = A.DOC_CODE AND T.QUIZ_NUMBER =A.QUIZ_NUMBER
+                AND A.QUIZ_SOURCE = #{quiz_source} AND T.SUCCESS_YN <> 'Y') C
+        ]]>
+	</select>
     <select id="selectQuizSuccessRate" parameterType="QuizStatModel"
             resultType="QuizStatModel">
         <![CDATA[

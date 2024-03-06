@@ -91,12 +91,11 @@
         <span  th:if="${quizModel.quiz_desc != null && quizModel.quiz_desc !=''}" type="button" class="badge rounded-pill bg-primary" style="cursor:pointer" onclick="openWindowPop()">해설</span>
         <span  th:if="${quizModel.quiz_desc == null || quizModel.quiz_desc ==''}" type="button" class="badge rounded-pill bg-secondary" style="cursor:pointer" onclick="openWindowPop()">해설</span>
         <!--<span
-            class="badge rounded-pill bg-secondary">문제통계</span>--> <span
-            class="badge rounded-pill bg-danger"
-            style="cursor:pointer" onclick="quiz_stat('X');">X</span><a href="/index"><span class="badge rounded-pill bg-success">S</span></a>
+            class="badge rounded-pill bg-secondary">문제통계</span>--> <a
+            style="cursor:pointer" onclick="quiz_stat('X');">🚫 </a>&nbsp;<a style="cursor:pointer" onclick="document.location.href='/index'">🎯 </a>
         |
-        <span style="cursor:pointer" onclick="quiz_tomorrow('Y');" class="badge rounded-pill bg-warning">T</span>
-        <span style="cursor:pointer" onclick="quiz_tomorrow('Z');" class="badge rounded-pill bg-info">Z</span>
+        <a style="cursor:pointer" onclick="quiz_tomorrow('Y');">📌 </a>
+        <a style="cursor:pointer" onclick="quiz_tomorrow('Z');">❔ </a>
 
         <!--<a th:href="'/index/'+${quizModel.doc_code}+'/'+${quizModel.quiz_number}"><span class="badge rounded-pill bg-secondary" style="cursor:pointer">R</span></a>-->
         <select
@@ -113,8 +112,8 @@
                 th:utext="${val.code_name}+'레벨'"></option>
     </select>&nbsp;&nbsp;<span
             class="badge rounded-pill bg-secondary" style="cursor:pointer" onclick="quiz_etc()">적용</span>
-        <span class="badge rounded-pill bg-warning" style="cursor:pointer" onclick="openPost()">E</span>
-        <span class="badge rounded-pill bg-info" style="cursor:pointer" onclick="openNext()">N</span>
+        <span class="badge rounded-pill bg-warning" style="cursor:pointer" onclick="openPost()">←</span>
+        <span class="badge rounded-pill bg-info" style="cursor:pointer" onclick="openNext()">→</span>
         <!--<span
                 class="badge rounded-pill bg-success" style="cursor:pointer" onclick="quiz_boorkmark()">마크</span>-->
         <span
