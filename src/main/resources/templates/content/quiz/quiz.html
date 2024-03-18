@@ -96,6 +96,7 @@
         |
         <a style="cursor:pointer" onclick="quiz_tomorrow('Y');">📌 </a>
         <a style="cursor:pointer" onclick="quiz_tomorrow('Z');">❔ </a>
+        <a style="cursor:pointer" onclick="openMemoPop();">📝 </a><!-- https://emojiegg.com/%ED%8A%B9%EC%88%98%EB%AC%B8%EC%9E%90%ED%91%9C/ -->
 
         <!--<a th:href="'/index/'+${quizModel.doc_code}+'/'+${quizModel.quiz_number}"><span class="badge rounded-pill bg-secondary" style="cursor:pointer">R</span></a>-->
         <select
@@ -314,6 +315,12 @@
                         console.log(error);
                     });
         }
+        let openMemoPop = function () {
+            let urls = "/quiz/memo/[[${quizModel.doc_code}]]/[[${quizModel.quiz_number}]]";
+            let options = 'top=10, left=10, width=500, height=600, status=no, menubar=no, toolbar=no, resizable=yes';
+            window.open(urls, "memo", options);
+        }
+
         $('#keyword_icon').click(function () {
             $('#keyword_button').removeClass('invisible');
             $('#keyword_button').addClass('visible');

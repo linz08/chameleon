@@ -337,6 +337,59 @@ public class DocController {
         return mav;
     }
 
+    @RequestMapping(value = {"/doc/memory/list"}, method = RequestMethod.GET)
+    public ModelAndView memoryList() {
+        ModelAndView mav = new ModelAndView();
+
+        List<DocModel> memory_list = ss
+                .selectList("net.javaguitar.mapper.DocMapper.selectDocMemoryList");
+        mav.addObject("memory_list", memory_list);
+        mav.setViewName("content/doc/memory_list");
+        return mav;
+    }
+    @RequestMapping(value = {"/doc/memory/{cdate}"}, method = RequestMethod.GET)
+    public ModelAndView doc_memory_Select(@ModelAttribute("docModel") DocModel docModel,
+                                        @PathVariable String cdate) {
+        ModelAndView mav = new ModelAndView();
+        docModel.setCdate(cdate);
+        List<DocModel> memory_list = ss.selectList("net.javaguitar.mapper.DocMapper.selectDocMemory", docModel);
+
+        mav.addObject("memory_list", memory_list);
+        mav.addObject("cdate", cdate);
+
+        mav.setViewName("content/doc/memory");
+        return mav;
+    }
+    @RequestMapping(value = {"/doc_memory_delete"}, method = {RequestMethod.POST})
+    public @ResponseBody
+    void docMemoryDel(@ModelAttribute("docModel") DocModel docModel) {
+        ss.delete("net.javaguitar.mapper.DocMapper.deleteDocMemory", docModel);
+    }
+    @RequestMapping(value = {"/doc/memory/add"}, method = RequestMethod.GET)
+    public ModelAndView doc_memory_add(@ModelAttribute("docModel") DocModel docModel
+     ) {
+        ModelAndView mav = new ModelAndView();
+
+        mav.addObject("docModel", docModel);
+
+        mav.setViewName("content/doc/memory_edit");
+        return mav;
+    }
+    @RequestMapping(value = {"/doc_memory_update"}, method = {RequestMethod.POST})
+    public String doc_memry_Add(@ModelAttribute("docModel") DocModel docModel
+    ) throws Exception {
+        ss.update("net.javaguitar.mapper.DocMapper.insertDocMemory", docModel);
+        // 현재 날짜 구하기
+        LocalDate now = LocalDate.now();
+        // 포맷 정의
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        // 포맷 적용
+        String formatedNow = now.format(formatter);
+
+
+        return "redirect:/doc/memory/" + formatedNow;
+    }
+
     @RequestMapping(value = {"/doc/memo/edit/{doc_name}"}, method = RequestMethod.GET)
     public ModelAndView quiz_desc_edit(@ModelAttribute("docModel") DocModel docModel,
                                        @PathVariable String doc_name) {

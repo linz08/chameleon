@@ -11,7 +11,7 @@
     <select id="selectQuizDocumentListByDoc" parameterType="QuizDocumentModel" resultType="QuizModel">
         <![CDATA[
         SELECT /* QuizDocumentMapper.selectQuizDocumentListByDoc */
-               A.DOC_CODE,A.QUIZ_NUMBER,FNC_COMMON_CODE(B.QUIZ_SOURCE) AS QUIZ_SOURCE_NAME,
+               A.DOC_CODE,B.QUIZ_MEMO,A.QUIZ_NUMBER,FNC_COMMON_CODE(B.QUIZ_SOURCE) AS QUIZ_SOURCE_NAME,
                FNC_COMMON_CODE(B.QUIZ_LEVEL) AS QUIZ_LEVEL_NAME,
                IF(B.PATTERN_CODE ='112',CONCAT('<strike>',B.QUIZ_ORG_NUMBER,'</strike>'),B.QUIZ_ORG_NUMBER)AS QUIZ_ORG_NUMBER,
                FNC_COMMON_CODE(B.PATTERN_CODE) AS PATTERN_CODE_NAME,

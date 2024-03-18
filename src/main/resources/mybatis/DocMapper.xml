@@ -4,7 +4,8 @@
     <select id="selectDocIndex" resultType="DocModel">
 	  <![CDATA[
 
-                SELECT DOC_NAME
+                SELECT /* DocMapper.selectDocIndex */
+                DOC_NAME
                 FROM DOCUMENT
                 WHERE DOC_NAME <> 'index'
                 AND MAIN_SHOW='Y'
@@ -14,13 +15,15 @@
 	</select>
     <select id="selectDoc" parameterType="String"
             resultType="DocModel">
-        SELECT A.*
+        SELECT  /* DocMapper.selectDoc */
+        A.*
         FROM DOCUMENT A
         WHERE DOC_NAME = #{doc_name}
     </select>
     <select id="selectDocToDay"
             resultType="DocModel">
-        SELECT DOC_NAME,MODIFY_DATE,
+        SELECT /* DocMapper.selectDocToDay */
+        DOC_NAME,MODIFY_DATE,
         (SELECT COUNT(*) FROM QUIZ_DOCUMENT B WHERE B.DOC_NAME =A.DOC_NAME ) AS QUIZ_CNT
         FROM DOCUMENT A WHERE (DATE_FORMAT(CREATE_DATE,'%Y-%m') = DATE_FORMAT(CONCAT(#{doc_month},'01'),'%Y-%m')
             OR DATE_FORMAT(MODIFY_DATE,'%Y-%m') = DATE_FORMAT(CONCAT(#{doc_month},'01'),'%Y-%m')) AND MAIN_SHOW = 'N'
@@ -28,8 +31,7 @@
     </select>
     <update id="updateDoc" parameterType="DocModel">
 	<![CDATA[
-
-                UPDATE
+                UPDATE /* DocMapper.updateDoc */
                     DOCUMENT
                 SET DOC_CONTENT = #{doc_content},
                     RANKINGS = #{rankings},
@@ -39,7 +41,8 @@
         ]]>
 	</update>
     <delete id="deleteDoc" parameterType="DocModel">
-        DELETE FROM DOCUMENT
+        DELETE /* DocMapper.deleteDoc */
+        FROM DOCUMENT
         WHERE DOC_NAME = #{doc_name}
     </delete>
     <delete id="deleteDocbyQuiz" parameterType="DocModel">
@@ -48,8 +51,7 @@
     </delete>
     <update id="updateDocLevel" parameterType="DocModel">
 	<![CDATA[
-
-                UPDATE
+                UPDATE /* DocMapper.updateDocLevel */
                     DOCUMENT
                 SET DOC_LEVEL = #{doc_level},
                     MODIFY_DATE = now()
@@ -60,7 +62,7 @@
     <update id="updateUpperDocName" parameterType="DocModel">
 	<![CDATA[
 
-                UPDATE
+                UPDATE /* DocMapper.updateUpperDocName */
                     DOCUMENT
                 SET UPPER_DOC_NAME = #{upper_doc_name},
                     MODIFY_DATE = now()
@@ -71,7 +73,7 @@
     <update id="updateNewDocName" parameterType="DocModel">
 	<![CDATA[
 
-                UPDATE
+                UPDATE /* DocMapper.updateNewDocName */
                     DOCUMENT
                 SET DOC_NAME = #{new_doc_name},
                     MODIFY_DATE = now()
@@ -82,7 +84,7 @@
     <update id="updateDocMemo" parameterType="DocModel">
 	<![CDATA[
 
-                UPDATE
+                UPDATE /* DocMapper.updateDocMemo */
                     DOCUMENT
                 SET MEMO = #{memo}, MANAGER = #{manager},
                     MODIFY_DATE = now()
@@ -93,7 +95,7 @@
     <update id="updateNewDocNameQuiz" parameterType="DocModel">
 	<![CDATA[
 
-                UPDATE
+                UPDATE /* DocMapper.updateNewDocNameQuiz */
                     QUIZ_DOCUMENT
                 SET DOC_NAME = #{new_doc_name}
                 WHERE DOC_NAME = #{doc_name}
@@ -108,7 +110,8 @@
     <insert id="insertDoc" parameterType="DocModel">
 		<![CDATA[
 
-                INSERT INTO DOCUMENT (DOC_NAME,
+                INSERT /* DocMapper.insertDoc */
+                INTO DOCUMENT (DOC_NAME,
                                       UPPER_DOC_NAME,
                                       SORT_NUM,
                                       DOC_CONTENT,
@@ -122,4 +125,38 @@
 
         ]]>
 	</insert>
+    <select id="selectDocMemory" parameterType="DocModel"
+            resultType="DocModel">
+        SELECT  /* DocMapper.selectDocMemory */
+        A.DOC_NAME, CONCAT(SUBSTRING(A.CDATE,1,4),'/',SUBSTRING(A.CDATE,5,2),'/',SUBSTRING(A.CDATE,7,2)) AS CDATE,
+        A.MEMORY_COMMENT
+        FROM DOCUMENT_MEMORY A
+        WHERE CDATE = #{cdate}
+        ORDER BY CDATE DESC
+    </select>
+    <select id="selectDocMemoryList" resultType="DocModel">
+        SELECT  /* DocMapper.selectDocMemoryList */
+              DATE_FORMAT(CDATE,'%Y-%m-%d') AS CDATE, DOC_NAME,MEMORY_COMMENT FROM DOCUMENT_MEMORY
+            WHERE YEAR(DATE_FORMAT(CDATE,'%Y%m%d')) = YEAR(NOW())
+            ORDER BY CDATE DESC
+    </select>
+    <insert id="insertDocMemory" parameterType="DocModel">
+		<![CDATA[
+
+                INSERT /* DocMapper.insertDocMemory */
+                INTO DOCUMENT_MEMORY (DOC_NAME,CDATE,
+                                      MEMORY_COMMENT)
+                VALUES (#{doc_name},
+                        DATE_FORMAT(NOW(),'%Y%m%d'),
+                        #{memory_comment}
+                )
+
+        ]]>
+	</insert>
+    <delete id="deleteDocMemory" parameterType="DocModel">
+        DELETE /* DocMapper.deleteDocMemory */
+        FROM DOCUMENT_MEMORY
+        WHERE DOC_NAME = #{doc_name}
+        AND CDATE = REPLACE(#{cdate},'/','')
+    </delete>
 </mapper>

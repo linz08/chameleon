@@ -24,4 +24,6 @@ public class DocModel {
 	private String manager; //담당자
 	private String modify_date; //수정일
 	private int rankings; // 토픽 순위
+	private String memory_comment;
+	private String cdate;
 }

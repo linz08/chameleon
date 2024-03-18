@@ -11,6 +11,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -24,7 +26,7 @@ public class QuizController {
     public ModelAndView index(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
 
-        QuizModel quizModel = ss.selectOne("net.javaguitar.mapper.QuizMapper.selectQuiz");
+        QuizModel quizModel = ss.selectOne("net.javaguitar.mapper.QuizMapper.selectQuizFail");
 
         if (quizModel.getQuiz_code() == 2) { // 객관식인 경우
             List<QuizObjectiveModel> ObjectList = ss
@@ -480,5 +482,28 @@ public class QuizController {
     void quizSubtitleUpdate(HttpServletRequest request, @ModelAttribute("quizModel") QuizModel quizModel) throws Exception {
         quizModel.setQuiz_subtitle(quizModel.getQuiz_subtitle().replaceAll("<table", "<table class='table_subtitle'"));
         ss.update("net.javaguitar.mapper.QuizMapper.updateQuizSubTitle", quizModel);
+    }
+
+    @RequestMapping(value = {"/quiz/memo/{doc_code}/{quiz_number}"}, method = RequestMethod.GET)
+    public ModelAndView doc_memo_Select(@ModelAttribute("QuizModel") QuizModel quizModel,
+                                        @PathVariable int doc_code,  @PathVariable int quiz_number) {
+        ModelAndView mav = new ModelAndView();
+        quizModel.setDoc_code(doc_code);
+        quizModel.setQuiz_number(quiz_number);
+        quizModel = ss.selectOne("net.javaguitar.mapper.QuizMapper.selectQuizMemo", quizModel);
+
+        mav.addObject("quizModel", quizModel);
+
+        mav.setViewName("content/quiz/memo");
+        return mav;
+    }
+    @RequestMapping(value = {"/quiz_memo_update"}, method = {RequestMethod.POST})
+    public String quiz_memo_update(@ModelAttribute("QuizModel") QuizModel quizModel
+    ) throws Exception {
+        quizModel.setQuiz_memo(quizModel.getQuiz_memo().replaceAll("<p>", ""));
+        quizModel.setQuiz_memo(quizModel.getQuiz_memo().replaceAll("</p>", ""));
+        ss.update("net.javaguitar.mapper.QuizMapper.updateQuizMemo", quizModel);
+
+        return "redirect:/quiz/memo/" + quizModel.getDoc_code()+"/"+quizModel.getQuiz_number();
     }
 }
