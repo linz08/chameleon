@@ -197,10 +197,13 @@
         </div>
     </div>
     <div>
+        <!-- 다음 등록 버튼, 임시로 주석
         <span class="badge rounded-pill bg-secondary" style="cursor:pointer" onclick="openNext()">N</span>
+        -->
+        <span class="badge rounded-pill bg-secondary" style="cursor:pointer" onclick="openKeyword()">S</span>
         <span id="keyword_icon"
                class="badge rounded-pill bg-secondary" style="cursor:pointer">키워드</span>
-        <span id="keyword_list"></span>
+        <span id="keyword_list" style="display: none"></span>
         <!--
         <th:block th:each="quizDocumentModelList,index : ${quizDocumentModelList}">
             <a th:href="'/doc/'+${quizDocumentModelList.doc_name}" target="_blank"> <span
@@ -712,6 +715,9 @@
                 clearInterval(timer);
                 int_quiz_times = 0;
             }
+        }
+        let openKeyword = function() {
+            $('#keyword_list').css("display","");
         }
     </script>
 </div>
