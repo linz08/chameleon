@@ -4,7 +4,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/default_layout}" lang="ko">
 <head>
-    <title>문제목록</title>
+    <title>토픽순위</title>
 <body>
 <div layout:fragment="content" class="content">
     <div class="input-group mb-3">
@@ -42,7 +42,7 @@
             <td style="text-align: center;background-color: #0a53be">실패</td>
             <td style="text-align: center;background-color: #0a53be">성공율</td></tr>
             <tr th:each="keywordList,i : ${keywordList}">
-                <td style="text-align: center"><a style="cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span th:text="${keywordList.doc_name}"></span></a></td>
+                <td style="text-align: left"><a style="cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span th:text="${keywordList.doc_name}"></span></a></td>
                 <td style="text-align: center" th:text="${keywordList.total_cnt}"></td>
                 <td style="text-align: center" th:text="${keywordList.success_cnt}"></td>
                 <td style="text-align: center" th:text="${keywordList.fail_cnt}"></td>

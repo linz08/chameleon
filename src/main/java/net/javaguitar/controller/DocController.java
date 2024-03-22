@@ -99,7 +99,7 @@ public class DocController {
         int docCheck = ss.selectOne("net.javaguitar.mapper.DocKeywordMapper.selectDocKeywordCheck", keyword);
         DocModel docModel = new DocModel();
 
-        //새로운 키워드가 없으면 생성
+        //새로운 토픽가 없으면 생성
         if (docCheck == 0) {
             //String referer = request.getHeader("Referer");
             //String upper_doc_name = referer.substring(referer.lastIndexOf("/") + 1);
@@ -271,7 +271,7 @@ public class DocController {
         ss.delete("net.javaguitar.mapper.DocKeywordMapper.deleteDocKeyword", docKeywordModel);
     }
 
-    /* 키워드 목록 */
+    /* 토픽 목록 */
     @RequestMapping(value = {"/docKeyword/list"}, method = RequestMethod.POST)
     public @ResponseBody
     List<DocKeywordModel> docKeywordList(@ModelAttribute("docKeywordModel") DocKeywordModel docKeywordModel) {

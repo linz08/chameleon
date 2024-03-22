@@ -200,16 +200,16 @@
                     th:utext="'['+${quizCnt}+']'"></span></a></h1>
 
     </div>
-    <div class="doc_keyword"><span id="keyword_icon" style="cursor:pointer">키워드 : </span>
+    <div class="doc_keyword"><span id="keyword_icon" style="cursor:pointer">토픽 : </span>
         <span id="keyword_list"></span>
     </div>
     <div class="doc_content ck-content">
         <span th:utext="${docModel.doc_content}"></span>
     </div>
     <div id="keyword_button" class="input-group mb-3 w-50 invisible">
-        <input type="text" id="document_keyword" class="form-control" placeholder="키워드명" aria-label="키워드명"
+        <input type="text" id="document_keyword" class="form-control" placeholder="토픽명" aria-label="토픽드명"
                aria-describedby="button-addon2">
-        <button class="btn btn-outline-secondary" type="button" id="btn_doc_add">키워드 등록</button>
+        <button class="btn btn-outline-secondary" type="button" id="btn_doc_add">토픽 등록</button>
     </div>
     <!-- 토스트 메시지 -->
     <div class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 11">
@@ -254,7 +254,7 @@
                 success: function () {
                     keyword_list();
                 }, error: function () {
-                    alert('키워드 삭제 실패');
+                    alert('토픽 삭제 실패');
                 }
             });
         }
