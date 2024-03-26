@@ -8,7 +8,10 @@
 <body>
 <div layout:fragment="content" class="content">
     <div class="doc_title">
-        <h1><span th:utext="':: '+${doc_name}"></span></h1>
+        <h1><span th:utext="':: '+${doc_name}"></span>
+            <span th:text="' (성공율: '+${quizStatModel.getSuccess_rate()}+'% / T:'+${quizStatModel.getTotal_cnt()}+' / S:'+${quizStatModel.getSuccess_cnt()}+' / F:'
+            +${quizStatModel.getFail_cnt()}+')'"></span>
+        </h1>
     </div>
 
     <table class="table table-dark table-hover">
@@ -27,25 +30,30 @@
             <th style="text-align: center" scope="row" th:text="${index.index+1}">1</th>
             <td th:text="${quizList.quiz_source_name}">출처</td>
             <td>
-                <span th:text="'['+${quizList.success_y} + ':' + ${quizList.success_n}+']'"></span>
+                <span th:if="${quizList.pattern_code_name == '예외처리'}" style="color:grey" th:text="'['+${quizList.success_y} + ':' + ${quizList.success_n}+']'"></span>
+                <span th:if="${quizList.pattern_code_name != '예외처리'}" th:text="'['+${quizList.success_y} + ':' + ${quizList.success_n}+']'"></span>
                 <a class="link-light" target="_blank"
-                   th:if="${quizList.success_y <= quizList.success_n} and ${quizList.success_n} > 0" style="color:red"
+                   th:if="${quizList.pattern_code_name == '예외처리'}" style="color:grey"
                    th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                    th:utext="'[' + ${quizList.doc_code_name} +'] '+${quizList.quiz_org_number}"/>
                 <a class="link-light" target="_blank"
-                   th:if="${quizList.success_y > quizList.success_n}"  style="color:blue"
+                   th:if="${quizList.pattern_code_name != '예외처리'} and ${quizList.success_y <= quizList.success_n} and ${quizList.success_n} > 0" style="color:red"
                    th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                    th:utext="'[' + ${quizList.doc_code_name} +'] '+${quizList.quiz_org_number}"/>
                 <a class="link-light" target="_blank"
-                   th:if="${quizList.success_y}==0 and ${quizList.success_n}==0 " style="color:green"
+                   th:if="${quizList.pattern_code_name != '예외처리'} and ${quizList.success_y > quizList.success_n}"  style="color:blue"
+                   th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
+                   th:utext="'[' + ${quizList.doc_code_name} +'] '+${quizList.quiz_org_number}"/>
+                <a class="link-light" target="_blank"
+                   th:if="${quizList.pattern_code_name != '예외처리'} and ${quizList.success_y}==0 and ${quizList.success_n}==0 " style="color:green"
                    th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                    th:utext="'[' + ${quizList.doc_code_name} +'] '+${quizList.quiz_org_number}"/>
                 <span th:if="${quizList.today_yn > 0}">*</span>
             </td>
-            <td style="text-align: center;font-size: 12px" th:utext="${quizList.quiz_memo}">퀴즈메모</td>
+            <td style="font-size: 12px" th:utext="${quizList.quiz_memo}">퀴즈메모</td>
             <td style="text-align: center" th:if="${quizList.quiz_level_name != '1'}" th:text="${quizList.quiz_level_name}">레벨</td>
             <td style="text-align: center" th:if="${quizList.quiz_level_name == '1'}"></td>
-            <td style="text-align: center" th:if="${quizList.pattern_code_name == '예외처리'}" th:utext="'<strike>'+${quizList.pattern_code_name}+'</strike>'">문제패턴</td>
+            <td style="text-align: center" th:if="${quizList.pattern_code_name == '예외처리'}" th:utext="''">문제패턴</td>
             <td style="text-align: center" th:if="${quizList.pattern_code_name != '예외처리'}" th:text="${quizList.pattern_code_name}">문제패턴</td>
         </tr>
         </tbody>

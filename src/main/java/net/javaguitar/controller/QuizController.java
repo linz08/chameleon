@@ -214,6 +214,7 @@ public class QuizController {
         List<QuizModel> quizList = ss.selectList("net.javaguitar.mapper.QuizMapper.selectQuizDayList", quiz_date);
 
         mav.addObject("quizList", quizList);
+        mav.addObject("quiz_date", quiz_date);
 
         mav.setViewName("content/quiz/quiz_stat");
         return mav;
@@ -222,8 +223,12 @@ public class QuizController {
     @RequestMapping(value = {"/quiz/doc/{doc_name}"}, method = RequestMethod.GET)
     public ModelAndView quizDocList(@PathVariable String doc_name) {
         ModelAndView mav = new ModelAndView();
+        QuizStatModel quizStatModel = new QuizStatModel();
+        quizStatModel = ss.selectOne("net.javaguitar.mapper.QuizStatMapper.selectKeyword", doc_name);
+
         List<QuizModel> quizList = ss.selectList("net.javaguitar.mapper.QuizDocumentMapper.selectQuizDocumentListByDoc", doc_name);
         mav.addObject("doc_name", doc_name);
+        mav.addObject("quizStatModel", quizStatModel);
         mav.addObject("quizList", quizList);
         mav.setViewName("content/quiz/quizdoc_list");
         return mav;
@@ -500,8 +505,6 @@ public class QuizController {
     @RequestMapping(value = {"/quiz_memo_update"}, method = {RequestMethod.POST})
     public String quiz_memo_update(@ModelAttribute("QuizModel") QuizModel quizModel
     ) throws Exception {
-        quizModel.setQuiz_memo(quizModel.getQuiz_memo().replaceAll("<p>", ""));
-        quizModel.setQuiz_memo(quizModel.getQuiz_memo().replaceAll("</p>", ""));
         ss.update("net.javaguitar.mapper.QuizMapper.updateQuizMemo", quizModel);
 
         return "redirect:/quiz/memo/" + quizModel.getDoc_code()+"/"+quizModel.getQuiz_number();

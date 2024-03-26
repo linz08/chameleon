@@ -144,7 +144,7 @@
         <tr th:if="${quizModel.quiz_subtitle != null and quizModel.quiz_subtitle != '' } " >
             <td onclick="display_title(2)" width="1%"></td>
             <td>
-                <div class="input-group">
+                <div class="input-group  ck-content">
                     <span id="span_subtitle" style="width:100%"
                           th:utext="${quizModel.quiz_subtitle}"></span>
                 </div>
@@ -320,7 +320,7 @@
         }
         let openMemoPop = function () {
             let urls = "/quiz/memo/[[${quizModel.doc_code}]]/[[${quizModel.quiz_number}]]";
-            let options = 'top=10, left=10, width=500, height=600, status=no, menubar=no, toolbar=no, resizable=yes';
+            let options = 'top=10, left=10, width=500, height=300, status=no, menubar=no, toolbar=no, resizable=yes';
             window.open(urls, "memo", options);
         }
 

@@ -19,12 +19,20 @@
                 id="srcSelector" onclick="moveSource()">선택
         </button>&nbsp;
         <button class="btn btn-outline-warning" type="button"
-                id="srcRegister" onclick="moveRegister()">신규등록
+                id="srcRegister" onclick="moveRegister()">등록
         </button> &nbsp;
-        <button type="button" class="btn btn-outline-danger" onclick="location.href='/quiz/all_list'">전체목록</button>
-        <button type="button" class="btn btn-outline-dark" onclick="location.href='/sys/index'">코드관리</button>
-        <button type="button" class="btn btn-outline-secondary" onclick="location.href='/quiz/keyword_list'">K</button>
-        <button type="button" class="btn btn-outline-secondary" onclick="location.href='/doc/memory/list'">M</button>
+        <button class="btn btn-outline-info" type="button"
+                id="srcRegister" onclick="moveChkList()">T
+        </button>&nbsp;<button class="btn btn-outline-info" type="button"
+                               id="srcZzz" onclick="moveZzzList()">Z
+    </button>&nbsp;
+        <button type="button" class="btn btn-outline-danger" onclick="location.href='/quiz/all_list'">퀴즈전체</button>&nbsp;
+        <button type="button" class="btn btn-outline-dark" onclick="location.href='/sys/index'">코드</button>&nbsp;
+        <button type="button" class="btn btn-outline-secondary" onclick="location.href='/quiz/keyword_list'">토픽</button>&nbsp;
+        <button type="button" class="btn btn-outline-secondary" onclick="location.href='/doc/memory/list'">암기</button>&nbsp;
+        <a th:href="@{'/quiz/date/'+${#calendars.format(#calendars.createNow(),'yyyy-MM-dd')}}">
+            <button type="button" class="btn btn-outline-secondary">어제</button>
+        </a> &nbsp;
         <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
             <input type="search" class="form-control form-control-dark" id="quiz_title" placeholder="Search..."
                    aria-label="Search">
@@ -32,14 +40,6 @@
         <div class="text-end">
             <button type="button" class="btn btn-outline-light me-2" onclick="moveSearch()">검색</button>
         </div>
-    </div>
-    <div>
-        <span class="badge rounded-pill bg-primary" style="cursor:pointer" onclick="openWindowPop()">북마크목록</span> <a
-            onclick="date_move(-1)">&lt;</a> <span
-            class="badge rounded-pill bg-secondary"><a th:href="@{'/quiz/date/'+${#calendars.format(#calendars.createNow(),'yyyy-MM-dd')}}">오늘목록</a></span><a
-            onclick="date_move(1)">&gt;</a>
-        <span
-                class="badge rounded-pill bg-success" style="cursor:pointer" onclick="quiz_boorkmark()">안푼목록</span>
     </div>
     <div style="width:100%;float:left;">
         <table class="table table-dark">

@@ -102,9 +102,9 @@
     <select id="selectKeywordList" resultType="QuizStatModel">
     <![CDATA[
         SELECT /* QuizStatMapper.selectKeywordList */
-            A.DOC_NAME,COUNT(*) AS TOTAL_CNT,
-            B.SUCCESS_CNT AS SUCCESS_CNT,C.FAIL_CNT AS FAIL_CNT,
-            COALESCE(ROUND(SUCCESS_CNT/(SUCCESS_CNT+FAIL_CNT)*100,2),0) AS SUCCESS_RATE
+            A.DOC_CODE, A.DOC_NAME,COUNT(*) AS TOTAL_CNT,
+            IFNULL(B.SUCCESS_CNT,0) AS SUCCESS_CNT,IFNULL(C.FAIL_CNT,0) AS FAIL_CNT,
+            COALESCE(ROUND(SUCCESS_CNT/(SUCCESS_CNT+COALESCE(FAIL_CNT,0))*100,0),0) AS SUCCESS_RATE
         FROM QUIZ_DOCUMENT A LEFT OUTER JOIN
              (SELECT A.DOC_NAME,COUNT(*) AS SUCCESS_CNT FROM QUIZ_DOCUMENT A, QUIZ_STAT B
               WHERE B.DOC_CODE = A.DOC_CODE AND B.QUIZ_NUMBER = A.QUIZ_NUMBER AND B.SUCCESS_YN='Y'
@@ -117,6 +117,23 @@
              ON A.DOC_NAME = C.DOC_NAME
         GROUP BY A.DOC_NAME
         ORDER BY COUNT(*) DESC
+        ]]>
+    </select>
+    <select id="selectKeyword" resultType="QuizStatModel"  parameterType="java.lang.String">
+    <![CDATA[
+        SELECT /* QuizStatMapper.selectKeyword */
+        (IFNULL(A.SUCCESS_CNT,0) + IFNULL(FAIL_CNT,0)) AS TOTAL_CNT,
+               IFNULL(A.SUCCESS_CNT,0) AS SUCCESS_CNT,IFNULL(B.FAIL_CNT,0) AS FAIL_CNT,
+               COALESCE(ROUND(SUCCESS_CNT/(SUCCESS_CNT+COALESCE(FAIL_CNT,0))*100,0),0) AS SUCCESS_RATE
+        FROM
+            (SELECT COUNT(*) AS SUCCESS_CNT FROM QUIZ_DOCUMENT A ,QUIZ_STAT B
+             WHERE A.DOC_NAME=#{doc_name} AND A.DOC_CODE = B.DOC_CODE
+               AND A.QUIZ_NUMBER  = B.QUIZ_NUMBER
+               AND B.SUCCESS_YN='Y') A,
+            (SELECT COUNT(*) AS FAIL_CNT FROM QUIZ_DOCUMENT A ,QUIZ_STAT B
+             WHERE A.DOC_NAME=#{doc_name} AND A.DOC_CODE = B.DOC_CODE
+               AND A.QUIZ_NUMBER  = B.QUIZ_NUMBER
+               AND B.SUCCESS_YN <> 'Y') B
         ]]>
     </select>
 </mapper>

@@ -4,7 +4,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/default_layout}" lang="ko">
 <head>
-    <title>문제목록</title>
+    <title>지난퀴즈</title>
 <style>
     a:link {
         color: black;
@@ -41,28 +41,52 @@
                 id="srcSelector" onclick="moveSource()">선택
         </button>&nbsp;
         <button class="btn btn-outline-warning" type="button"
-                id="srcRegister" onclick="moveRegister()">신규등록
+                id="srcRegister" onclick="moveRegister()">등록
         </button> &nbsp;
-        <button type="button" class="btn btn-outline-dark" onclick="location.href='/sys/index'">코드관리</button>
+        <button class="btn btn-outline-info" type="button"
+                id="srcRegister" onclick="moveChkList()">T
+        </button>&nbsp;<button class="btn btn-outline-info" type="button"
+                               id="srcZzz" onclick="moveZzzList()">Z
+    </button>&nbsp;
+        <button type="button" class="btn btn-outline-danger" onclick="location.href='/quiz/all_list'">퀴즈전체</button>&nbsp;
+        <button type="button" class="btn btn-outline-dark" onclick="location.href='/sys/index'">코드</button>&nbsp;
+        <button type="button" class="btn btn-outline-secondary" onclick="location.href='/quiz/keyword_list'">토픽</button>&nbsp;
+        <button type="button" class="btn btn-outline-secondary" onclick="location.href='/doc/memory/list'">암기</button>&nbsp;
+        <a th:href="@{'/quiz/date/'+${#calendars.format(#calendars.createNow(),'yyyy-MM-dd')}}">
+            <button type="button" class="btn btn-outline-secondary">어제</button>
+        </a> &nbsp;
         <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-            <input type="search" class="form-control form-control-dark" id="quiz_title" placeholder="Search..." aria-label="Search">
+            <input type="search" class="form-control form-control-dark" id="quiz_title" placeholder="Search..."
+                   aria-label="Search">
         </form>
         <div class="text-end">
             <button type="button" class="btn btn-outline-light me-2" onclick="moveSearch()">검색</button>
         </div>
     </div>
     <div>
-        <span class="badge rounded-pill bg-primary" style="cursor:pointer" onclick="openWindowPop()">북마크목록</span>  <a
-            onclick="date_move(-1)">&lt;</a> <span
-            class="badge rounded-pill bg-secondary"><a th:href="@{'/quiz/date/'+${#calendars.format(#calendars.createNow(),'yyyy-MM-dd')}}">오늘목록</a></span><a
-            onclick="date_move(1)">&gt;</a><span
-            class="badge rounded-pill bg-success" style="cursor:pointer" onclick="quiz_boorkmark()">안푼목록</span>
+
+        <figure class="text-center">
+            <blockquote class="blockquote">
+
+                <h3 class="display-3"><a style="cursor:pointer" onclick="date_move(-1)">&lt;</a> <span th:text="${quiz_date}"></span>
+                    <a style="cursor:pointer" onclick="date_move(1)">&gt;</a></h3>
+            </blockquote>
+        </figure>
      </div>
     <div style="width:100%;float:left;">
         <table class="table table-dark">
             <tbody>
+            <tr>
+                <td style="background-color: #0a53be">출처</td>
+                <td style="background-color: #0a53be">분류</td>
+                <td style="background-color: #0a53be">번호</td>
+                <td style="background-color: #0a53be">제목</td>
+            </tr>
             <tr th:each="quizList : ${quizList}">
-                <td><span th:text="${quizList.quiz_number}"></span></td>
+                <td><span th:text="${quizList.quiz_source_name}"></span></td>
+                <td><span th:text="${quizList.category_name}"></span></td>
+                <td><span th:if="${quizList.success_yn} != 'Y'" style="color:red" th:text="${quizList.quiz_org_number}"></span>
+                    <span th:if="${quizList.success_yn} == 'Y'" th:text="${quizList.quiz_org_number}"></span></td>
                 <td><a class="link-light" th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}" th:utext="${quizList.quiz_title}"/>
                 </td>
             </tr>
@@ -77,30 +101,36 @@
         let moveRegister = function () {
             document.location.href = "/quiz/write";
         }
+        let moveChkList = function () {
+            document.location.href = "/quiz/chk_list";
+        }
+        let moveZzzList = function () {
+            document.location.href = "/quiz/zzz_list";
+        }
         let moveSearch = function () {
 
-            location.href="/quiz/search/"+($("#quiz_title").val());
+            location.href = "/quiz/search/" + ($("#quiz_title").val());
         }
         let date_move = function (iDay) {
-            const protocol = window.location.protocol +"//";
+            const protocol = window.location.protocol + "//";
 
             const host = window.location.host
             let cUrl = window.location.href;
-            const arr  = cUrl.split('/');
+            const arr = cUrl.split('/');
             const cDate = arr[arr.length - 1];
-            let wade = StringToDate(cDate,iDay);
+            let wade = StringToDate(cDate, iDay);
             let leftUrl = "";
-            for(let j=2;j < arr.length-1;j++) {
+            for (let j = 2; j < arr.length - 1; j++) {
                 if (j > 2) {
-                  leftUrl = leftUrl +"/"+ arr[j];
+                    leftUrl = leftUrl + "/" + arr[j];
                 }
             }
-            document.location.href = (protocol+host+leftUrl+"/"+wade);
+            document.location.href = (protocol + host + leftUrl + "/" + wade);
         }
         let date_next = function () {
             alert(window.location.href);
         }
-        let StringToDate = function(date, n) {
+        let StringToDate = function (date, n) {
             let yyyy = date.substring(0, 4);
             let mm = date.substring(5, 7);
             let dd = date.substring(8, 10);

@@ -197,7 +197,15 @@
     </select>
     <select id="selectQuizDayList" parameterType="String"
             resultType="QuizModel">
-        SELECT B.*
+        SELECT
+            FNC_COMMON_CODE(B.QUIZ_SOURCE) AS QUIZ_SOURCE_NAME,
+            (
+                SELECT CATEGORY_NAME
+                FROM DOCUMENT_CATEGORY
+                WHERE DOC_CODE = B.DOC_CODE
+            ) AS CATEGORY_NAME,
+            A.SUCCESS_YN,B.DOC_CODE,B.QUIZ_NUMBER,B.QUIZ_TITLE,
+               B.QUIZ_ORG_NUMBER
         FROM QUIZ_STAT A,
              QUIZ B
         WHERE A.DOC_CODE = B.DOC_CODE

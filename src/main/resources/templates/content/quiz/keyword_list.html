@@ -5,6 +5,16 @@
       layout:decorate="~{layout/default_layout}" lang="ko">
 <head>
     <title>토픽순위</title>
+    <style>
+        a:link {
+            text-decoration: none;
+        }
+
+        table {
+            font-size: 14px;
+        }
+    </style>
+</head>
 <body>
 <div layout:fragment="content" class="content">
     <div class="input-group mb-3">
@@ -19,12 +29,20 @@
                 id="srcSelector" onclick="moveSource()">선택
         </button>&nbsp;
         <button class="btn btn-outline-warning" type="button"
-                id="srcRegister" onclick="moveRegister()">신규등록
+                id="srcRegister" onclick="moveRegister()">등록
         </button> &nbsp;
-        <button type="button" class="btn btn-outline-danger" onclick="location.href='/quiz/all_list'">전체목록</button>
-        <button type="button" class="btn btn-outline-dark" onclick="location.href='/sys/index'">코드관리</button>
-        <button type="button" class="btn btn-outline-secondary" onclick="location.href='/quiz/keyword_list'">K</button>
-        <button type="button" class="btn btn-outline-secondary" onclick="location.href='/doc/memory/list'">M</button>
+        <button class="btn btn-outline-info" type="button"
+                id="srcRegister" onclick="moveChkList()">T
+        </button>&nbsp;<button class="btn btn-outline-info" type="button"
+                               id="srcZzz" onclick="moveZzzList()">Z
+    </button>&nbsp;
+        <button type="button" class="btn btn-outline-danger" onclick="location.href='/quiz/all_list'">퀴즈전체</button>&nbsp;
+        <button type="button" class="btn btn-outline-dark" onclick="location.href='/sys/index'">코드</button>&nbsp;
+        <button type="button" class="btn btn-outline-secondary" onclick="location.href='/quiz/keyword_list'">토픽</button>&nbsp;
+        <button type="button" class="btn btn-outline-secondary" onclick="location.href='/doc/memory/list'">암기</button>&nbsp;
+        <a th:href="@{'/quiz/date/'+${#calendars.format(#calendars.createNow(),'yyyy-MM-dd')}}">
+            <button type="button" class="btn btn-outline-secondary">어제</button>
+        </a> &nbsp;
         <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
             <input type="search" class="form-control form-control-dark" id="quiz_title" placeholder="Search..."
                    aria-label="Search">
@@ -33,25 +51,176 @@
             <button type="button" class="btn btn-outline-light me-2" onclick="moveSearch()">검색</button>
         </div>
     </div>
-    <div style="width:100%;float:left;">
+    <div style="width:20%;float:left;" class="div_quiz">
+        <span class="d-block p-2 bg-primary text-white" style="text-align: center">감리/사관</span>
         <table class="table table-dark">
             <tbody>
-            <tr><td style="text-align: center;background-color: #0a53be">문서명</td>
-            <td style="text-align: center;background-color: #0a53be">문제수</td>
-            <td style="text-align: center;background-color: #0a53be">성공</td>
-            <td style="text-align: center;background-color: #0a53be">실패</td>
-            <td style="text-align: center;background-color: #0a53be">성공율</td></tr>
-            <tr th:each="keywordList,i : ${keywordList}">
-                <td style="text-align: left"><a style="cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span th:text="${keywordList.doc_name}"></span></a></td>
-                <td style="text-align: center" th:text="${keywordList.total_cnt}"></td>
-                <td style="text-align: center" th:text="${keywordList.success_cnt}"></td>
-                <td style="text-align: center" th:text="${keywordList.fail_cnt}"></td>
+            <tr th:each="keywordList : ${keywordList}" th:if="${keywordList.doc_code}==2 or ${keywordList.doc_code}==3">
+                <td><a th:if="${keywordList.success_rate} <= 50" style="color:red;cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                        th:text="${keywordList.doc_name}"></span></a>
+                    <a th:if="${keywordList.success_rate} > 50 and ${keywordList.success_rate} < 70" style="color: #ffc107; cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                            th:text="${keywordList.doc_name}"></span></a>
+                    <a th:if="${keywordList.success_rate} >= 70" style="cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                            th:text="${keywordList.doc_name}"></span></a>
+                </td>
+                <td style="text-align: center">
+                    <span th:text="${keywordList.total_cnt}+'('+${keywordList.success_cnt}+'/'+${keywordList.fail_cnt}+')'"></span>
+                </td>
+                <td style="text-align: center" th:text="${keywordList.success_rate}+'%'"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div style="width:20%;float:left;" class="div_quiz">
+        <span class="d-block p-2 bg-secondary text-white" style="text-align: center">소공</span>
+        <table class="table table-dark">
+            <tbody>
+            <tr th:each="keywordList : ${keywordList}" th:if="${keywordList.doc_code}==4">
+                <td><a th:if="${keywordList.success_rate} <= 50" style="color:red;cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                        th:text="${keywordList.doc_name}"></span></a>
+                    <a th:if="${keywordList.success_rate} > 50 and ${keywordList.success_rate} < 70" style="color: #ffc107; cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                            th:text="${keywordList.doc_name}"></span></a>
+                    <a th:if="${keywordList.success_rate} >= 70" style="cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                            th:text="${keywordList.doc_name}"></span></a>
+                </td>
+                <td style="text-align: center">
+                    <span th:text="${keywordList.total_cnt}+'('+${keywordList.success_cnt}+'/'+${keywordList.fail_cnt}+')'"></span>
+                </td>
+                <td style="text-align: center" th:text="${keywordList.success_rate}+'%'"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div style="width:20%;float:left;" class="div_quiz">
+        <span class="d-block p-2 bg-success text-white" style="text-align: center">DB</span>
+        <table class="table table-dark">
+            <tbody>
+            <tr th:each="keywordList : ${keywordList}" th:if="${keywordList.doc_code}==5">
+                <td><a th:if="${keywordList.success_rate} <= 50" style="color:red;cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                        th:text="${keywordList.doc_name}"></span></a>
+                    <a th:if="${keywordList.success_rate} > 50 and ${keywordList.success_rate} < 70" style="color: #ffc107; cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                            th:text="${keywordList.doc_name}"></span></a>
+                    <a th:if="${keywordList.success_rate} >= 70" style="cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                            th:text="${keywordList.doc_name}"></span></a>
+                </td>
+                <td style="text-align: center">
+                    <span th:text="${keywordList.total_cnt}+'('+${keywordList.success_cnt}+'/'+${keywordList.fail_cnt}+')'"></span>
+                </td>
+                <td style="text-align: center" th:text="${keywordList.success_rate}+'%'"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div style="width:20%;float:left;" class="div_quiz">
+        <span class="d-block p-2 bg-danger text-white" style="text-align: center">시구</span>
+        <table class="table table-dark">
+            <tbody>
+            <tr th:each="keywordList : ${keywordList}" th:if="${keywordList.doc_code}==6">
+                <td><a th:if="${keywordList.success_rate} <= 50" style="color:red;cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                        th:text="${keywordList.doc_name}"></span></a>
+                    <a th:if="${keywordList.success_rate} > 50 and ${keywordList.success_rate} < 70" style="color: #ffc107; cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                            th:text="${keywordList.doc_name}"></span></a>
+                    <a th:if="${keywordList.success_rate} >= 70" style="cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                            th:text="${keywordList.doc_name}"></span></a>
+                </td>
+                <td style="text-align: center">
+                    <span th:text="${keywordList.total_cnt}+'('+${keywordList.success_cnt}+'/'+${keywordList.fail_cnt}+')'"></span>
+                </td>
+                <td style="text-align: center" th:text="${keywordList.success_rate}+'%'"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div style="width:20%;float:left;" class="div_quiz">
+        <span class="d-block p-2 bg-warning text-white" style="text-align: center">보안</span>
+        <table class="table table-dark">
+            <tbody>
+            <tr th:each="keywordList : ${keywordList}" th:if="${keywordList.doc_code}==7">
+                <td><a th:if="${keywordList.success_rate} <= 50" style="color:red;cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                        th:text="${keywordList.doc_name}"></span></a>
+                    <a th:if="${keywordList.success_rate} > 50 and ${keywordList.success_rate} < 70" style="color: #ffc107; cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                            th:text="${keywordList.doc_name}"></span></a>
+                    <a th:if="${keywordList.success_rate} >= 70" style="cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                            th:text="${keywordList.doc_name}"></span></a>
+                </td>
+                <td style="text-align: center">
+                    <span th:text="${keywordList.total_cnt}+'('+${keywordList.success_cnt}+'/'+${keywordList.fail_cnt}+')'"></span>
+                </td>
                 <td style="text-align: center" th:text="${keywordList.success_rate}+'%'"></td>
             </tr>
             </tbody>
         </table>
     </div>
     <script type="text/javaScript">
+        let quiz_tomorrow = function (doc_code, quiz_number) {
+            $.ajax({
+                type: "POST",
+                url: "/quiz_tomorrow_delete",
+                beforeSend: function (jqXHR, settings) {
+                    let header = $("meta[name='_csrf_header']").attr("content");
+                    let token = $("meta[name='_csrf']").attr("content");
+                    jqXHR.setRequestHeader(header, token);
+                },
+                data: {
+                    "doc_code": doc_code,
+                    "quiz_number": quiz_number
+                },
+                success: function () {
+                    document.location.reload();
+                }, error: function () {
+                    toastAlert('저장 실패', 1);
+                }
+            });
+        }
+        let moveSource = function () {
+            let quiz_source = $("#quiz_source option:selected").val();
+            document.location.href = "/quiz/list/" + quiz_source;
+        }
+        let moveRegister = function () {
+            document.location.href = "/quiz/write";
+        }
+        let moveChkList = function () {
+            document.location.href = "/quiz/chk_list";
+        }
+        let moveZzzList = function () {
+            document.location.href = "/quiz/zzz_list";
+        }
+        let moveSearch = function () {
+
+            location.href = "/quiz/search/" + ($("#quiz_title").val());
+        }
+        let date_move = function (iDay) {
+            const protocol = window.location.protocol + "//";
+
+            const host = window.location.host
+            let cUrl = window.location.href;
+            const arr = cUrl.split('/');
+            const cDate = arr[arr.length - 1];
+            let wade = StringToDate(cDate, iDay);
+            let leftUrl = "";
+            for (let j = 2; j < arr.length - 1; j++) {
+                if (j > 2) {
+                    leftUrl = leftUrl + "/" + arr[j];
+                }
+            }
+            document.location.href = (protocol + host + leftUrl + "/" + wade);
+        }
+        let date_next = function () {
+            alert(window.location.href);
+        }
+        let StringToDate = function (date, n) {
+            let yyyy = date.substring(0, 4);
+            let mm = date.substring(5, 7);
+            let dd = date.substring(8, 10);
+            mm = Number(mm) - 1;
+
+            let stringNewDate = new Date(yyyy, mm, dd);
+            stringNewDate.setDate(stringNewDate.getDate() + n);
+
+            return stringNewDate.getFullYear() +
+                "-" + ((stringNewDate.getMonth() + 1) > 9 ? (stringNewDate.getMonth() + 1).toString() : "0" + (stringNewDate.getMonth() + 1)) +
+                "-" + (stringNewDate.getDate() > 9 ? stringNewDate.getDate().toString() : "0" + stringNewDate.getDate().toString());
+        }
         //keyword 열기
         let doc_name_move = function(keyword){
             $.ajax({
