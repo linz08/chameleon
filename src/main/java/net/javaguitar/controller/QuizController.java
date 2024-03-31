@@ -212,8 +212,10 @@ public class QuizController {
 
 
         List<QuizModel> quizList = ss.selectList("net.javaguitar.mapper.QuizMapper.selectQuizDayList", quiz_date);
+        QuizStatModel quizStatModel = ss.selectOne("net.javaguitar.mapper.QuizStatMapper.selectQuizDayCount",quiz_date);
 
         mav.addObject("quizList", quizList);
+        mav.addObject("quizStatModel", quizStatModel);
         mav.addObject("quiz_date", quiz_date);
 
         mav.setViewName("content/quiz/quiz_stat");

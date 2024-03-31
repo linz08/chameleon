@@ -56,7 +56,7 @@
         }
         code, kbd, pre, samp {
             font-family: "JetBrains Mono";
-            font-size: 1.0em;
+            font-size: 14px;
             direction: ltr;
             unicode-bidi: bidi-override;
         }
@@ -128,8 +128,8 @@
             <td width="1%"><a class="nounderline"
                    th:href="'/quiz/edit/'+${quizModel.doc_code}+'/'+${quizModel.quiz_number}"
                    th:utext="${quizModel.quiz_org_number}"></a><a class="nounderline" th:href="'/index/'+${quizModel.doc_code}+'/'+${quizModel.quiz_number}">. </a></td>
-            <td><span id="span_title"
-                 th:utext="${quizModel.quiz_title}"></span><a onclick="display_title(1)">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+            <td th:ondblclick="display_title(1)"><span id="span_title"
+                 th:utext="${quizModel.quiz_title}"></span>
             </td>
         </tr>
         <tr id="tr_title" style="display:none">
@@ -143,8 +143,8 @@
         </tr>
         <tr th:if="${quizModel.quiz_subtitle != null and quizModel.quiz_subtitle != '' } " >
             <td onclick="display_title(2)" width="1%"></td>
-            <td>
-                <div class="input-group  ck-content">
+            <td ondblclick="display_title(2)">
+                <div class="input-group">
                     <span id="span_subtitle" style="width:100%"
                           th:utext="${quizModel.quiz_subtitle}"></span>
                 </div>
@@ -169,7 +169,7 @@
                     style="width: 2%; text-align: center; cursor: pointer;">번호
                 </td>
                 <td th:utext="${objectList.quiz_object_name}" th:id="'td'+${index.index+1}"
-                    style="width: 98%;" th:onclick="display_tr([[${index.index+1}]]);">
+                    style="width: 98%;" th:ondblclick="display_tr([[${index.index+1}]]);">
                 </td>
             </tr>
             <tr th:id="'tr'+${index.index+1}" style="display:none">

@@ -28,7 +28,9 @@
         <tbody>
         <tr th:each="quizList,index : ${quizList}">
             <th style="text-align: center" scope="row" th:text="${index.index+1}">1</th>
-            <td th:text="${quizList.quiz_source_name}">출처</td>
+            <td><span th:if="${#strings.contains(quizList.quiz_source_name,'감리')}" style="color:orange" th:text="${quizList.quiz_source_name}"></span>
+                <span th:unless="${#strings.contains(quizList.quiz_source_name,'감리')}" th:text="${quizList.quiz_source_name}"></span>
+            </td>
             <td>
                 <span th:if="${quizList.pattern_code_name == '예외처리'}" style="color:grey" th:text="'['+${quizList.success_y} + ':' + ${quizList.success_n}+']'"></span>
                 <span th:if="${quizList.pattern_code_name != '예외처리'}" th:text="'['+${quizList.success_y} + ':' + ${quizList.success_n}+']'"></span>
@@ -48,7 +50,7 @@
                    th:if="${quizList.pattern_code_name != '예외처리'} and ${quizList.success_y}==0 and ${quizList.success_n}==0 " style="color:green"
                    th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                    th:utext="'[' + ${quizList.doc_code_name} +'] '+${quizList.quiz_org_number}"/>
-                <span th:if="${quizList.today_yn > 0}">*</span>
+                <span th:if="${quizList.today_yn > 0}">🟢</span>
             </td>
             <td style="font-size: 12px" th:utext="${quizList.quiz_memo}">퀴즈메모</td>
             <td style="text-align: center" th:if="${quizList.quiz_level_name != '1'}" th:text="${quizList.quiz_level_name}">레벨</td>

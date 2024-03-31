@@ -46,15 +46,23 @@
                )                              AS CATEGORY_NAME
         FROM QUIZ A,
              (
-                 SELECT B.DOC_CODE,B.QUIZ_NUMBER FROM
-                     (SELECT DOC_CODE,QUIZ_NUMBER,COUNT(*) AS SUCCESS_CNT FROM QUIZ_STAT
-                      WHERE SUCCESS_YN='Y' GROUP BY DOC_CODE,QUIZ_NUMBER) A,
-                     (
-                         SELECT DOC_CODE,QUIZ_NUMBER,COUNT(*) AS FAIL_CNT FROM QUIZ_STAT
-                         WHERE SUCCESS_YN <> 'Y' GROUP BY DOC_CODE,QUIZ_NUMBER) B
-                 WHERE A.DOC_CODE = B.DOC_CODE AND A.QUIZ_NUMBER = B.QUIZ_NUMBER
+                 SELECT B.DOC_CODE, B.QUIZ_NUMBER
+                 FROM (SELECT DOC_CODE, QUIZ_NUMBER, COUNT(*) AS SUCCESS_CNT
+                       FROM QUIZ_STAT
+                       WHERE SUCCESS_YN = 'Y'
+                       GROUP BY DOC_CODE, QUIZ_NUMBER) A,
+                      (
+                          SELECT DOC_CODE, QUIZ_NUMBER, COUNT(*) AS FAIL_CNT
+                          FROM QUIZ_STAT
+                          WHERE SUCCESS_YN <> 'Y'
+                          GROUP BY DOC_CODE, QUIZ_NUMBER) B
+                 WHERE A.DOC_CODE = B.DOC_CODE
+                   AND A.QUIZ_NUMBER = B.QUIZ_NUMBER
                    AND ((B.FAIL_CNT >= A.SUCCESS_CNT) OR (A.SUCCESS_CNT = 1))
-             ) B WHERE A.PATTERN_CODE <> 112 and A.DOC_CODE = B.DOC_CODE AND A.QUIZ_NUMBER = B.QUIZ_NUMBER
+             ) B
+        WHERE A.PATTERN_CODE <> 112
+          and A.DOC_CODE = B.DOC_CODE
+          AND A.QUIZ_NUMBER = B.QUIZ_NUMBER
         ORDER BY RAND()
         LIMIT 1
         ]]>
@@ -90,26 +98,28 @@
     <select id="selectQuizList" parameterType="int" resultType="QuizModel">
         <![CDATA[
         SELECT /* QuizMapper.selectQuizList */
-            fnc_common_code(A.QUIZ_LEVEL)                                                            AS QUIZ_LEVEL,
+            fnc_common_code(A.QUIZ_LEVEL)         AS               QUIZ_LEVEL,
             IF(A.PATTERN_CODE = '112', CONCAT('<strike>', COALESCE(B.DOC_NAME, 'N/A'), '</strike>'),
-               COALESCE(B.DOC_NAME, 'N/A'))                                                          AS CATEGORY_NAME
+               COALESCE(B.DOC_NAME, 'N/A'))       AS               CATEGORY_NAME
                 ,
             A.DOC_CODE,
             A.QUIZ_NUMBER,
             A.QUIZ_ORG_NUMBER,
             (SELECT COUNT(*)
              FROM QUIZ_STAT C
-             WHERE C.SUCCESS_YN = 'Y' AND C.DOC_CODE = A.DOC_CODE AND C.QUIZ_NUMBER = A.QUIZ_NUMBER) AS SUCCESS_Y,
+             WHERE C.SUCCESS_YN = 'Y'
+               AND C.DOC_CODE = A.DOC_CODE
+               AND C.QUIZ_NUMBER = A.QUIZ_NUMBER) AS               SUCCESS_Y,
             (SELECT COUNT(*)
              FROM QUIZ_STAT C
              WHERE C.SUCCESS_YN <> 'Y'
                AND C.DOC_CODE = A.DOC_CODE
-               AND C.QUIZ_NUMBER = A.QUIZ_NUMBER)                                                    AS SUCCESS_N,
+               AND C.QUIZ_NUMBER = A.QUIZ_NUMBER) AS               SUCCESS_N,
             (SELECT COUNT(*) AS CNT
              FROM QUIZ_STAT C
              WHERE DOC_CODE = A.DOC_CODE
                AND QUIZ_NUMBER = A.QUIZ_NUMBER
-               AND quiz_date = date_format(curdate(), '%Y-%m-%d'))                                      TODAY_YN
+               AND quiz_date = date_format(curdate(), '%Y-%m-%d')) TODAY_YN
         FROM QUIZ A
                  LEFT OUTER JOIN (SELECT MAX(DOC_NAME) AS DOC_NAME, DOC_CODE, QUIZ_NUMBER
                                   FROM (
@@ -126,26 +136,28 @@
     <select id="selectChkQuizList" resultType="QuizModel">
         <![CDATA[
         SELECT /* QuizMapper.selectChkQuizList */
-            fnc_common_code(A.QUIZ_LEVEL)                                                            AS QUIZ_LEVEL,
+            fnc_common_code(A.QUIZ_LEVEL)         AS               QUIZ_LEVEL,
             IF(A.PATTERN_CODE = '112', CONCAT('<strike>', COALESCE(B.DOC_NAME, 'N/A'), '</strike>'),
-               COALESCE(B.DOC_NAME, 'N/A'))                                                          AS CATEGORY_NAME
+               COALESCE(B.DOC_NAME, 'N/A'))       AS               CATEGORY_NAME
                 ,
             A.DOC_CODE,
             A.QUIZ_NUMBER,
             A.QUIZ_ORG_NUMBER,
             (SELECT COUNT(*)
              FROM QUIZ_STAT C
-             WHERE C.SUCCESS_YN = 'Y' AND C.DOC_CODE = A.DOC_CODE AND C.QUIZ_NUMBER = A.QUIZ_NUMBER) AS SUCCESS_Y,
+             WHERE C.SUCCESS_YN = 'Y'
+               AND C.DOC_CODE = A.DOC_CODE
+               AND C.QUIZ_NUMBER = A.QUIZ_NUMBER) AS               SUCCESS_Y,
             (SELECT COUNT(*)
              FROM QUIZ_STAT C
              WHERE C.SUCCESS_YN <> 'Y'
                AND C.DOC_CODE = A.DOC_CODE
-               AND C.QUIZ_NUMBER = A.QUIZ_NUMBER)                                                    AS SUCCESS_N,
+               AND C.QUIZ_NUMBER = A.QUIZ_NUMBER) AS               SUCCESS_N,
             (SELECT COUNT(*) AS CNT
              FROM QUIZ_STAT C
              WHERE DOC_CODE = A.DOC_CODE
                AND QUIZ_NUMBER = A.QUIZ_NUMBER
-               AND quiz_date = date_format(curdate(), '%Y-%m-%d'))                                      TODAY_YN
+               AND quiz_date = date_format(curdate(), '%Y-%m-%d')) TODAY_YN
         FROM QUIZ A
                  LEFT OUTER JOIN (SELECT MAX(DOC_NAME) AS DOC_NAME, DOC_CODE, QUIZ_NUMBER
                                   FROM (
@@ -162,26 +174,28 @@
     <select id="selectZzzQuizList" resultType="QuizModel">
         <![CDATA[
         SELECT /* QuizMapper.selectChkQuizList */
-            fnc_common_code(A.QUIZ_LEVEL)                                                            AS QUIZ_LEVEL,
+            fnc_common_code(A.QUIZ_LEVEL)         AS               QUIZ_LEVEL,
             IF(A.PATTERN_CODE = '112', CONCAT('<strike>', COALESCE(B.DOC_NAME, 'N/A'), '</strike>'),
-               COALESCE(B.DOC_NAME, 'N/A'))                                                          AS CATEGORY_NAME
+               COALESCE(B.DOC_NAME, 'N/A'))       AS               CATEGORY_NAME
                 ,
             A.DOC_CODE,
             A.QUIZ_NUMBER,
             A.QUIZ_ORG_NUMBER,
             (SELECT COUNT(*)
              FROM QUIZ_STAT C
-             WHERE C.SUCCESS_YN = 'Y' AND C.DOC_CODE = A.DOC_CODE AND C.QUIZ_NUMBER = A.QUIZ_NUMBER) AS SUCCESS_Y,
+             WHERE C.SUCCESS_YN = 'Y'
+               AND C.DOC_CODE = A.DOC_CODE
+               AND C.QUIZ_NUMBER = A.QUIZ_NUMBER) AS               SUCCESS_Y,
             (SELECT COUNT(*)
              FROM QUIZ_STAT C
              WHERE C.SUCCESS_YN <> 'Y'
                AND C.DOC_CODE = A.DOC_CODE
-               AND C.QUIZ_NUMBER = A.QUIZ_NUMBER)                                                    AS SUCCESS_N,
+               AND C.QUIZ_NUMBER = A.QUIZ_NUMBER) AS               SUCCESS_N,
             (SELECT COUNT(*) AS CNT
              FROM QUIZ_STAT C
              WHERE DOC_CODE = A.DOC_CODE
                AND QUIZ_NUMBER = A.QUIZ_NUMBER
-               AND quiz_date = date_format(curdate(), '%Y-%m-%d'))                                      TODAY_YN
+               AND quiz_date = date_format(curdate(), '%Y-%m-%d')) TODAY_YN
         FROM QUIZ A
                  LEFT OUTER JOIN (SELECT MAX(DOC_NAME) AS DOC_NAME, DOC_CODE, QUIZ_NUMBER
                                   FROM (
@@ -197,21 +211,47 @@
     </select>
     <select id="selectQuizDayList" parameterType="String"
             resultType="QuizModel">
-        SELECT
-            FNC_COMMON_CODE(B.QUIZ_SOURCE) AS QUIZ_SOURCE_NAME,
-            (
-                SELECT CATEGORY_NAME
-                FROM DOCUMENT_CATEGORY
-                WHERE DOC_CODE = B.DOC_CODE
-            ) AS CATEGORY_NAME,
-            A.SUCCESS_YN,B.DOC_CODE,B.QUIZ_NUMBER,B.QUIZ_TITLE,
-               B.QUIZ_ORG_NUMBER
+       <![CDATA[
+        SELECT /* QuizMapper.selectQuizDayList */
+            IF(B.PATTERN_CODE = '112', CONCAT('<strike>', SUBSTR(C.DOC_NAME, 1, 16), '</strike>'),
+               SUBSTR(C.DOC_NAME, 1, 16))         AS               CATEGORY_NAME,
+            FNC_COMMON_CODE(B.QUIZ_SOURCE)        AS               QUIZ_SOURCE_NAME,
+            A.SUCCESS_YN,
+            B.DOC_CODE,
+            B.QUIZ_NUMBER,
+            B.QUIZ_ORG_NUMBER,
+            B.PATTERN_CODE,
+            fnc_common_code(B.QUIZ_LEVEL)         AS               QUIZ_LEVEL,
+            (SELECT COUNT(*)
+             FROM QUIZ_STAT C
+             WHERE C.SUCCESS_YN = 'Y'
+               AND C.DOC_CODE = A.DOC_CODE
+               AND C.QUIZ_NUMBER = A.QUIZ_NUMBER) AS               SUCCESS_Y,
+            (SELECT COUNT(*)
+             FROM QUIZ_STAT C
+             WHERE C.SUCCESS_YN <> 'Y'
+               AND C.DOC_CODE = A.DOC_CODE
+               AND C.QUIZ_NUMBER = A.QUIZ_NUMBER) AS               SUCCESS_N,
+            (SELECT COUNT(*) AS CNT
+             FROM QUIZ_STAT C
+             WHERE DOC_CODE = A.DOC_CODE
+               AND QUIZ_NUMBER = A.QUIZ_NUMBER
+               AND quiz_date = date_format(curdate(), '%Y-%m-%d')) TODAY_YN
         FROM QUIZ_STAT A,
-             QUIZ B
+             QUIZ B,
+             (SELECT MAX(DOC_NAME) AS DOC_NAME, DOC_CODE, QUIZ_NUMBER
+              FROM (
+                       SELECT X.DOC_NAME, X.DOC_CODE, X.QUIZ_NUMBER
+                       FROM QUIZ_DOCUMENT X
+                   ) Y
+              GROUP BY Y.DOC_CODE, Y.QUIZ_NUMBER) C
         WHERE A.DOC_CODE = B.DOC_CODE
           AND A.QUIZ_NUMBER = B.QUIZ_NUMBER
+          AND A.DOC_CODE = C.DOC_CODE
+          AND A.QUIZ_NUMBER = C.QUIZ_NUMBER
           AND A.QUIZ_DATE = #{quiz_date}
         ORDER BY A.CREATE_DATE DESC
+        ]]>
     </select>
     <select id="selectQuizSearch" parameterType="String" resultType="QuizModel">
         SELECT DISTINCT A.QUIZ_TITLE, A.DOC_CODE, A.QUIZ_NUMBER
@@ -223,10 +263,10 @@
     </select>
     <select id="selectQuizMemo" parameterType="QuizModel" resultType="QuizModel">
      <![CDATA[
-        SELECT A.QUIZ_MEMO,A.DOC_CODE,A.QUIZ_NUMBER /* QuizMapper.selectQuizMemo */
+        SELECT A.QUIZ_MEMO, A.DOC_CODE, A.QUIZ_NUMBER /* QuizMapper.selectQuizMemo */
         FROM QUIZ A
         WHERE A.DOC_CODE = #{doc_code}
-            AND A.QUIZ_NUMBER = #{quiz_number}
+          AND A.QUIZ_NUMBER = #{quiz_number}
         ]]>
     </select>
     <update id="updateQuizMemo" parameterType="QuizModel">

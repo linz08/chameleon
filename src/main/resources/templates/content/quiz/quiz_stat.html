@@ -5,27 +5,30 @@
       layout:decorate="~{layout/default_layout}" lang="ko">
 <head>
     <title>지난퀴즈</title>
-<style>
-    a:link {
-        color: black;
-        text-decoration: none;
-    }
+    <style>
+        a:link {
+            color: black;
+            text-decoration: none;
+        }
 
-    a:visited {
-        color: black;
-        text-decoration: none;
-    }
+        a:visited {
+            color: black;
+            text-decoration: none;
+        }
 
-    a:hover {
-        color: black;
-        text-decoration: underline;
-    }
+        a:hover {
+            color: black;
+            text-decoration: underline;
+        }
 
-    a:active {
-        color: black;
-        text-decoration: none;
-    }
-</style>
+        a:active {
+            color: black;
+            text-decoration: none;
+        }
+        table {
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
 <div layout:fragment="content" class="content">
@@ -63,31 +66,173 @@
             <button type="button" class="btn btn-outline-light me-2" onclick="moveSearch()">검색</button>
         </div>
     </div>
-    <div>
-
-        <figure class="text-center">
-            <blockquote class="blockquote">
-
-                <h3 class="display-3"><a style="cursor:pointer" onclick="date_move(-1)">&lt;</a> <span th:text="${quiz_date}"></span>
-                    <a style="cursor:pointer" onclick="date_move(1)">&gt;</a></h3>
-            </blockquote>
-        </figure>
-     </div>
-    <div style="width:100%;float:left;">
+    <div style="text-align: center">
+        <h3><a style="cursor:pointer" onclick="date_move(-1)"><span>&lt;</span></a> <span th:text="${quiz_date}"></span>
+            <a style="cursor:pointer" onclick="date_move(1)"><span>&gt;</span></a></h3>
+    </div>
+    <div style="text-align: center"><h3><span th:text="${quizStatModel.total_cnt}"></span> / <span style="color:blue"
+                                                                                                   th:text="${quizStatModel.success_cnt}"></span>
+        / <span style="color:red" th:text="${quizStatModel.fail_cnt}"></span> (<span class="answer_ratio"
+                                                                                     th:text="${quizStatModel.success_rate}"></span>
+        %)</h3></div>
+    <div style="width:20%;float:left;" class="div_quiz">
+        <span class="d-block p-2 bg-primary text-white">감리</span>
         <table class="table table-dark">
             <tbody>
-            <tr>
-                <td style="background-color: #0a53be">출처</td>
-                <td style="background-color: #0a53be">분류</td>
-                <td style="background-color: #0a53be">번호</td>
-                <td style="background-color: #0a53be">제목</td>
+            <tr th:each="quizList : ${quizList}" th:if="${quizList.doc_code}==2">
+                <td>
+                    <a class="link-light" target="_blank"
+                       th:if="${quizList.success_y <= quizList.success_n} and ${quizList.success_n} > 0 and ${quizList.pattern_code} != '112'"
+                       style="color:red"
+                       th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
+                       th:utext="'['+${quizList.quiz_source_name}+'] '+${quizList.category_name}"></a>
+                    <a class="link-light" target="_blank"
+                       th:if="${quizList.success_y > quizList.success_n} and ${quizList.pattern_code} != '112'" style="color:blue"
+                       th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
+                       th:utext="'['+${quizList.quiz_source_name}+'] '+${quizList.category_name}"></a>
+                    <a class="link-light" target="_blank"
+                       th:if="${quizList.pattern_code} == '112'" style="color:grey"
+                       th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
+                       th:utext="'['+${quizList.quiz_source_name}+'] '+${quizList.category_name}"></a>
+                    <span th:text="'['+ ${quizList.success_y}+':'+${quizList.success_n}+'] (' +${quizList.quiz_level}+')'"></span>
+                    <span th:if="${quizList.today_yn > 0}">🟢</span>
+                    <span th:if="${quizList.success_yn != 'Y'}">❌</span>
+
+                </td>
             </tr>
-            <tr th:each="quizList : ${quizList}">
-                <td><span th:text="${quizList.quiz_source_name}"></span></td>
-                <td><span th:text="${quizList.category_name}"></span></td>
-                <td><span th:if="${quizList.success_yn} != 'Y'" style="color:red" th:text="${quizList.quiz_org_number}"></span>
-                    <span th:if="${quizList.success_yn} == 'Y'" th:text="${quizList.quiz_org_number}"></span></td>
-                <td><a class="link-light" th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}" th:utext="${quizList.quiz_title}"/>
+            </tbody>
+        </table>
+    </div>
+    <div style="width:16%;float:left;" class="div_quiz">
+        <span class="d-block p-2 bg-warning text-white">사업관리</span>
+        <table class="table table-dark">
+            <tbody>
+            <tr th:each="quizList : ${quizList}" th:if="${quizList.doc_code}==3">
+                <td>
+                    <a class="link-light" target="_blank"
+                       th:if="${quizList.success_y <= quizList.success_n} and ${quizList.success_n} > 0 and ${quizList.pattern_code} != '112'"
+                       style="color:red"
+                       th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
+                       th:utext="'['+${quizList.quiz_source_name}+'] '+${quizList.category_name}"></a>
+                    <a class="link-light" target="_blank"
+                       th:if="${quizList.success_y > quizList.success_n} and ${quizList.pattern_code} != '112'" style="color:blue"
+                       th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
+                       th:utext="'['+${quizList.quiz_source_name}+'] '+${quizList.category_name}"></a>
+                    <a class="link-light" target="_blank"
+                       th:if="${quizList.pattern_code} == '112'" style="color:grey"
+                       th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
+                       th:utext="'['+${quizList.quiz_source_name}+'] '+${quizList.category_name}"></a>
+                    <span th:text="'['+ ${quizList.success_y}+':'+${quizList.success_n}+'] (' +${quizList.quiz_level}+')'"></span>
+                    <span th:if="${quizList.today_yn > 0}">🟢</span>
+                    <span th:if="${quizList.success_yn != 'Y'}">❌</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div style="width:16%;float:left;" class="div_quiz">
+        <span class="d-block p-2 bg-secondary text-white">소공</span>
+        <table class="table table-dark">
+            <tbody>
+            <tr th:each="quizList : ${quizList}" th:if="${quizList.doc_code}==4">
+                <td>
+                    <a class="link-light" target="_blank"
+                       th:if="${quizList.success_y <= quizList.success_n} and ${quizList.success_n} > 0 and ${quizList.pattern_code} != '112'"
+                       style="color:red"
+                       th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
+                       th:utext="'['+${quizList.quiz_source_name}+'] '+${quizList.category_name}"></a>
+                    <a class="link-light" target="_blank"
+                       th:if="${quizList.success_y > quizList.success_n} and ${quizList.pattern_code} != '112'" style="color:blue"
+                       th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
+                       th:utext="'['+${quizList.quiz_source_name}+'] '+${quizList.category_name}"></a>
+                    <a class="link-light" target="_blank"
+                       th:if="${quizList.pattern_code} == '112'" style="color:grey"
+                       th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
+                       th:utext="'['+${quizList.quiz_source_name}+'] '+${quizList.category_name}"></a>
+                    <span th:text="'['+ ${quizList.success_y}+':'+${quizList.success_n}+'] (' +${quizList.quiz_level}+')'"></span>
+                    <span th:if="${quizList.today_yn > 0}">🟢</span>
+                    <span th:if="${quizList.success_yn != 'Y'}">❌</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div style="width:16%;float:left;">
+        <span class="d-block p-2 bg-success text-white">DB</span>
+        <table class="table table-dark">
+            <tbody>
+            <tr th:each="quizList : ${quizList}" th:if="${quizList.doc_code}==5">
+                <td>
+                    <a class="link-light" target="_blank"
+                       th:if="${quizList.success_y <= quizList.success_n} and ${quizList.success_n} > 0 and ${quizList.pattern_code} != '112'"
+                       style="color:red"
+                       th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
+                       th:utext="'['+${quizList.quiz_source_name}+'] '+${quizList.category_name}"></a>
+                    <a class="link-light" target="_blank"
+                       th:if="${quizList.success_y > quizList.success_n} and ${quizList.pattern_code} != '112'" style="color:blue"
+                       th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
+                       th:utext="'['+${quizList.quiz_source_name}+'] '+${quizList.category_name}"></a>
+                    <a class="link-light" target="_blank"
+                       th:if="${quizList.pattern_code} == '112'" style="color:grey"
+                       th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
+                       th:utext="'['+${quizList.quiz_source_name}+'] '+${quizList.category_name}"></a>
+                    <span th:text="'['+ ${quizList.success_y}+':'+${quizList.success_n}+'] (' +${quizList.quiz_level}+')'"></span>
+                    <span th:if="${quizList.today_yn > 0}">🟢</span>
+                    <span th:if="${quizList.success_yn != 'Y'}">❌</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div style="width:16%;float:left;">
+        <span class="d-block p-2 bg-danger text-white">시구</span>
+        <table class="table table-dark">
+            <tbody>
+            <tr th:each="quizList : ${quizList}" th:if="${quizList.doc_code}==6">
+                <td>
+                    <a class="link-light" target="_blank"
+                       th:if="${quizList.success_y <= quizList.success_n} and ${quizList.success_n} > 0 and ${quizList.pattern_code} != '112'"
+                       style="color:red"
+                       th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
+                       th:utext="'['+${quizList.quiz_source_name}+'] '+${quizList.category_name}"></a>
+                    <a class="link-light" target="_blank"
+                       th:if="${quizList.success_y > quizList.success_n} and ${quizList.pattern_code} != '112'" style="color:blue"
+                       th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
+                       th:utext="'['+${quizList.quiz_source_name}+'] '+${quizList.category_name}"></a>
+                    <a class="link-light" target="_blank"
+                       th:if="${quizList.pattern_code} == '112'" style="color:grey"
+                       th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
+                       th:utext="'['+${quizList.quiz_source_name}+'] '+${quizList.category_name}"></a>
+                    <span th:text="'['+ ${quizList.success_y}+':'+${quizList.success_n}+'] (' +${quizList.quiz_level}+')'"></span>
+                    <span th:if="${quizList.today_yn > 0}">🟢</span>
+                    <span th:if="${quizList.success_yn != 'Y'}">❌</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div style="width:16%;float:left;">
+        <span class="d-block p-2 bg-warning text-white">보안</span>
+        <table class="table table-dark">
+            <tbody>
+            <tr th:each="quizList : ${quizList}" th:if="${quizList.doc_code}==7">
+                <td>
+                    <a class="link-light" target="_blank"
+                       th:if="${quizList.success_y <= quizList.success_n} and ${quizList.success_n} > 0 and ${quizList.pattern_code} != '112'"
+                       style="color:red"
+                       th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
+                       th:utext="'['+${quizList.quiz_source_name}+'] '+${quizList.category_name}"></a>
+                    <a class="link-light" target="_blank"
+                       th:if="${quizList.success_y > quizList.success_n} and ${quizList.pattern_code} != '112'" style="color:blue"
+                       th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
+                       th:utext="'['+${quizList.quiz_source_name}+'] '+${quizList.category_name}"></a>
+                    <a class="link-light" target="_blank"
+                       th:if="${quizList.pattern_code} == '112'" style="color:grey"
+                       th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
+                       th:utext="'['+${quizList.quiz_source_name}+'] '+${quizList.category_name}"></a>
+                    <span th:text="'['+ ${quizList.success_y}+':'+${quizList.success_n}+'] (' +${quizList.quiz_level}+')'"></span>
+                    <span th:if="${quizList.today_yn > 0}">🟢</span>
+                    <span th:if="${quizList.success_yn != 'Y'}">❌</span>
                 </td>
             </tr>
             </tbody>
