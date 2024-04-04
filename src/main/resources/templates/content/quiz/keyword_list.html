@@ -56,11 +56,18 @@
         <table class="table table-dark">
             <tbody>
             <tr th:each="keywordList : ${keywordList}" th:if="${keywordList.doc_code}==2 or ${keywordList.doc_code}==3">
-                <td><a th:if="${keywordList.success_rate} <= 50" style="color:red;cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                <td><a th:if="${keywordList.success_rate} <= 50" style="color:red;cursor:pointer"
+                       th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
                         th:text="${keywordList.doc_name}"></span></a>
-                    <a th:if="${keywordList.success_rate} > 50 and ${keywordList.success_rate} < 70" style="color: #ffc107; cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                    <a th:if="${keywordList.success_rate} > 50 and ${keywordList.success_rate} < 70"
+                       style="color: #ffc107; cursor:pointer"
+                       th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
                             th:text="${keywordList.doc_name}"></span></a>
-                    <a th:if="${keywordList.success_rate} >= 70" style="cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                    <a th:if="${keywordList.success_rate} >= 70 and ${keywordList.success_rate} < 80"
+                       style="cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                            th:text="${keywordList.doc_name}"></span></a>
+                    <a th:if="${keywordList.success_rate} >= 80" style="color: #0d6efd; cursor:pointer"
+                       th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
                             th:text="${keywordList.doc_name}"></span></a>
                 </td>
                 <td style="text-align: center">
@@ -76,11 +83,18 @@
         <table class="table table-dark">
             <tbody>
             <tr th:each="keywordList : ${keywordList}" th:if="${keywordList.doc_code}==4">
-                <td><a th:if="${keywordList.success_rate} <= 50" style="color:red;cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                <td><a th:if="${keywordList.success_rate} <= 50" style="color:red;cursor:pointer"
+                       th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
                         th:text="${keywordList.doc_name}"></span></a>
-                    <a th:if="${keywordList.success_rate} > 50 and ${keywordList.success_rate} < 70" style="color: #ffc107; cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                    <a th:if="${keywordList.success_rate} > 50 and ${keywordList.success_rate} < 70"
+                       style="color: #ffc107; cursor:pointer"
+                       th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
                             th:text="${keywordList.doc_name}"></span></a>
-                    <a th:if="${keywordList.success_rate} >= 70" style="cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                    <a th:if="${keywordList.success_rate} >= 70 and ${keywordList.success_rate} < 80"
+                       style="cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                            th:text="${keywordList.doc_name}"></span></a>
+                    <a th:if="${keywordList.success_rate} >= 80" style="color: #0d6efd; cursor:pointer"
+                       th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
                             th:text="${keywordList.doc_name}"></span></a>
                 </td>
                 <td style="text-align: center">
@@ -96,11 +110,18 @@
         <table class="table table-dark">
             <tbody>
             <tr th:each="keywordList : ${keywordList}" th:if="${keywordList.doc_code}==5">
-                <td><a th:if="${keywordList.success_rate} <= 50" style="color:red;cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                <td><a th:if="${keywordList.success_rate} <= 50" style="color:red;cursor:pointer"
+                       th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
                         th:text="${keywordList.doc_name}"></span></a>
-                    <a th:if="${keywordList.success_rate} > 50 and ${keywordList.success_rate} < 70" style="color: #ffc107; cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                    <a th:if="${keywordList.success_rate} > 50 and ${keywordList.success_rate} < 70"
+                       style="color: #ffc107; cursor:pointer"
+                       th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
                             th:text="${keywordList.doc_name}"></span></a>
-                    <a th:if="${keywordList.success_rate} >= 70" style="cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                    <a th:if="${keywordList.success_rate} >= 70 and ${keywordList.success_rate} < 80"
+                       style="cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                            th:text="${keywordList.doc_name}"></span></a>
+                    <a th:if="${keywordList.success_rate} >= 80" style="color: #0d6efd; cursor:pointer"
+                       th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
                             th:text="${keywordList.doc_name}"></span></a>
                 </td>
                 <td style="text-align: center">
@@ -116,11 +137,18 @@
         <table class="table table-dark">
             <tbody>
             <tr th:each="keywordList : ${keywordList}" th:if="${keywordList.doc_code}==6">
-                <td><a th:if="${keywordList.success_rate} <= 50" style="color:red;cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                <td><a th:if="${keywordList.success_rate} <= 50" style="color:red;cursor:pointer"
+                       th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
                         th:text="${keywordList.doc_name}"></span></a>
-                    <a th:if="${keywordList.success_rate} > 50 and ${keywordList.success_rate} < 70" style="color: #ffc107; cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                    <a th:if="${keywordList.success_rate} > 50 and ${keywordList.success_rate} < 70"
+                       style="color: #ffc107; cursor:pointer"
+                       th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
                             th:text="${keywordList.doc_name}"></span></a>
-                    <a th:if="${keywordList.success_rate} >= 70" style="cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                    <a th:if="${keywordList.success_rate} >= 70 and ${keywordList.success_rate} < 80"
+                       style="cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                            th:text="${keywordList.doc_name}"></span></a>
+                    <a th:if="${keywordList.success_rate} >= 80" style="color: #0d6efd; cursor:pointer"
+                       th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
                             th:text="${keywordList.doc_name}"></span></a>
                 </td>
                 <td style="text-align: center">
@@ -136,11 +164,18 @@
         <table class="table table-dark">
             <tbody>
             <tr th:each="keywordList : ${keywordList}" th:if="${keywordList.doc_code}==7">
-                <td><a th:if="${keywordList.success_rate} <= 50" style="color:red;cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                <td><a th:if="${keywordList.success_rate} <= 50" style="color:red;cursor:pointer"
+                       th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
                         th:text="${keywordList.doc_name}"></span></a>
-                    <a th:if="${keywordList.success_rate} > 50 and ${keywordList.success_rate} < 70" style="color: #ffc107; cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                    <a th:if="${keywordList.success_rate} > 50 and ${keywordList.success_rate} < 70"
+                       style="color: #ffc107; cursor:pointer"
+                       th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
                             th:text="${keywordList.doc_name}"></span></a>
-                    <a th:if="${keywordList.success_rate} >= 70" style="cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                    <a th:if="${keywordList.success_rate} >= 70 and ${keywordList.success_rate} < 80"
+                       style="cursor:pointer" th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
+                            th:text="${keywordList.doc_name}"></span></a>
+                    <a th:if="${keywordList.success_rate} >= 80" style="color: #0d6efd; cursor:pointer"
+                       th:onclick="doc_name_move([[${keywordList.doc_name}]])"><span
                             th:text="${keywordList.doc_name}"></span></a>
                 </td>
                 <td style="text-align: center">
@@ -222,7 +257,7 @@
                 "-" + (stringNewDate.getDate() > 9 ? stringNewDate.getDate().toString() : "0" + stringNewDate.getDate().toString());
         }
         //keyword 열기
-        let doc_name_move = function(keyword){
+        let doc_name_move = function (keyword) {
             $.ajax({
                 type: "POST",
                 url: "/doc_keyword/search_keyword",
@@ -235,9 +270,9 @@
                     "keyword": keyword
                 },
                 success: function (doc_name) {
-                    window.open("/doc/"+doc_name);
+                    window.open("/doc/" + doc_name);
                 }, error: function () {
-                    alert("error : "+ error);
+                    alert("error : " + error);
                 }
             });
         }

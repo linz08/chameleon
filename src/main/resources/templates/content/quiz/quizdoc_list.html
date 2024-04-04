@@ -21,7 +21,6 @@
             <th scope="col" style="background-color: #0a53be">출처</th>
             <th scope="col" style="background-color: #0a53be">(성공:실패) 번호</th>
             <th scope="col" style="background-color: #0a53be">메모</th>
-            <th scope="col" style="background-color: #0a53be; text-align: center;">레벨</th>
             <th scope="col" style="background-color: #0a53be; text-align: center;">문제패턴</th>
         </tr>
         </thead>
@@ -32,6 +31,13 @@
                 <span th:unless="${#strings.contains(quizList.quiz_source_name,'감리')}" th:text="${quizList.quiz_source_name}"></span>
             </td>
             <td>
+                <th:block th:switch="${quizList.quiz_level_name}">
+                    <span th:case="1">&nbsp;&nbsp;&nbsp;</span>
+                    <span th:case="2" style="color:lightpink">2️⃣</span>
+                    <span th:case="3" style="color:lightpink">3️⃣</span>
+                    <span th:case="4" style="color:lightpink">4️⃣</span>
+                    <span th:case="5" style="color:lightpink">5️⃣</span>
+                </th:block>
                 <span th:if="${quizList.pattern_code_name == '예외처리'}" style="color:grey" th:text="'['+${quizList.success_y} + ':' + ${quizList.success_n}+']'"></span>
                 <span th:if="${quizList.pattern_code_name != '예외처리'}" th:text="'['+${quizList.success_y} + ':' + ${quizList.success_n}+']'"></span>
                 <a class="link-light" target="_blank"
@@ -53,8 +59,6 @@
                 <span th:if="${quizList.today_yn > 0}">🟢</span>
             </td>
             <td style="font-size: 12px" th:utext="${quizList.quiz_memo}">퀴즈메모</td>
-            <td style="text-align: center" th:if="${quizList.quiz_level_name != '1'}" th:text="${quizList.quiz_level_name}">레벨</td>
-            <td style="text-align: center" th:if="${quizList.quiz_level_name == '1'}"></td>
             <td style="text-align: center" th:if="${quizList.pattern_code_name == '예외처리'}" th:utext="''">문제패턴</td>
             <td style="text-align: center" th:if="${quizList.pattern_code_name != '예외처리'}" th:text="${quizList.pattern_code_name}">문제패턴</td>
         </tr>

@@ -94,7 +94,14 @@
                        th:if="${quizList.pattern_code} == '112'" style="color:grey"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                        th:utext="'['+${quizList.quiz_source_name}+'] '+${quizList.category_name}"></a>
-                    <span th:text="'['+ ${quizList.success_y}+':'+${quizList.success_n}+'] (' +${quizList.quiz_level}+')'"></span>
+                    <span th:text="'['+ ${quizList.success_y}+':'+${quizList.success_n}+'] '"></span>
+                    <th:block th:switch="${quizList.quiz_level}">
+                        <span th:case="1"></span>
+                        <span th:case="2" style="color:orange">2️⃣</span>
+                        <span th:case="3" style="color:orange">3️⃣</span>
+                        <span th:case="4" style="color:orange">4️⃣</span>
+                        <span th:case="5" style="color:orange">5️⃣</span>
+                    </th:block>
                     <span th:if="${quizList.today_yn > 0}">🟢</span>
                     <span th:if="${quizList.success_yn != 'Y'}">❌</span>
 
@@ -122,7 +129,14 @@
                        th:if="${quizList.pattern_code} == '112'" style="color:grey"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                        th:utext="'['+${quizList.quiz_source_name}+'] '+${quizList.category_name}"></a>
-                    <span th:text="'['+ ${quizList.success_y}+':'+${quizList.success_n}+'] (' +${quizList.quiz_level}+')'"></span>
+                    <span th:text="'['+ ${quizList.success_y}+':'+${quizList.success_n}+']'"></span>
+                    <th:block th:switch="${quizList.quiz_level}">
+                        <span th:case="1"></span>
+                        <span th:case="2" style="color:orange">2️⃣</span>
+                        <span th:case="3" style="color:orange">3️⃣</span>
+                        <span th:case="4" style="color:orange">4️⃣</span>
+                        <span th:case="5" style="color:orange">5️⃣</span>
+                    </th:block>
                     <span th:if="${quizList.today_yn > 0}">🟢</span>
                     <span th:if="${quizList.success_yn != 'Y'}">❌</span>
                 </td>
@@ -149,7 +163,14 @@
                        th:if="${quizList.pattern_code} == '112'" style="color:grey"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                        th:utext="'['+${quizList.quiz_source_name}+'] '+${quizList.category_name}"></a>
-                    <span th:text="'['+ ${quizList.success_y}+':'+${quizList.success_n}+'] (' +${quizList.quiz_level}+')'"></span>
+                    <span th:text="'['+ ${quizList.success_y}+':'+${quizList.success_n}+']'"></span>
+                    <th:block th:switch="${quizList.quiz_level}">
+                        <span th:case="1"></span>
+                        <span th:case="2" style="color:orange">2️⃣</span>
+                        <span th:case="3" style="color:orange">3️⃣</span>
+                        <span th:case="4" style="color:orange">4️⃣</span>
+                        <span th:case="5" style="color:orange">5️⃣</span>
+                    </th:block>
                     <span th:if="${quizList.today_yn > 0}">🟢</span>
                     <span th:if="${quizList.success_yn != 'Y'}">❌</span>
                 </td>
@@ -176,7 +197,14 @@
                        th:if="${quizList.pattern_code} == '112'" style="color:grey"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                        th:utext="'['+${quizList.quiz_source_name}+'] '+${quizList.category_name}"></a>
-                    <span th:text="'['+ ${quizList.success_y}+':'+${quizList.success_n}+'] (' +${quizList.quiz_level}+')'"></span>
+                    <span th:text="'['+ ${quizList.success_y}+':'+${quizList.success_n}+']'"></span>
+                    <th:block th:switch="${quizList.quiz_level}">
+                        <span th:case="1"></span>
+                        <span th:case="2" style="color:orange">2️⃣</span>
+                        <span th:case="3" style="color:orange">3️⃣</span>
+                        <span th:case="4" style="color:orange">4️⃣</span>
+                        <span th:case="5" style="color:orange">5️⃣</span>
+                    </th:block>
                     <span th:if="${quizList.today_yn > 0}">🟢</span>
                     <span th:if="${quizList.success_yn != 'Y'}">❌</span>
                 </td>
@@ -203,7 +231,14 @@
                        th:if="${quizList.pattern_code} == '112'" style="color:grey"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                        th:utext="'['+${quizList.quiz_source_name}+'] '+${quizList.category_name}"></a>
-                    <span th:text="'['+ ${quizList.success_y}+':'+${quizList.success_n}+'] (' +${quizList.quiz_level}+')'"></span>
+                    <span th:text="'['+ ${quizList.success_y}+':'+${quizList.success_n}+']'"></span>
+                    <th:block th:switch="${quizList.quiz_level}">
+                        <span th:case="1"></span>
+                        <span th:case="2" style="color:orange">2️⃣</span>
+                        <span th:case="3" style="color:orange">3️⃣</span>
+                        <span th:case="4" style="color:orange">4️⃣</span>
+                        <span th:case="5" style="color:orange">5️⃣</span>
+                    </th:block>
                     <span th:if="${quizList.today_yn > 0}">🟢</span>
                     <span th:if="${quizList.success_yn != 'Y'}">❌</span>
                 </td>
@@ -230,7 +265,14 @@
                        th:if="${quizList.pattern_code} == '112'" style="color:grey"
                        th:href="@{'/index/'+${quizList.doc_code}+'/'+${quizList.quiz_number}}"
                        th:utext="'['+${quizList.quiz_source_name}+'] '+${quizList.category_name}"></a>
-                    <span th:text="'['+ ${quizList.success_y}+':'+${quizList.success_n}+'] (' +${quizList.quiz_level}+')'"></span>
+                    <span th:text="'['+ ${quizList.success_y}+':'+${quizList.success_n}+']'"></span>
+                    <th:block th:switch="${quizList.quiz_level}">
+                        <span th:case="1"></span>
+                        <span th:case="2" style="color:orange">2️⃣</span>
+                        <span th:case="3" style="color:orange">3️⃣</span>
+                        <span th:case="4" style="color:orange">4️⃣</span>
+                        <span th:case="5" style="color:orange">5️⃣</span>
+                    </th:block>
                     <span th:if="${quizList.today_yn > 0}">🟢</span>
                     <span th:if="${quizList.success_yn != 'Y'}">❌</span>
                 </td>
