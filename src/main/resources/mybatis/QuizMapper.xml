@@ -59,10 +59,14 @@
                  WHERE A.DOC_CODE = B.DOC_CODE
                    AND A.QUIZ_NUMBER = B.QUIZ_NUMBER
                    AND ((B.FAIL_CNT >= A.SUCCESS_CNT) OR (A.SUCCESS_CNT = 1))
-             ) B
+             ) B,
+             QUIZ_STAT C
         WHERE A.PATTERN_CODE <> 112
           and A.DOC_CODE = B.DOC_CODE
           AND A.QUIZ_NUMBER = B.QUIZ_NUMBER
+          AND A.DOC_CODE = C.DOC_CODE
+          AND A.QUIZ_NUMBER = C.QUIZ_NUMBER
+          AND C.QUIZ_DATE <> date_format(CURDATE(), '%Y-%m-%d')
         ORDER BY RAND()
         LIMIT 1
         ]]>
