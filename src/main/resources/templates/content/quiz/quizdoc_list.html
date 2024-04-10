@@ -4,7 +4,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/default_layout}" lang="ko">
 <head>
-    <title>문제목록</title>
+    <title th:text="${doc_name}+': 문제'">page title</title>
 <body>
 <div layout:fragment="content" class="content">
     <div class="doc_title">
@@ -60,7 +60,9 @@
             </td>
             <td style="font-size: 12px" th:utext="${quizList.quiz_memo}">퀴즈메모</td>
             <td style="text-align: center" th:if="${quizList.pattern_code_name == '예외처리'}" th:utext="''">문제패턴</td>
-            <td style="text-align: center" th:if="${quizList.pattern_code_name != '예외처리'}" th:text="${quizList.pattern_code_name}">문제패턴</td>
+            <td style="text-align: center" th:if="${quizList.pattern_code_name == '개념이해'}"></td>
+            <td style="text-align: center" th:if="${quizList.pattern_code_name != '개념이해'} and
+            ${quizList.pattern_code_name != '예외처리'}" th:text="${quizList.pattern_code_name}">문제패턴</td>
         </tr>
         </tbody>
     </table>
