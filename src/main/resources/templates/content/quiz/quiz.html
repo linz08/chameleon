@@ -20,36 +20,6 @@
             text-decoration: none !important;
             color: black;
         }
-
-        .table_subtitle {
-            border: 1px solid black;
-            border-collapse: collapse;
-        }
-        .table_subtitle td {
-            border: 1px solid black;
-            padding: 5px;
-        }
-
-/*
-        a:link {
-            color: black;
-            text-decoration: none;
-        }
-
-        a:visited {
-            color: black;
-            text-decoration: none;
-        }
-
-        a:hover {
-            color: black;
-            text-decoration: underline;
-        }
-
-        a:active {
-            color: black;
-            text-decoration: none;
-        }*/
         /* for block of code */
         .hljs-ln td {
             padding-right: 10px;
@@ -442,6 +412,8 @@
                 }
             });
         }
+        let multi_val_length = 0;
+        let multi_val_arr = [];
         let quiz_answer = function (answer) {
             let retV = "오답";
             let success_yn = "N";
@@ -453,11 +425,21 @@
                     success_yn = "Y";
                 }
             } else {
-                for (let i = 0; i < dap_arr.length; i++) {
-                    if (answer === Number(dap_arr[i])) {
-                        retV = "[정답갯수=" + dap_arr.length + "개 중]  정답";
-                        success_yn = "Y";
+                if(multi_val_arr[0] != answer && multi_val_arr[1] != answer && multi_val_arr[2] != answer && multi_val_arr[3] != answer)
+                {
+
+                    for (let i = 0; i < dap_arr.length; i++) {
+                        if (answer === Number(dap_arr[i])) {
+                            multi_val_arr[multi_val_length] = answer;
+                            retV = "[정답갯수=" + (multi_val_length+1) + "개 중]  정답";
+                            success_yn = "Y";
+                            multi_val_length++;
+
+                        }
                     }
+                }
+                else {
+                    retV = "중복";
                 }
             }
             if (retV === "오답") {
@@ -465,14 +447,28 @@
                 int_fail = Number(int_fail) + 1;
                 $('#span_fail').text(int_fail);
                 toastAlert(retV, 1);
-            } else {
+                quiz_stat(success_yn);
+            }
+            else if (retV == "중복") {
+                toastAlert("중복 클릭이다!!", 0);
+            }
+            else {
                 let int_success = $('#span_success').text();
                 int_success = Number(int_success) + 1;
                 $('#span_success').text(int_success);
-
                 toastAlert(retV, 0);
+
+                if (dap_arr.length === 1) {
+                    quiz_stat(success_yn);
+                }
+                else {
+                    if(dap_arr.length == multi_val_length) {
+                        quiz_stat(success_yn);
+                        //console.log('multi_val_length = '+ multi_val_length);
+                    }
+                }
             }
-            quiz_stat(success_yn);
+
 
         }
 

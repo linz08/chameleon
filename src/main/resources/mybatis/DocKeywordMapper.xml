@@ -17,9 +17,9 @@
     <select id="selectDocSearch" parameterType="String"
             resultType="DocKeywordModel">
         SELECT /* DocKeywordMapper.selectDocSearch */
-               A.DOC_NAME,A.KEYWORD
+               A.DOC_NAME,A.KEYWORD,A.UNIQUE_YN
         FROM (
-                 SELECT A.DOC_NAME,A.KEYWORD,COUNT(*) AS CNT
+                 SELECT A.DOC_NAME,A.UNIQUE_YN,A.KEYWORD,COUNT(*) AS CNT
                  FROM (SELECT * FROM DOCUMENT_KEYWORD
                        WHERE KEYWORD LIKE CONCAT('%',#{doc_name},'%')) A
                           LEFT OUTER JOIN QUIZ_DOCUMENT B
@@ -36,9 +36,11 @@
     <insert id="insertDocKeyword" parameterType="DocKeywordModel">
 		<![CDATA[
         INSERT INTO DOCUMENT_KEYWORD (DOC_NAME,
-                                      KEYWORD)
+                                      KEYWORD,
+                                      UNIQUE_YN)
         VALUES (#{doc_name},
-            #{keyword})
+                #{keyword},
+                #{unique_yn})
         ]]>
 	</insert>
     <update id="updateDocKeyword" parameterType="DocKeywordModel">
@@ -46,7 +48,8 @@
         UPDATE
             DOCUMENT_KEYWORD
         SET DOC_NAME = #{keyword},
-            KEYWORD = #{keyword}
+            KEYWORD = #{keyword},
+            UNIQUE_YN = #{unique_yn}
         WHERE DOC_NAME = #{doc_name}
         ]]>
 	</update>

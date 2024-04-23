@@ -32,9 +32,17 @@ if(document.getElementById('doc_search')) {
 			}).done(function (rData, textStatus, jqXHR) {
 				response(
 					$.map(rData.resultList, function (item) {
+						let retVal;
+						if(item.unique_yn=='Y'){
+							retVal = item.doc_name;
+						}
+						else {
+							retVal = item.keyword;
+						}
+
 						return {
-							label: item.keyword,    	// 목록에 표시되는 값
-							value: item.keyword 		// 선택 시 input창에 표시되는 값
+							label: retVal,    	// 목록에 표시되는 값
+							value: retVal 		// 선택 시 input창에 표시되는 값
 							//, idx : item.SEQ // index
 						};
 					})

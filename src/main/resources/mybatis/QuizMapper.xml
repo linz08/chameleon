@@ -58,7 +58,7 @@
                           GROUP BY DOC_CODE, QUIZ_NUMBER) B
                  WHERE A.DOC_CODE = B.DOC_CODE
                    AND A.QUIZ_NUMBER = B.QUIZ_NUMBER
-                   AND ((B.FAIL_CNT >= A.SUCCESS_CNT) OR (A.SUCCESS_CNT = 1))
+                   AND ((B.FAIL_CNT >= (A.SUCCESS_CNT-1)))
              ) B,
              QUIZ_STAT C
         WHERE A.PATTERN_CODE <> 112

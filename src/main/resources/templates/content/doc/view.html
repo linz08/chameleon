@@ -210,6 +210,11 @@
         <span th:utext="${docModel.doc_content}"></span>
     </div>
     <div id="keyword_button" class="input-group mb-3 w-50 invisible">
+        <select
+                class="form-select" aria-label="독립값여부" name="unique_yn" id="unique_yn">
+            <option selected value="N">공통값</option>
+            <option value="Y">독립값</option>
+        </select>
         <input type="text" id="document_keyword" class="form-control" placeholder="토픽명" aria-label="토픽드명"
                aria-describedby="button-addon2">
         <button class="btn btn-outline-secondary" type="button" id="btn_doc_add">토픽 등록</button>
@@ -345,7 +350,8 @@
                 },
                 data: {
                     "keyword": $('#document_keyword').val(),
-                    "doc_name": '[[${docModel.doc_name}]]'
+                    "doc_name": '[[${docModel.doc_name}]]',
+                    "unique_yn": $('#unique_yn option:selected').val()
                 },
                 success: function (data) {
                     keyword_list();
