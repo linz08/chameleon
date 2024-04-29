@@ -69,7 +69,7 @@
             <label class="visually-hidden" for="specificSizeInputGroupUsername">문서분류</label>
             <div class="input-group">
                 <span class="input-group-text" id="basic-addon2">문서분류</span> <select
-                    class="form-select" aria-label="문서분류" th:id="doc_code" th:name="doc_code">
+                    class="form-select" aria-label="문서분류" th:id="doc_code" th:name="doc_code" onchange="fn_quiz_org_number()">
                 <option th:each="val:${docCatehogryList}"
                         th:value="${val.doc_code}" th:utext="${val.category_name}"
                         th:selected="${val.doc_code==session.doc_code}"></option>
@@ -335,6 +335,29 @@
                    // console.log("error:" + error);
                 }
             });
+        }
+        function fn_quiz_org_number() {
+            let doc_code = $("#doc_code option:selected").val();
+            if(doc_code != '1') {
+                $.ajax({
+                    type: "POST",
+                    url: "/quiz/maxNumber",
+                    beforeSend: function (jqXHR, settings) {
+                        let header = $("meta[name='_csrf_header']").attr("content");
+                        let token = $("meta[name='_csrf']").attr("content");
+                        jqXHR.setRequestHeader(header, token);
+                    },
+                    data: {
+                        "quiz_source": $('#quiz_source').val(),
+                        "doc_code": $('#doc_code').val()
+                    },
+                    success: function (data) {
+                        document.getElementById("quiz_org_number").value = data;
+                    }, error: function () {
+                        alert('실패');
+                    }
+                });
+            }
         }
     </script>
     <script src="/js/google_image.js"></script>

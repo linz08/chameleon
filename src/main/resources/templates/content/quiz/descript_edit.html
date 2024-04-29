@@ -123,14 +123,34 @@
         let allEditors = document.querySelector('.ck_editor_txt');
         ClassicEditor.create((allEditors),
             {
-                simpleUpload:
-                    {
-                        withCredentials: true,
-                        headers: {
-                            'X-CSRF-TOKEN': 'CSRF-Token',
-                            Authorization: 'Bearer <JSON Web Token>'
+                link: {
+                    decorators: {
+                        openInNewTab: {
+                            mode: 'manual',
+                            label: 'Open in a new tab',
+                            defaultValue: true,
+                            attributes: {
+                                target: '_blank',
+                                rel: 'noopener noreferrer'
+                            }
                         }
                     }
+                },
+                codeBlock: {
+                    languages: [
+                        { language: 'plaintext', label: 'Plain text' }, // The default language.
+                        { language: 'java', label: 'Java' },
+                        { language: 'sql', label: 'SQL' },
+                        { language: 'c', label: 'C' },
+                        { language: 'cpp', label: 'C++' },
+                        { language: 'javascript', label: 'JavaScript' },
+                        { language: 'xml', label: 'XML' },
+                        { language: 'html', label: 'HTML' },
+                        { language: 'css', label: 'CSS' },
+                        { language: 'python', label: 'Python' }
+
+                    ]
+                }
             })
             .catch(error => {
                 //console.log( error );

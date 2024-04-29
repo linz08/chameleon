@@ -95,9 +95,19 @@
                     <h1><span th:text="${statModel_doc.current_count}"></span> / <span
                             th:text="${statModel_doc.total_count}"></span>개</h1></p>
                 </div>
+                <div class="card-body">
+                    <select
+                            class="form-select" aria-label="문제선택" th:id="quiz_selection" th:name="quiz_selection" onchange="fn_quiz_select()">
+                        <option value="">:: 퀴즈선택 ::</option>
+                        <option value="1" th:selected="${session.quiz_selection} == '1'">기본퀴즈</option>
+                        <option value="2" th:selected="${session.quiz_selection} == '2'">안푼퀴즈</option>
+                        <option value="3" th:selected="${session.quiz_selection} == '3'">틀린퀴즈</option>
+                    </select>
+                </div>
 
             </div>
         </div>
+        <br/>
         <!--
         <div class="col-sm-6">
             <div class="card">
@@ -193,7 +203,11 @@
 
         month_doc(document.getElementById("month_val").value);
         */
+        let fn_quiz_select = function () {
 
+            document.location.href="/quiz/selection/"+$('#quiz_selection').val();
+
+        }
     </script>
 
 </div>

@@ -394,6 +394,12 @@
             IFNULL(MAX(QUIZ_NUMBER) + 1, 1)
         FROM QUIZ
     </select>
+    <select id="selectSrcMaxQuizNumber" resultType="java.lang.String">
+        SELECT /*
+		QuizMapper.selectSrcMaxQuizNumber */
+        COALESCE(MAX(CAST(QUIZ_ORG_NUMBER AS UNSIGNED)),0)+1 AS QUIZ_ORG_NUMBER
+        FROM QUIZ WHERE QUIZ_SOURCE =#{quiz_source} AND DOC_CODE=#{doc_code}
+    </select>
     <select id="selectPreAnswer" resultType="java.lang.String">
         SELECT /*
 		QuizMapper.selectPreAnswer */

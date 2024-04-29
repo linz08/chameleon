@@ -26,13 +26,30 @@ public class QuizController {
     public ModelAndView index(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
 
-        QuizModel quizModel = ss.selectOne("net.javaguitar.mapper.QuizMapper.selectQuizFail");
+        HttpSession session = request.getSession();
+        String quiz_selection = "1";
 
-        if (quizModel.getQuiz_code() == 2) { // 객관식인 경우
+        if (session.getAttribute("quiz_selection") != null) {
+            quiz_selection = (String) session.getAttribute("quiz_selection");
+        }
+        QuizModel quizModel = new QuizModel();
+
+
+        switch (quiz_selection){
+            case "2": //안푼 문제
+                quizModel = ss.selectOne("net.javaguitar.mapper.QuizMapper.selectQuiz");
+                break;
+            case "3": //틀린 문제
+                quizModel = ss.selectOne("net.javaguitar.mapper.QuizMapper.selectQuizFail");
+                break;
+            default:  //기본 문제
+                quizModel = ss.selectOne("net.javaguitar.mapper.QuizMapper.selectQuiz_Default");
+                break;
+        }
             List<QuizObjectiveModel> ObjectList = ss
                     .selectList("net.javaguitar.mapper.QuizObjectiveMapper.selectQuizObjective", quizModel);
             mav.addObject("objectList", ObjectList);
-        }
+
         // 문제패턴
         List<CodeModel> ptnCodeList = ss.selectList("net.javaguitar.mapper.CodeMapper.selectCode", 5);
         // 난이도
@@ -50,12 +67,14 @@ public class QuizController {
         quizStatModel.setDoc_code(quizModel.getDoc_code());
         quizStatModel.setQuiz_number(quizModel.getQuiz_number());
         quizStatModel = ss.selectOne("net.javaguitar.mapper.QuizStatMapper.selectQuizSuccessRate", quizStatModel);
+        StatModel statModel_answer = ss.selectOne("net.javaguitar.mapper.StatMapper.selectQuizAnswerCount");
 
         mav.addObject("ptnCodeList", ptnCodeList);
         mav.addObject("lvlCodeList", lvlCodeList);
         mav.addObject("quizModel", quizModel);
         mav.addObject("quizStatModel", quizStatModel);
         mav.addObject("quizDocumentModelList", quizDocumentModelList);
+        mav.addObject("statModel_answer", statModel_answer); //오늘 전체 통계
 
         mav.setViewName("content/quiz/quiz");
         return mav;
@@ -71,6 +90,7 @@ public class QuizController {
         quizModel.setDoc_code(doc_code);
         quizModel.setQuiz_number(quiz_number);
         quizModel = ss.selectOne("net.javaguitar.mapper.QuizMapper.selectQuizEdit", quizModel);
+        StatModel statModel_answer = ss.selectOne("net.javaguitar.mapper.StatMapper.selectQuizAnswerCount");
 
         if (quizModel.getQuiz_code() == 2) {
             List<QuizObjectiveModel> ObjectList = ss
@@ -100,6 +120,7 @@ public class QuizController {
         mav.addObject("quizModel", quizModel);
         mav.addObject("quizStatModel", quizStatModel);
         mav.addObject("quizDocumentModelList", quizDocumentModelList);
+        mav.addObject("statModel_answer", statModel_answer); //오늘 전체 통계
 
         mav.setViewName("content/quiz/quiz");
         return mav;
@@ -321,6 +342,15 @@ public class QuizController {
     }
 
     /* 정답 미리 가져오기 */
+    @RequestMapping(value = {"/quiz/maxNumber"}, method = RequestMethod.POST)
+    public @ResponseBody
+    String maxNumber(@ModelAttribute("quizModel") QuizModel quizModel) {
+
+        return ss.selectOne("net.javaguitar.mapper.QuizMapper.selectSrcMaxQuizNumber",quizModel);
+
+    }
+
+    /* 출처 원본번호 맥스값 */
     @RequestMapping(value = {"/pre_answer"}, method = RequestMethod.POST)
     public @ResponseBody
     String pre_answer(@ModelAttribute("quizModel") QuizModel quizModel) {
@@ -409,6 +439,16 @@ public class QuizController {
         session.setAttribute("doc_code", quizModel.getDoc_code());
         session.setAttribute("quiz_source", quizModel.getQuiz_source());
         return "redirect:/quiz/write";
+    }
+
+    @RequestMapping(value = {"/quiz/selection/{quiz_selection}"}, method = {RequestMethod.POST, RequestMethod.GET})
+    public String quizSelection(@PathVariable String quiz_selection, HttpServletRequest request, RedirectAttributes redirectAttributes) throws Exception {
+
+        //선택한 퀴즈로 이동
+        HttpSession session = request.getSession();
+        session.setAttribute("quiz_selection", quiz_selection);
+
+        return "redirect:/index";
     }
 
 

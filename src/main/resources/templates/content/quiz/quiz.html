@@ -20,6 +20,15 @@
             text-decoration: none !important;
             color: black;
         }
+
+        .table_subtitle {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        .table_subtitle td {
+            border: 1px solid black;
+            padding: 5px;
+        }
         /* for block of code */
         .hljs-ln td {
             padding-right: 10px;
@@ -180,7 +189,6 @@
                     th:text="${quizDocumentModelList.doc_name}"></span></a>&nbsp;
         </th:block>-->
     </div>
-    <br/>
     <div id="keyword_button" class="input-group mb-3 invisible">
         <input type="text" id="doc_search" class="form-control" placeholder="토픽명" aria-label="토픽명"
                aria-describedby="button-addon2">
@@ -191,12 +199,19 @@
         <div class="progress-bar" role="progressbar" th:style="'width:'+${quizStatModel.success_rate}+'%'"
              aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" th:text="${quizStatModel.success_rate}">25%</div>
     </div>
-    <ul class="list-group">
-        <li class="list-group-item list-group-item-success" onclick="answer_visuable()"> 성공 : <span id="span_success" th:text="${quizStatModel.success_cnt}"></span></li>
-        <li class="list-group-item list-group-item-danger"> 실패 : <span id="span_fail" th:text="${quizStatModel.fail_cnt}"></span></li>
-        <li class="list-group-item list-group-item-secondary">
-            <span id="quiz_times" th:utext="'시간 : 0 (평균 : '+${quizStatModel.quiz_times}+')'"></span></li>
-    </ul>
+    <table class="table">
+        <tbody>
+        <tr>
+            <td style="background-color: #0c4128;text-align: center" onclick="answer_visuable()"> <span id="span_success" th:text="${quizStatModel.success_cnt}"></span></td>
+            <td style="background-color: #6a1a21;text-align: center"> <span id="span_fail" th:text="${quizStatModel.fail_cnt}"></span></td>
+            <td style="background-color: #323539"><span id="quiz_times" th:utext="'시간 : 0 (평균 : '+${quizStatModel.quiz_times}+')'"></span>
+                &nbsp;&nbsp;오늘 : <span th:text="${statModel_answer.total_count}"></span>/<span style="color:blue"
+                 th:text="${statModel_answer.current_count}"></span>/<span style="color:red" th:text="${statModel_answer.fault_count}"></span> (<span class="answer_ratio"
+                                                                                                                                                                                                                   th:text="${statModel_answer.doc_count}"></span>
+                %)</td>
+        </tr>
+        </tbody>
+    </table>
     <div id="quiz_answer" class="input-group mb-3 invisible">
         <span id="answer" th:text="${quizModel.quiz_answer}"></span>
     </div>
