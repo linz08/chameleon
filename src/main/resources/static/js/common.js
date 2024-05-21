@@ -33,12 +33,12 @@ if(document.getElementById('doc_search')) {
 				response(
 					$.map(rData.resultList, function (item) {
 						let retVal;
-						if(item.unique_yn=='Y'){
+						//if(item.unique_yn=='Y'){
 							retVal = item.doc_name;
-						}
-						else {
-							retVal = item.keyword;
-						}
+						//}
+						//else {
+						//	retVal = item.keyword;
+						//}
 
 						return {
 							label: retVal,    	// 목록에 표시되는 값

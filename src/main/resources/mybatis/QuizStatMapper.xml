@@ -161,4 +161,19 @@
                AND B.SUCCESS_YN <> 'Y') B
         ]]>
     </select>
+    <select id="selectCalendarList" parameterType="CalendarModel" resultType="CalendarModel">
+    <![CDATA[
+        SELECT /* QuizStatMapper.selectCalendarList */
+               A.DAY,B.CNT,C.SEQ,C.TITLE,C.MEMO
+        FROM CALENDARS A LEFT OUTER JOIN
+             (SELECT CAST(DATE_FORMAT(QUIZ_DATE,'%d') AS INT) AS QUIZ_DATE,COUNT(*) AS CNT
+              FROM QUIZ_STAT
+              WHERE QUIZ_DATE BETWEEN '2024-05-01' AND '2024-05-31'
+              GROUP BY QUIZ_DATE) B
+             ON A.DAY = B.QUIZ_DATE
+                         LEFT OUTER JOIN CALENDARS_MEMO  C
+                                         ON A.DAY = C.DAY AND C.YEARS = 2024 AND C.MONTHS = 5
+        WHERE A.DAY <=DATE_FORMAT(LAST_DAY('20240501'),'%d')
+        ]]>
+    </select>
 </mapper>

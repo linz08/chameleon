@@ -234,8 +234,10 @@ public class QuizController {
 
         List<QuizModel> quizList = ss.selectList("net.javaguitar.mapper.QuizMapper.selectQuizDayList", quiz_date);
         QuizStatModel quizStatModel = ss.selectOne("net.javaguitar.mapper.QuizStatMapper.selectQuizDayCount",quiz_date);
+        List<CodeModel> srcCodeList = ss.selectList("net.javaguitar.mapper.CodeMapper.selectCode", 13);
 
         mav.addObject("quizList", quizList);
+        mav.addObject("srcCodeList", srcCodeList);
         mav.addObject("quizStatModel", quizStatModel);
         mav.addObject("quiz_date", quiz_date);
 
@@ -305,7 +307,9 @@ public class QuizController {
 
         // 출처
         List<QuizStatModel> keywordList = ss.selectList("net.javaguitar.mapper.QuizStatMapper.selectKeywordList");
+        List<CodeModel> srcCodeList = ss.selectList("net.javaguitar.mapper.CodeMapper.selectCode", 13);
         mav.addObject("keywordList", keywordList);
+        mav.addObject("srcCodeList", srcCodeList);
 
         mav.setViewName("content/quiz/keyword_list");
         return mav;

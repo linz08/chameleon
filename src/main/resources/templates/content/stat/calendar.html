@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}" lang="ko">
+<head>
+    <title>캘린더</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0px;
+        }
+
+        td {
+            width: 100px;
+            height: 100px;
+        }
+
+        th {
+            height: 30px;
+            font-weight: normal;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content" class="content">
+    <div class="container mt-3">
+        <div class="mt-3 mb-3 p-3 d-flex justify-content-between">
+				<span>
+					<a class="btn btn-outline-dark btn-sm" onclick="nextMon(-1)"
+                       href="#">
+						[이전달]
+					</a>
+				</span>
+            <span class="fw-bold fs-3"
+                  th:text="${calendarModel.getIntYear()}+'년 '+${calendarModel.getIntMonth()}+'월'"></span>
+            <span>
+					<a class="btn btn-outline-dark btn-sm" onclick="nextMon(1)"
+                       href="#">
+						[다음달]
+					</a>
+				</span>
+        </div>
+        <div>
+            <table class="table text-left table-bordered">
+                <!--<tr class="table-light text-center fs-5 tr-h">
+                    <th class="text-danger">일</th>
+                    <th>월</th>
+                    <th>화</th>
+                    <th>수</th>
+                    <th>목</th>
+                    <th>금</th>
+                    <th class="text-primary">토</th>
+                </tr>-->
+                <!--
+                <tr th:each="nums : ${#numbers.sequence(1,6)}">
+                    <td th:each="num : ${#numbers.sequence(1,7)}">
+                        <span th:if="((${num}-${calendarModel.getIntFirstWeekDay()})+(${nums}-1)*7) > 0 and
+                            ((${num}-${calendarModel.getIntFirstWeekDay()})+(${nums}-1)*7) <= ${calendarModel.getIntLastDate()}"
+                              th:text="(${num}-${calendarModel.getIntFirstWeekDay()})+(${nums}-1)*7"></span>
+                    </td>
+                </tr>
+                 <tr th:each="calendarList : ${calendarList}" th:if="${calendarList.day%6==0}">
+                 <td th:unless="${iterStat.first}" th:text="${prods[iterStat.index-1].price}"></td>
+                 <td th:each="cld,iterStat : ${calendarList}" th:if="${cld.day < 8} and ${nums == 1}">
+                -->
+                <tr th:each="nums : ${#numbers.sequence(1,6)}" th:with="dupls=''">
+                    <td th:each="cld,iterStat : ${calendarList}">
+                        <span th:text="${cld.day}" th:unless="${iterStat.first}" t"dupls=cld.day" ></span>
+                        <span th:text="${calendarList[iterStat.index].day}"></span>
+                        <span th:text="${dupls}"></span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!--
+            1. bootstrap 적용
+            2. 첫번줄 일 월 화 수 목 금 토
+            3. 토요일 파란색 / 일요일 빨간색
+        -->
+    </div>
+    <script type="text/javaScript">
+        let nextMon = function (monthGap) {
+            let months = "[[${calendarModel.getIntMonth()}]]";
+            let reqMon;
+            let lastYear;
+            if (months == "12" && monthGap == "1") {
+                reqMon = 1;
+                lastYear = (Number("[[${calendarModel.getIntYear()}]]") + 1).toString();
+            } else if (months == "1" && monthGap == "-1") {
+                reqMon = 12;
+                lastYear = (Number("[[${calendarModel.getIntYear()}]]") - 1).toString();
+            } else {
+                reqMon = Number(months) + Number(monthGap);
+                lastYear = "[[${calendarModel.getIntYear()}]]";
+            }
+            let lastMon; // 해당월
+            if (reqMon < 10) {
+                lastMon = lastYear + "0" + reqMon;
+            } else {
+                lastMon = lastYear + reqMon;
+            }
+            document.location.href = "/stat/calendar/" + lastMon;
+        }
+    </script>
+</div>
+
+</body>
+</html>

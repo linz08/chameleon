@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -58,5 +59,38 @@ public class QuizStatController {
                 ss.insert("net.javaguitar.mapper.QuizStatMapper.insertQuizStat", quizStatModel);
             }
         }
+    }
+    @RequestMapping(value = {"/stat/calendar/{yyyymm}"}, method = RequestMethod.GET)
+    public ModelAndView statCalendar(@PathVariable String yyyymm) {
+        ModelAndView mav = new ModelAndView();
+        CalendarModel calendarModel = new CalendarModel();
+        int reqYear = 2023; //Integer.parseInt(yyyymm.substring(0,4));
+        int reqMonth = 4; //Integer.parseInt(yyyymm.substring(4,2));
+
+        if(yyyymm != null) {
+            reqYear = Integer.parseInt(yyyymm.substring(0,4));
+            reqMonth = Integer.parseInt(yyyymm.substring(4,6));
+        }
+
+        //Calendar cal = Calendar.getInstance();
+        LocalDate toDay = LocalDate.of(reqYear,reqMonth,1); //현재날짜 LocalDate firstDay = LocalDate.of(toDay.getYear(),toDay.getMonthValue(),1);LocalDate.now()
+
+        calendarModel.setIntYear(toDay.getYear());
+        calendarModel.setIntMonth(toDay.getMonthValue());
+        calendarModel.setStrMonth(toDay.getMonth().toString());
+        calendarModel.setIntLastDate(toDay.lengthOfMonth());  //월의 마지막 날짜
+
+        DayOfWeek dayofWeek = toDay.getDayOfWeek();
+        calendarModel.setIntFirstWeekDay(dayofWeek.getValue());
+
+
+        mav.addObject("calendarModel", calendarModel);
+
+
+        List<CalendarModel> calendarList = ss.selectList("net.javaguitar.mapper.QuizStatMapper.selectCalendarList");
+        mav.addObject("calendarList", calendarList);
+
+        mav.setViewName("content/stat/calendar");
+        return mav;
     }
 }
