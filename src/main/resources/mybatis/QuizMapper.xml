@@ -35,6 +35,22 @@
         LIMIT 1
         ]]>
     </select>
+    <select id="selectCategoryQuiz" parameterType="int" resultType="QuizModel">
+     <![CDATA[
+            SELECT A.*, /* QuizMapper.selectCategoryQuiz  과목별 퀴즈 */
+            FNC_COMMON_CODE(A.QUIZ_SOURCE) AS QUIZ_SOURCE_NAME,
+            (
+            SELECT CATEGORY_NAME
+            FROM DOCUMENT_CATEGORY
+            WHERE DOC_CODE = A.DOC_CODE
+            )                              AS CATEGORY_NAME
+            FROM QUIZ A
+            WHERE A.PATTERN_CODE <> 112
+            AND A.DOC_CODE= #{doc_code}
+            ORDER BY RAND()
+            LIMIT 1
+        ]]>
+    </select>
     <select id="selectQuizFail" resultType="QuizModel">
      <![CDATA[
         SELECT A.*, /* QuizMapper.selectQuizFail  틀린 문제 */

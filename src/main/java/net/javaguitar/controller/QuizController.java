@@ -42,6 +42,28 @@ public class QuizController {
             case "3": //틀린 문제
                 quizModel = ss.selectOne("net.javaguitar.mapper.QuizMapper.selectQuizFail");
                 break;
+            case "4": //감리
+                quizModel = ss.selectOne("net.javaguitar.mapper.QuizMapper.selectCategoryQuiz",2);
+                break;
+            case "5": //사업관리
+                quizModel = ss.selectOne("net.javaguitar.mapper.QuizMapper.selectCategoryQuiz",3);
+                break;
+            case "6": //소프트웨어공학
+
+                quizModel = ss.selectOne("net.javaguitar.mapper.QuizMapper.selectCategoryQuiz",4);
+                break;
+            case "7": //데이터베이스
+
+                quizModel = ss.selectOne("net.javaguitar.mapper.QuizMapper.selectCategoryQuiz",5);
+                break;
+            case "8": //시스템구조
+
+                quizModel = ss.selectOne("net.javaguitar.mapper.QuizMapper.selectCategoryQuiz",6);
+                break;
+            case "9": //보안
+
+                quizModel = ss.selectOne("net.javaguitar.mapper.QuizMapper.selectCategoryQuiz",7);
+                break;
             default:  //기본 문제
                 quizModel = ss.selectOne("net.javaguitar.mapper.QuizMapper.selectQuiz_Default");
                 break;
